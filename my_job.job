@@ -14,4 +14,8 @@ module load gcc/10.2.0
 module load cuda/11.5.0
 module load python/anaconda/4.6/miniconda/3.7
 
-python code2.py
+echo ">>> Installing Requirements";
+conda run -n custom_env pip install -r requirements.txt
+echo ">>> Running Code";
+
+/usr/bin/env time -v conda run -n custom_env python code2.py
