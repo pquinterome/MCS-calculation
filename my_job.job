@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J jobname 
+#SBATCH -J imgprost 
 #SBATCH -n 1
 #SBATCH -o %j.out 
 #SBATCH -e %j.err 
