@@ -1,21 +1,13 @@
 #!/bin/bash
-#SBATCH -J compute-single-node
-#SBATCH -N 1
-#SBATCH --ntasks-per-node 20
-#SBATCH -o %N.%j.%a.out
-#SBATCH -e %N.%j.%a.err
-#SBATCH -p compute
-#SBATCH --exclusive
-#SBATCH --mail-user= p.a.quintero-mejia-2019
-
-echo $SLURM_JOB_NODELIST
+#SBATCH -J jobname 
+#SBATCH -n 1
+#SBATCH -o %j.out 
+#SBATCH -e %j.err 
+#SBATCH -p compute 
+#SBATCH --time=20:00:00
 
 module purge
-module add anaconda/4.0/3.5
-module add openmpi/gcc/1.10.2
+module add python/anaconda/4.0/3.5
 
-export I_MPI_DEBUG=5
-export I_MPI_FABRICS=shm:tmi
-export I_MPI_FALLBACK=no
 
-mpirun python code.py
+python code.py
