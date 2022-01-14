@@ -1,6 +1,10 @@
 import tensorflow as tf
 import pandas as pd
 import seaborn as sns
+import os
+
+os.makedirs("output")
+
 print('hello')
 
 p0 = pd.read_csv('HL_Prostate_3Gy_2arc.csv') 
