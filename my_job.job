@@ -6,7 +6,7 @@
 #SBATCH -e %N.%j.%a.err
 #SBATCH -p compute
 #SBATCH --exclusive
-#SBATCH --mail-user= p.a.quintero-mejia-2019@hull.ac.uk
+#SBATCH --mail-user= p.a.quintero-mejia-2019
 
 echo $SLURM_JOB_NODELIST
 
