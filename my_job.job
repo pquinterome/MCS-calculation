@@ -3,7 +3,8 @@
 #SBATCH -n 1
 #SBATCH -o %j.out 
 #SBATCH -e %j.err 
-#SBATCH -p compute 
+#SBATCH -p gpu05,gpu
+#SBATCH --gres=gpu:1
 #SBATCH --time=20:00:00
 
 module purge
