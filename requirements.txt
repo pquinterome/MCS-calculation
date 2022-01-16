@@ -5,3 +5,4 @@ seaborn
 sklearn
 scipy
 tensorflow>=2.5
+chart_studio
