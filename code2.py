@@ -73,11 +73,11 @@ r = model1.fit(train_generator, epochs=100, validation_data=(X_test, y_test), ca
 metrics = pd.DataFrame(model1.history.history)
 
 plt.figure(1) 
-plt.subplot(311)
+plt.subplot(211)
 plt.title('Loss [rmse]')
 plt.plot(metrics[['loss', 'val_loss']], label=['train', 'loss'])
 plt.legend()
-plt.subplot(312)
+plt.subplot(212)
 plt.title('Mean Absolute Error')
 plt.plot(metrics[['mean_absolute_error', 'val_mean_absolute_error']], label=['mean_abs_error', 'val_mean_abs_error' ])
 plt.legend()
