@@ -90,7 +90,7 @@ rmse = mean_squared_error(y_test, pred, squared=False)
 print('MAE---->>>>', mae)
 print('RMSE--->>>>', rmse)
 
-plt.subplot(313)
+plt.subplot(1)
 plt.scatter(x=y_test, y=pred, edgecolors='k', color='g', alpha=0.7)
 plt.ylabel('predicted')
 plt.xlabel('Measured')
