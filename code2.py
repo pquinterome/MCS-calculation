@@ -71,6 +71,8 @@ early_stop = EarlyStopping(monitor='val_loss', patience=3)
 r = model1.fit(train_generator, epochs=100, validation_data=(X_test, y_test), callbacks=[early_stop], verbose=1)
 
 metrics = pd.DataFrame(model1.history.history)
+
+plt.figure(1) 
 plt.subplot(311)
 plt.title('Loss [rmse]')
 plt.plot(metrics[['loss', 'val_loss']], label=['train', 'loss'])
@@ -90,7 +92,8 @@ rmse = mean_squared_error(y_test, pred, squared=False)
 print('MAE---->>>>', mae)
 print('RMSE--->>>>', rmse)
 
-plt.subplot(1)
+
+plt.figure(2) 
 plt.scatter(x=y_test, y=pred, edgecolors='k', color='g', alpha=0.7)
 plt.ylabel('predicted')
 plt.xlabel('Measured')
@@ -98,4 +101,3 @@ plt.savefig('output/predictions.png', bbox_inches='tight')
 
 corr = spearmanr(pred, y_test)
 print('Spearman Correlation', corr)
-# %%
