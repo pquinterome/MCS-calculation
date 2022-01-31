@@ -200,6 +200,7 @@ m1=[]
 loss_m1=[]
 val_lossE=[]
 fold_no = 1
+plt.figure(4)
 fig, ax = plt.subplots()
 kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
 
@@ -232,7 +233,7 @@ for train, test in kfold.split(X, y):
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
     batch_size = 3
     
-    r = model.fit(train_generator, epochs=600, validation_data=(X[test], y[test]), callbacks=[early_stop], verbose=0)
+    r = model.fit(train_generator, epochs=200, validation_data=(X[test], y[test]), callbacks=[early_stop], verbose=0)
 
     metrics = pd.DataFrame(model.history.history)
     
@@ -249,7 +250,7 @@ for train, test in kfold.split(X, y):
     test_generator = data_generator.flow(X[test], y[test], batch_size=3)
     pred = model.predict(test_generator)
     mae_i = mean_absolute_error(y[test], pred)
-    rmse_i = mean_squared_error(y[test], pred, squared=False)
+    rmse_i = mean_squared_error(y[test], pred, squared=True)
 
     mae.append(mae_i)
     rmse.append(rmse_i)
@@ -270,10 +271,10 @@ std2 = metrics['val_loss'].std()
 print('CV_mae=', mean, std)
 print('CV_rmse=', mean2, std2)
 
-rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0])-1)]
-r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0])-1)]
+rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
+r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
 rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(len(m1[0]))]
-r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0])-1)]
+r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0]))]
 
 plt.subplot(211)
 plt.title('Loss [rmse]')
