@@ -101,6 +101,7 @@ plt.scatter(x=y_test, y=pred, edgecolors='k', color='g', alpha=0.7)
 plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 plt.ylabel('predicted')
 plt.xlabel('Measured')
+plt.ylim(0.9, 1.01)
 plt.savefig('output/predictions.png', bbox_inches='tight')
 
 corr = spearmanr(pred, y_test)
@@ -189,9 +190,12 @@ X = X1.reshape(X1.shape[0],X1.shape[1],X1.shape[2],1)
 y = y
 seed =18
 np.random.seed(seed)
-i2 = 0.1
 mae = []
 rmse = []
+lossE = []
+m1=[]
+loss_m1=[]
+val_lossE=[]
 fold_no = 1
 fig, ax = plt.subplots()
 kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
@@ -228,14 +232,13 @@ for train, test in kfold.split(X, y):
     
     plt.subplot(211)
     plt.title('Loss [rmse]')
-    plt.plot(metrics['loss'], label=['train'], color=('blue'), alpha=i2)
-    plt.plot(metrics['val_loss'], label=['loss'], color=('orange'), alpha=i2)
-    plt.legend()
+    plt.plot(metrics['loss'], color=('blue'), alpha=0.1)
+    plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1)
+    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.subplot(212)
     plt.title('MAE')
-    plt.plot(metrics['mean_absolute_error'], label=['mean_absolute_error'], color=('blue'), alpha=i2)
-    plt.plot(metrics['val_mean_absolute_error'], label=['val_mean_absolute_error'], color=('orange'), alpha=i2)
-    plt.legend()
+    plt.plot(metrics['mean_absolute_error'], label=['mean_absolute_error'], color=('blue'), alpha=0.1)
+    plt.plot(metrics['val_mean_absolute_error'], label=['val_mean_absolute_error'], color=('orange'), alpha=0.1)
        
 # evaluate the model  
     test_generator = data_generator.flow(X[test], y[test], batch_size=3)
@@ -246,8 +249,12 @@ for train, test in kfold.split(X, y):
     mae.append(mae_i)
     rmse.append(rmse_i)
 
+    lossE.append(np.array(metrics['loss']))
+    val_lossE.append(np.array(metrics['val_loss']))
+    m1.append(np.array(metrics['mean_absolute_error']))
+    loss_m1.append(np.array(metrics['val_mean_absolute_error']))
+
     fold_no = fold_no + 1
-    i2 = i2+0.2
 
 m = metrics['val_mean_absolute_error']
 mean = metrics['val_mean_absolute_error'].mean()
@@ -255,7 +262,24 @@ std = metrics['val_mean_absolute_error'].std()
 m2 = metrics['val_loss']
 mean2 = metrics['val_loss'].mean()
 std2 = metrics['val_loss'].std()
-print('mae=', mean, std)
-print('rmse=', mean2, std2)
+print('CV_mae=', mean, std)
+print('CV_rmse=', mean2, std2)
+
+rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
+r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
+rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(len(m1[0]))]
+r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0]))]
+
+plt.subplot(211)
+plt.title('Loss [rmse]')
+plt.plot(rloss, label=['train'], color=('blue'))
+plt.plot(r_val_loss, label=['loss'], color=('orange'))
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.subplot(212)
+plt.title('MAE')
+plt.plot(rm1, label=['mean_absolute_error'], color=('blue'), alpha=i2)
+plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'), alpha=i2)
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
 plt.savefig('output/train_curves_CV.png', bbox_inches='tight')
 # %%
