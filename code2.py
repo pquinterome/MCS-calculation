@@ -186,6 +186,7 @@ ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/roc_auc.png', bbox_inches='tight')
+print('Mean_auc-->>', mean_auc, std_auc)
 # %%
 X1 = ltm
 X = X1.reshape(X1.shape[0],X1.shape[1],X1.shape[2],1)
