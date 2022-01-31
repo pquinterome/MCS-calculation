@@ -277,9 +277,9 @@ plt.plot(r_val_loss, label=['loss'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.subplot(212)
 plt.title('MAE')
-plt.plot(rm1, label=['mean_absolute_error'], color=('blue'), alpha=i2)
-plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'), alpha=i2)
+plt.plot(rm1, label=['mean_absolute_error'], color=('blue'))
+plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
+plt.tight_layout()
 plt.savefig('output/train_curves_CV.png', bbox_inches='tight')
 # %%
