@@ -102,6 +102,7 @@ plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=
 plt.ylabel('predicted')
 plt.xlabel('Measured')
 plt.ylim(0.9, 1.01)
+plt.xlim(0.9, 1.01)
 plt.savefig('output/predictions.png', bbox_inches='tight')
 
 corr = spearmanr(pred, y_test)
