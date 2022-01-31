@@ -238,11 +238,10 @@ for train, test in kfold.split(X, y):
     plt.title('Loss [rmse]')
     plt.plot(metrics['loss'], color=('blue'), alpha=0.1)
     plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1)
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.subplot(212)
     plt.title('MAE')
-    plt.plot(metrics['mean_absolute_error'], label=['mean_absolute_error'], color=('blue'), alpha=0.1)
-    plt.plot(metrics['val_mean_absolute_error'], label=['val_mean_absolute_error'], color=('orange'), alpha=0.1)
+    plt.plot(metrics['mean_absolute_error'], color=('blue'), alpha=0.1)
+    plt.plot(metrics['val_mean_absolute_error'], color=('orange'), alpha=0.1)
        
 # evaluate the model  
     test_generator = data_generator.flow(X[test], y[test], batch_size=3)
