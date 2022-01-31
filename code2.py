@@ -189,7 +189,7 @@ X = X1.reshape(X1.shape[0],X1.shape[1],X1.shape[2],1)
 y = y
 seed =18
 np.random.seed(seed)
-i2 = 1
+i2 = 0.1
 mae = []
 rmse = []
 fold_no = 1
