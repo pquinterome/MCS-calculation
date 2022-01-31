@@ -1,4 +1,5 @@
 # %%
+from cProfile import label
 import matplotlib.pyplot as plt
 import os
 import numpy as np
@@ -236,12 +237,12 @@ for train, test in kfold.split(X, y):
     
     plt.subplot(211)
     plt.title('Loss [rmse]')
-    plt.plot(metrics['loss'], color=('blue'), alpha=0.1)
-    plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1)
+    plt.plot(metrics['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
     plt.subplot(212)
     plt.title('MAE')
-    plt.plot(metrics['mean_absolute_error'], color=('blue'), alpha=0.1)
-    plt.plot(metrics['val_mean_absolute_error'], color=('orange'), alpha=0.1)
+    plt.plot(metrics['mean_absolute_error'], color=('blue'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['val_mean_absolute_error'], color=('orange'), alpha=0.1, label='_nolegend_')
        
 # evaluate the model  
     test_generator = data_generator.flow(X[test], y[test], batch_size=3)
