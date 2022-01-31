@@ -270,10 +270,10 @@ std2 = metrics['val_loss'].std()
 print('CV_mae=', mean, std)
 print('CV_rmse=', mean2, std2)
 
-rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
-r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
+rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0])-1)]
+r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0])-1)]
 rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(len(m1[0]))]
-r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0]))]
+r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0])-1)]
 
 plt.subplot(211)
 plt.title('Loss [rmse]')
