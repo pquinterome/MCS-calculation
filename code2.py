@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import pandas as pd
+from pyparsing import alphas
 import seaborn as sns
 import tensorflow as tf
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
@@ -121,7 +122,7 @@ plt.figure(3)
 fig, ax = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) 
 for train, test in kfold.split(X2, y2):
-    !rm -rf ./logs/
+    
     print(f'fold_no {fold_no}')
     # create model
     i = Input(shape=(112,177,1))
@@ -188,15 +189,15 @@ X = X1.reshape(X1.shape[0],X1.shape[1],X1.shape[2],1)
 y = y
 seed =18
 np.random.seed(seed)
-i = 1
+i2 = 1
 mae = []
 rmse = []
 fold_no = 1
 fig, ax = plt.subplots()
-kfold = KFold(n_splits=3, shuffle=True) #, random_state=seed)
+kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
 
 for train, test in kfold.split(X, y):
-    !rm -rf ./logs/
+    
     print(f'fold_no {fold_no}')
     
     data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
@@ -227,13 +228,13 @@ for train, test in kfold.split(X, y):
     
     plt.subplot(211)
     plt.title('Loss [rmse]')
-    plt.plot(metrics['loss'], label=['train'], color=('blue'))
-    plt.plot(metrics['val_loss'], label=['loss'], color=('orange'))
+    plt.plot(metrics['loss'], label=['train'], color=('blue'), alpha=i2)
+    plt.plot(metrics['val_loss'], label=['loss'], color=('orange'), alpha=i2)
     plt.legend()
     plt.subplot(212)
     plt.title('MAE')
-    plt.plot(metrics['mean_absolute_error'], label=['mean_absolute_error'], color=('blue'))
-    plt.plot(metrics['val_mean_absolute_error'], label=['val_mean_absolute_error'], color=('orange'))
+    plt.plot(metrics['mean_absolute_error'], label=['mean_absolute_error'], color=('blue'), alpha=i2)
+    plt.plot(metrics['val_mean_absolute_error'], label=['val_mean_absolute_error'], color=('orange'), alpha=i2)
     plt.legend()
        
 # evaluate the model  
@@ -246,6 +247,7 @@ for train, test in kfold.split(X, y):
     rmse.append(rmse_i)
 
     fold_no = fold_no + 1
+    i2 = i2+0.2
 
 m = metrics['val_mean_absolute_error']
 mean = metrics['val_mean_absolute_error'].mean()
