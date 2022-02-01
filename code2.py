@@ -18,15 +18,12 @@ from scipy.stats import pearsonr
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from numpy import interp
-
 #os.makedirs("output")
-
 print('hello')
 # %%
 #p0 = pd.read_csv('HL_Prostate_3Gy.csv') 
 #fig =sns.scatterplot(data=p0, x='MU', x_jitter=True, y='2_1', color='r', edgecolor='black', linewidth=0.9, alpha=0.6, label='2.7Gy').get_figure()
 #fig.savefig("output/image1.png")
-
 ltm1 = np.load('tlm_3Gy_2arc_HL.npy')
 ltm1 = np.array([ltm1[i][:112,] for i in range(len(ltm1))])
 ltm2 = np.load('tlm_3Gy_1arc_HL.npy')
@@ -41,7 +38,6 @@ y = np.concatenate((y1,y2), axis=0)
 y = y.reshape(547)
 print ('Input size', ltm.shape)
 print('Output size', len(y))
-
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
 X_train = X_train.reshape(437,112,177,1)
 X_test = X_test.reshape(110,112,177,1)
@@ -202,7 +198,7 @@ val_lossE=[]
 fold_no = 1
 plt.figure(4)
 fig, ax = plt.subplots()
-kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
+kfold = KFold(n_splits=3, shuffle=True) #, random_state=seed)
 
 for train, test in kfold.split(X, y):
     
@@ -287,5 +283,6 @@ plt.plot(rm1, label=['mean_absolute_error'], color=('blue'))
 plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.tight_layout()
-plt.savefig('output/train_curves_CV.png', bbox_inches='tight')
+#plt.savefig('output/train_curves_CV.png', bbox_inches='tight')
+
 # %%
