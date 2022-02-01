@@ -116,8 +116,8 @@ std = metrics['val_mean_absolute_error'].std()
 m2 = metrics['val_loss']
 mean2 = metrics['val_loss'].mean()
 std2 = metrics['val_loss'].std()
-print('mae=', mean, std)
-print('rmse=', mean2, std2)
+print('MAE---->>>>',    mae)
+print('RMSE--->>>>',    rmse)
 
 rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
 r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
