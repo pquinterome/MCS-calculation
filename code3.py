@@ -48,8 +48,6 @@ val_lossE=[]
 fold_no = 1
 fig, ax = plt.subplots()
 kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
-
-
 for train, test in kfold.split(X, y):
     print(f'fold_no {fold_no}')
     data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
@@ -118,12 +116,10 @@ mean2 = metrics['val_loss'].mean()
 std2 = metrics['val_loss'].std()
 print('MAE---->>>>',    mae)
 print('RMSE--->>>>',    rmse)
-
 rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
 r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
 rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(len(m1[0]))]
 r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0]))]
-
 plt.figure(1)
 plt.title('Loss [rmse]')
 plt.plot(rloss, label=['train'], color=('blue'))
