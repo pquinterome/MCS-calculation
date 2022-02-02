@@ -1,0 +1,7 @@
+numpy
+matplotlib
+pandas
+seaborn
+sklearn
+scipy
+tensorflow>=2.5
