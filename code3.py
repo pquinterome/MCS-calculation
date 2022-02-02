@@ -133,4 +133,3 @@ plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 #plt.tight_layout()
 plt.savefig('output/mae.png', bbox_inches='tight')
-# %%
