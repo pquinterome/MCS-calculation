@@ -32,6 +32,7 @@ y = np.concatenate((y1,y2), axis=0)
 y = y.reshape(547)
 print ('Input size', ltm.shape)
 print('Output size', len(y))
+print('hooper')
 # %%
 # Cross Validation
 X1 = ltm
