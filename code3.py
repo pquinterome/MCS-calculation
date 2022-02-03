@@ -55,8 +55,8 @@ for train, test in kfold.split(X, y):
     train_generator = data_generator.flow(X[train], y[train], batch_size=3)
   # create model
     i = Input(shape=(112,177,1))
-    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(i)
-    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(3,1), activation='relu')(i)
+    x = Conv2D(filters=32, kernel_size=(1,3), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
@@ -65,6 +65,7 @@ for train, test in kfold.split(X, y):
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     #x = GlobalMaxPooling2D()(x)  
+
     x = Flatten()(x)
     x = Dense(128, activation='relu')(x)
     x = Dense(60, activation='relu')(x)
