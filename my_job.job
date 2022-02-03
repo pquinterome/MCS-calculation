@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J imgprost 
+#SBATCH -J prostate_calc 
 #SBATCH -n 1
 #SBATCH -o %j.out 
 #SBATCH -e %j.err 
