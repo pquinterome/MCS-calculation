@@ -124,6 +124,8 @@ mean2 = metrics['val_loss'].mean()
 std2 = metrics['val_loss'].std()
 print('MAE---->>>>',    mae)
 print('RMSE--->>>>',    rmse)
+print('CV_mae=', mean, std)
+print('CV_rmse=', mean2, std2)
 rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
 r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
 rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(len(m1[0]))]
