@@ -49,7 +49,7 @@ predict=[]
 yeti=[]
 fold_no = 1
 fig, ax = plt.subplots()
-kfold = KFold(n_splits=3, shuffle=True) #, random_state=seed)
+kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
 
 
 for train, test in kfold.split(X, y):
@@ -136,7 +136,7 @@ print('MAE---->>>>',    mae)
 print('RMSE--->>>>',    rmse)
 print('CV_mae=', mean, std)
 print('CV_rmse=', mean2, std2)
-print('CV_spearman--->>>', spear)
+print(spear)
 min_x = min([len(lossE[i]) for i in range(len(lossE))])
 rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(min_x)]
 r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(min_x)]
