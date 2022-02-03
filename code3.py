@@ -65,7 +65,13 @@ for train, test in kfold.split(X, y):
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     #x = GlobalMaxPooling2D()(x)  
-
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = MaxPool2D(pool_size=(2,2))(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = MaxPool2D(pool_size=(2,2))(x)
+    
     x = Flatten()(x)
     x = Dense(128, activation='relu')(x)
     x = Dense(60, activation='relu')(x)
