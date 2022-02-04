@@ -98,19 +98,9 @@ for train, test in kfold.split(X2, y2):
     roc_auc = auc(fpr, tpr)
     #roc_auc5 = metrics.auc(fpr, tpr)
     aucs1.append(roc_auc)
-    plt.figure(3)
     plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
     i1= i1+1
     fold_no = fold_no + 1
-    plt.figure(1)
-    plt.title('Loss [rmse]')
-    plt.plot(metrics['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.figure(2)
-    plt.title('AUC')
-    plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
 
 
 ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
