@@ -120,14 +120,14 @@ plt.title('Loss [bce]')
 plt.plot(rloss, label=['train'], color=('blue'))
 plt.plot(r_val_loss, label=['loss'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.savefig('output/loss.png', bbox_inches='tight')
+plt.savefig('output/loss.png', bbox_inches='tight')
 
 plt.figure(2)
 plt.title('accuracy')
 plt.plot(rm1, label=['mean_acc'], color=('blue'))
 plt.plot(r_loss_m1, label=['val_acc'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.savefig('output/acc.png', bbox_inches='tight')
+plt.savefig('output/acc.png', bbox_inches='tight')
 
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr[-1] = 1.0
@@ -147,8 +147,9 @@ plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label
 plt.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
-#plt.savefig('output/roc_auc.png', bbox_inches='tight')
 plt.xlim(-0.05, 1.05)
 plt.ylim(-0.05, 1.05)
+plt.savefig('output/roc_auc.png', bbox_inches='tight')
 print('Mean_auc-->>', mean_auc, std_auc)
+
 # %%
