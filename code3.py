@@ -56,6 +56,7 @@ kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
 for train, test in kfold.split(X, y):
     print(f'fold_no {fold_no}')
     #Data Generator
+    batch_size = 16
     data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
     train_generator = data_generator.flow(X[train], y[train])
     test_generator = data_generator.flow(X[test], y[test], shuffle=False)
@@ -83,7 +84,7 @@ for train, test in kfold.split(X, y):
     #compile model     
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
-    batch_size = 16
+    
     r = model.fit(train_generator, epochs=600, validation_data=test_generator, callbacks=[early_stop], verbose=0)
     metrics = pd.DataFrame(model.history.history)
     
