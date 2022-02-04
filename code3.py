@@ -38,7 +38,9 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 # Cross Validation
 X = ltm.reshape(ltm.shape[0],ltm.shape[1],ltm.shape[2],1)
 y= y
-
+aucs1 = []
+tprs1 = []
+mean_fpr = np.linspace(0, 1, 100)
 spear=[]
 mae = []
 rmse = []
@@ -50,9 +52,10 @@ predict=[]
 yeti=[]
 fold_no = 1
 fig, ax = plt.subplots()
+i1=1
 kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
 
-
+plt.figure(1)
 for train, test in kfold.split(X, y):
     print(f'fold_no {fold_no}')
     #Data Generator
@@ -77,14 +80,11 @@ for train, test in kfold.split(X, y):
     x = Flatten()(x)
     x = Dense(128, activation='relu')(x)
     x = Dense(128, activation='relu')(x)
-    #x = Dense(38, activation='relu')(x)
-    #x = Dense(15, activation='relu')(x)
-    x= Dense(1, activation='linear')(x)
-    model = Model(i, x)    
+    x= Dense(1, activation='sigmoid')(x)
+    model = Model(i, x)   
     #compile model     
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
-    
     r = model.fit(train_generator, epochs=600, validation_data=test_generator, callbacks=[early_stop], verbose=0)
     metrics = pd.DataFrame(model.history.history)
     
@@ -94,72 +94,74 @@ for train, test in kfold.split(X, y):
     plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
     #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.figure(2)
-    plt.title('MAE')
-    plt.plot(metrics['mean_absolute_error'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics['val_mean_absolute_error'], color=('orange'), alpha=0.1, label='_nolegend_')
+    plt.title('Accuracy')
+    plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
     #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
        
 # evaluate the model  
     #test_generator = data_generator.flow(X[test], y[test], batch_size=3)
-    pred = model.predict(test_generator)
+    pred = model.predict(test_generator).ravel()
 
-    mae_i = mean_absolute_error(y[test], pred)
-    rmse_i = mean_squared_error(y[test], pred, squared=False)
-    mae.append(mae_i)
-    rmse.append(rmse_i)
+    fpr, tpr, thresholds = roc_curve(y2[test], pred)
+    tprs1.append(interp(mean_fpr, fpr, tpr))
+    roc_auc = auc(fpr, tpr)
+    #roc_auc5 = metrics.auc(fpr, tpr)
+    aucs1.append(roc_auc)
+    plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
+
     lossE.append(np.array(metrics['loss']))
     val_lossE.append(np.array(metrics['val_loss']))
-    m1.append(np.array(metrics['mean_absolute_error']))
-    loss_m1.append(np.array(metrics['val_mean_absolute_error']))
+    m1.append(np.array(metrics['accuracy']))
+    loss_m1.append(np.array(metrics['val_accuracy']))
 
-    corr = spearmanr(pred, y[test])
-    spear.append(corr)
-
-    plt.figure(3)
-    plt.scatter(x=y[test], y=pred, edgecolors='k', color='g', alpha=0.1, label='_nolegend_')
-    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.1)
-    plt.ylabel('predicted')
-    plt.xlabel('Measured')
-    plt.ylim(0.9, 1.01)
-    plt.xlim(0.9, 1.01)
+    i1= i1+1
     fold_no = fold_no + 1
-    #i2 = i2 + 0.2
 
-m = metrics['val_mean_absolute_error']
-mean = metrics['val_mean_absolute_error'].mean()
-std = metrics['val_mean_absolute_error'].std()
-m2 = metrics['val_loss']
-mean2 = metrics['val_loss'].mean()
-std2 = metrics['val_loss'].std()
-print('MAE---->>>>',    mae)
-print('RMSE--->>>>',    rmse)
-print('CV_mae=', mean, std)
-print('CV_rmse=', mean2, std2)
-print(spear)
-min_x = min([len(lossE[i]) for i in range(len(lossE))])
-rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(min_x)]
-r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(min_x)]
-rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(min_x)]
-r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(min_x)]
-plt.figure(1)
+
+
+
+ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+mean_tpr = np.mean(tprs1, axis=0)
+mean_tpr[-1] = 1.0
+mean_auc = auc(mean_fpr, mean_tpr)
+#mean_auc = np.mean(aucs1)
+#roc_auc = metrics.auc(mean_fpr, mean_tpr)
+std_auc = np.std(aucs1)
+
+ax.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+std_tpr = np.std(tprs1, axis=0)
+tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                label=r'$\pm$ 1 std. dev.')
+
+ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
+       title="Receiver operating characteristic example")
+ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+plt.savefig('output/roc_auc.png', bbox_inches='tight')
+print('Mean_auc-->>', mean_auc, std_auc)
+
+rloss = [np.array([lossE[j][i] for j in range(len(lossE))]).mean() for i in range(len(lossE[0]))]
+r_val_loss = [np.array([val_lossE[j][i] for j in range(len(val_lossE))]).mean() for i in range(len(val_lossE[0]))]
+rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(len(m1[0]))]
+r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(len(loss_m1[0]))]
+
+plt.figure(2)
 plt.title('Loss [rmse]')
 plt.plot(rloss, label=['train'], color=('blue'))
 plt.plot(r_val_loss, label=['loss'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 #plt.savefig('output/loss.png', bbox_inches='tight')
-plt.figure(2)
-plt.title('MAE')
+plt.figure(3)
+plt.title('Acc')
 plt.plot(rm1, label=['mean_absolute_error'], color=('blue'))
 plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 #plt.tight_layout()
-#plt.savefig('output/mae.png', bbox_inches='tight')
-plt.figure(3)
-plt.scatter(x=y[test], y=pred, edgecolors='k', color='g', alpha=0.7)
-plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-plt.ylabel('predicted')
-plt.xlabel('Measured')
-plt.ylim(0.9, 1.01)
-plt.xlim(0.9, 1.01)
-#plt.savefig('output/regression.png', bbox_inches='tight')
+plt.savefig('output/acc.png', bbox_inches='tight')
+
+
 # %%
