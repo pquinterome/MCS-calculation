@@ -53,7 +53,7 @@ val_loss=[]
 m1=[]
 loss_m1=[]
 
-
+plt.figure(3)
 fig, ax = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) 
 for train, test in kfold.split(X2, y2):
@@ -84,17 +84,7 @@ for train, test in kfold.split(X2, y2):
     model.fit(x=X2[train], y= y2[train], validation_data=(X2[test], y2[test]),
                 epochs=600,verbose=0, callbacks=[early_stop]) #batch=size=5
     metrics = pd.DataFrame(model.history.history)
-    #metrics.plot()  
-    plt.figure(1)
-    plt.title('Loss [rmse]')
-    plt.plot(metrics['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.figure(2)
-    plt.title('AUC')
-    plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
-
+    #metrics.plot()    
     loss.append(np.array(metrics['loss']))
     val_loss.append(np.array(metrics['val_loss']))
     m1.append(np.array(metrics['accuracy']))
@@ -112,8 +102,17 @@ for train, test in kfold.split(X2, y2):
     plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
     i1= i1+1
     fold_no = fold_no + 1
+    plt.figure(1)
+    plt.title('Loss [rmse]')
+    plt.plot(metrics['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
+    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.figure(2)
+    plt.title('AUC')
+    plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
 
-plt.figure(3)
+
 ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr[-1] = 1.0
