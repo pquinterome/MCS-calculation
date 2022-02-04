@@ -79,7 +79,7 @@ for train, test in kfold.split(X2, y2):
     x = Dense(1, activation='sigmoid')(x)
     model = Model(i, x)
     auc1 = tf.keras.metrics.AUC()
-    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=[auc1])
+    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
     model.fit(x=X2[train], y= y2[train], validation_data=(X2[test], y2[test]),
                 epochs=600,verbose=0, callbacks=[early_stop]) #batch=size=5
@@ -92,13 +92,13 @@ for train, test in kfold.split(X2, y2):
     #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.figure(2)
     plt.title('AUC')
-    plt.plot(metrics['auc1'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics['val_auc1'], color=('orange'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
+    plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
 
     loss.append(np.array(metrics['loss']))
     val_loss.append(np.array(metrics['val_loss']))
-    m1.append(np.array(metrics['auc1']))
-    loss_m1.append(np.array(metrics['val_auc1']))
+    m1.append(np.array(metrics['accuracy']))
+    loss_m1.append(np.array(metrics['val_accuracy']))
 
     # evaluate the model  
     y_pred_keras = model.predict(X2[test]).ravel()
