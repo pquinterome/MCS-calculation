@@ -83,7 +83,7 @@ for train, test in kfold.split(X, y):
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
     batch_size = 3
-    r = model.fit(train_generator, epochs=600, validation_data=(X[test], y[test]), callbacks=[early_stop], verbose=0)
+    r = model.fit(train_generator, epochs=600, validation_data=(X[test], y[test]), callbacks=[], verbose=0)
     metrics = pd.DataFrame(model.history.history)
     
     plt.figure(1)
