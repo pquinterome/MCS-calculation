@@ -122,7 +122,6 @@ for train, test in kfold.split(X2, y2):
     plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
     plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
 
-
 plt.figure(3)
 plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
