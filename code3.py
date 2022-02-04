@@ -135,5 +135,23 @@ plt.xlabel('False Positive Rate')
 plt.savefig('output/roc_auc.png', bbox_inches='tight')
 print('Mean_auc-->>', mean_auc, std_auc)
 
+min_x = min([len(loss[i]) for i in range(len(loss))])
+rloss = [np.array([loss[j][i] for j in range(len(loss))]).mean() for i in range(min_x)]
+r_val_loss = [np.array([val_loss[j][i] for j in range(len(val_loss))]).mean() for i in range(min_x)]
+rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(min_x)]
+r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(min_x)]
 
+plt.figure(1)
+plt.title('Loss [rmse]')
+plt.plot(rloss, label=['train'], color=('blue'))
+plt.plot(r_val_loss, label=['loss'], color=('orange'))
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.savefig('output/loss.png', bbox_inches='tight')
+plt.figure(2)
+plt.title('MAE')
+plt.plot(rm1, label=['mean_absolute_error'], color=('blue'))
+plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'))
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.tight_layout()
+plt.savefig('output/mae.png', bbox_inches='tight')
 # %%
