@@ -88,7 +88,7 @@ for train, test in kfold.split(X2, y2):
     plt.plot(metrics['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
     plt.plot(metrics['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
     #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    
+    plt.figure(2)
     plt.title('accuracy')
     plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
     plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
@@ -121,6 +121,7 @@ plt.plot(rloss, label=['train'], color=('blue'))
 plt.plot(r_val_loss, label=['loss'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 #plt.savefig('output/loss.png', bbox_inches='tight')
+
 plt.figure(2)
 plt.title('accuracy')
 plt.plot(rm1, label=['mean_acc'], color=('blue'))
