@@ -125,9 +125,9 @@ tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
 ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
 ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic example")
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
-plt.ylabel('True Positive Rate')
-plt.xlabel('False Positive Rate')
-plt.savefig('output/roc_auc.png', bbox_inches='tight')
+ax.ylabel('True Positive Rate')
+ax.xlabel('False Positive Rate')
+ax.savefig('output/roc_auc.png', bbox_inches='tight')
 
 print('Mean_auc-->>', mean_auc, std_auc)
 
