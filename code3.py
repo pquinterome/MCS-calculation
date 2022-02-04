@@ -115,13 +115,13 @@ for train, test in kfold.split(X2, y2):
     roc_auc = auc(fpr, tpr)
     #roc_auc5 = metrics.auc(fpr, tpr)
     aucs1.append(roc_auc)
-    plt.figure(3)
+    ax.figure(3)
     plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
     i1= i1+1
     fold_no = fold_no + 1
 
 
-plt.figure(3)
+ax.figure(3)
 ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr[-1] = 1.0
