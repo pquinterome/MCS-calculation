@@ -53,7 +53,7 @@ val_loss=[]
 m1=[]
 loss_m1=[]
 
-plt.figure(3)
+
 fig, ax = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) 
 for train, test in kfold.split(X2, y2):
@@ -108,10 +108,12 @@ for train, test in kfold.split(X2, y2):
     roc_auc = auc(fpr, tpr)
     #roc_auc5 = metrics.auc(fpr, tpr)
     aucs1.append(roc_auc)
+    plt.figure(3)
     plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
     i1= i1+1
     fold_no = fold_no + 1
 
+plt.figure(3)
 ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr[-1] = 1.0
@@ -149,9 +151,9 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.savefig('output/loss.png', bbox_inches='tight')
 plt.figure(2)
 plt.title('MAE')
-plt.plot(rm1, label=['mean_absolute_error'], color=('blue'))
-plt.plot(r_loss_m1, label=['val_mean_absolute_error'], color=('orange'))
+plt.plot(rm1, label=['mean_acc'], color=('blue'))
+plt.plot(r_loss_m1, label=['val_acc'], color=('orange'))
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 #plt.tight_layout()
-plt.savefig('output/mae.png', bbox_inches='tight')
+plt.savefig('output/acc.png', bbox_inches='tight')
 # %%
