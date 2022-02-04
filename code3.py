@@ -55,7 +55,7 @@ kfold = KFold(n_splits=5, shuffle=True) #, random_state=seed)
 for train, test in kfold.split(X, y):
     print(f'fold_no {fold_no}')
     #Data Generator
-    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
+    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
     train_generator = data_generator.flow(X[train], y[train], batch_size=3)
     #create model
     i = Input(shape=(112,177,1))
@@ -63,8 +63,8 @@ for train, test in kfold.split(X, y):
     x = Conv2D(filters=32, kernel_size=(3,1), activation='relu')(i)
     x = Conv2D(filters=32, kernel_size=(1,3), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
-    x = Conv2D(filters=32, kernel_size=(3,1), activation='relu')(x)
-    x = Conv2D(filters=32, kernel_size=(1,3), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
