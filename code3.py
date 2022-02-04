@@ -55,23 +55,21 @@ loss_m1=[]
 
 
 fig, ax = plt.subplots()
-kfold = StratifiedKFold(n_splits=5, shuffle=True) 
+kfold = StratifiedKFold(n_splits=2, shuffle=True) 
 for train, test in kfold.split(X2, y2):
     
     print(f'fold_no {fold_no}')
     # create model
     i = Input(shape=(112,177,1))
-    x = GlobalMaxPooling2D()(i)
-    x = Conv2D(filters=64, kernel_size=(3,1), activation='relu')(i)
-    x = Conv2D(filters=64, kernel_size=(1,3), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(3,1), activation='relu')(i)
+    x = Conv2D(filters=32, kernel_size=(1,3), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
-    x = Conv2D(filters=64, kernel_size=(2,2), activation='relu')(x)
-    x = Conv2D(filters=64, kernel_size=(2,2), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
+    x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     #x = GlobalMaxPooling2D()(x)
     x = Flatten()(x)
     x = Dense(150, activation='relu')(x)
-    x = Dense(50, activation='relu')(x)
     x = Dense(1, activation='sigmoid')(x)
     model = Model(i, x)
     auc1 = tf.keras.metrics.AUC()
@@ -96,7 +94,6 @@ for train, test in kfold.split(X2, y2):
     roc_auc = auc(fpr, tpr)
     #roc_auc5 = metrics.auc(fpr, tpr)
     aucs1.append(roc_auc)
-    ax.figure(3)
     ax.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
     
     plt.figure(1)
@@ -113,7 +110,7 @@ for train, test in kfold.split(X2, y2):
     fold_no = fold_no + 1
 
 
-ax.figure(3)
+#ax.figure(3)
 ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr[-1] = 1.0
