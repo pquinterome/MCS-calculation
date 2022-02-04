@@ -101,7 +101,7 @@ for train, test in kfold.split(X, y):
        
 # evaluate the model  
     #test_generator = data_generator.flow(X[test], y[test], batch_size=3)
-    pred = model.predict(test_generator).ravel()
+    pred = model.predict(X[test]).ravel()
 
     fpr, tpr, thresholds = roc_curve(y2[test], pred)
     tprs1.append(interp(mean_fpr, fpr, tpr))
