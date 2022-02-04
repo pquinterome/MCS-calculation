@@ -54,8 +54,8 @@ m1=[]
 loss_m1=[]
 
 
-fig, ax = plt.subplots()
-kfold = StratifiedKFold(n_splits=5, shuffle=True) 
+#fig, ax = plt.subplots()
+kfold = StratifiedKFold(n_splits=2, shuffle=True) 
 for train, test in kfold.split(X2, y2):
     
     print(f'fold_no {fold_no}')
@@ -97,6 +97,21 @@ for train, test in kfold.split(X2, y2):
     m1.append(np.array(metrics['accuracy']))
     loss_m1.append(np.array(metrics['val_accuracy']))
 
+    
+
+    # evaluate the model  
+    y_pred_keras = model.predict(X2[test]).ravel()
+ 
+    fpr, tpr, thresholds = roc_curve(y2[test], y_pred_keras)
+    tprs1.append(interp(mean_fpr, fpr, tpr))
+    roc_auc = auc(fpr, tpr)
+    #roc_auc5 = metrics.auc(fpr, tpr)
+    aucs1.append(roc_auc)
+    plt.figure(3)
+    plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
+    i1= i1+1
+    fold_no = fold_no + 1
+
     plt.figure(1)
     plt.title('Loss [rmse]')
     plt.plot(metrics['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
@@ -107,35 +122,22 @@ for train, test in kfold.split(X2, y2):
     plt.plot(metrics['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
     plt.plot(metrics['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
 
-    # evaluate the model  
-    y_pred_keras = model.predict(X2[test]).ravel()
- 
-    fpr, tpr, thresholds = roc_curve(y2[test], y_pred_keras)
-    tprs1.append(interp(mean_fpr, fpr, tpr))
-    roc_auc = auc(fpr, tpr)
-    #roc_auc5 = metrics.auc(fpr, tpr)
-    aucs1.append(roc_auc)
-    ax.figure(3)
-    ax.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
-    i1= i1+1
-    fold_no = fold_no + 1
 
-
-ax.figure(3)
-ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+plt.figure(3)
+plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr[-1] = 1.0
 mean_auc = auc(mean_fpr, mean_tpr)
 #mean_auc = np.mean(aucs1)
 #roc_auc = metrics.auc(mean_fpr, mean_tpr)
 std_auc = np.std(aucs1)
-ax.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+plt.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
 std_tpr = np.std(tprs1, axis=0)
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
 tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
-ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
-ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic example")
-ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
+plt.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic example")
+plt.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/roc_auc.png', bbox_inches='tight')
