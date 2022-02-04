@@ -37,7 +37,9 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 # %%
 # Cross Validation
 X = ltm.reshape(ltm.shape[0],ltm.shape[1],ltm.shape[2],1)
-y= y
+G = y
+mu=[0 if x >= 0.975 else 1 for x in G]
+y = np.array(mu)
 aucs1 = []
 tprs1 = []
 mean_fpr = np.linspace(0, 1, 100)
@@ -60,7 +62,7 @@ for train, test in kfold.split(X, y):
     print(f'fold_no {fold_no}')
     #Data Generator
     batch_size = 16
-    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
+    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0]) #, shear_range=0.1)
     train_generator = data_generator.flow(X[train], y[train])
     test_generator = data_generator.flow(X[test], y[test], shuffle=False)
     #create model
@@ -78,8 +80,10 @@ for train, test in kfold.split(X, y):
     #x = GlobalMaxPooling2D()(x)  
     #x = Dropout(0.5)(x)
     x = Flatten()(x)
-    x = Dense(128, activation='relu')(x)
-    x = Dense(128, activation='relu')(x)
+    x = Dense(600, activation='relu')(x)
+    x = Dense(300, activation='relu')(x)
+    x = Dense(150, activation='relu')(x)
+    x = Dense(50, activation='relu')(x)
     x= Dense(1, activation='sigmoid')(x)
     model = Model(i, x)   
     #compile model     
@@ -117,9 +121,6 @@ for train, test in kfold.split(X, y):
 
     i1= i1+1
     fold_no = fold_no + 1
-
-
-
 
 ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
