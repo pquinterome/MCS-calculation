@@ -70,6 +70,7 @@ for train, test in kfold.split(X2, y2):
     #x = GlobalMaxPooling2D()(x)
     x = Flatten()(x)
     x = Dense(150, activation='relu')(x)
+    x = Dense(150, activation='relu')(x)
     x = Dense(1, activation='sigmoid')(x)
     model = Model(i, x)
     auc1 = tf.keras.metrics.AUC()
