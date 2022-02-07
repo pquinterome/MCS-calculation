@@ -60,7 +60,7 @@ fold_no = 1
 kfold = StratifiedKFold(n_splits=5, shuffle=True) 
 for train, test in kfold.split(X2, y2):
 
-    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
+    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
     train_generator = data_generator.flow(X2[train], y2[train])
     test_generator = data_generator.flow(X2[test], y2[test], shuffle=False)
     
