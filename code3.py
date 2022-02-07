@@ -57,7 +57,7 @@ loss_m1=[]
 
 #fig, ax = plt.subplots()
 fold_no = 1
-kfold = StratifiedKFold(n_splits=2, shuffle=True) 
+kfold = StratifiedKFold(n_splits=5, shuffle=True) 
 for train, test in kfold.split(X2, y2):
     
     print(f'fold_no {fold_no}')
