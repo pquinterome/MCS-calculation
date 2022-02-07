@@ -46,7 +46,7 @@ np.random.seed(seed)
 tprs1 = []
 aucs1 = []
 mean_fpr = np.linspace(0, 1, 100)
-fold_no = 1
+
 i1 = 1
 
 loss=[]
@@ -56,6 +56,7 @@ loss_m1=[]
 
 
 #fig, ax = plt.subplots()
+fold_no = 1
 kfold = StratifiedKFold(n_splits=2, shuffle=True) 
 for train, test in kfold.split(X2, y2):
     
