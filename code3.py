@@ -170,100 +170,82 @@ for train, test in kfold.split(X2, y2):
     auc1 = tf.keras.metrics.AUC()
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
 
-    model1_0.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model1_1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model1_2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model2_0.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model2_1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model2_2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    
-    model1_0.fit(x=train_generator, validation_data=test_generator, epochs=600,verbose=0, callbacks=[early_stop]) #batch=size=5
-    model1_1.fit(x=train_generator, validation_data=test_generator, epochs=600,verbose=0, callbacks=[early_stop])
-    model1_2.fit(x=train_generator, validation_data=test_generator, epochs=600,verbose=0, callbacks=[early_stop])
-    model2_0.fit(x=train_generator, validation_data=test_generator, epochs=600,verbose=0, callbacks=[early_stop])
-    model2_1.fit(x=train_generator, validation_data=test_generator, epochs=600,verbose=0, callbacks=[early_stop])
-    model2_2.fit(x=train_generator, validation_data=test_generator, epochs=600,verbose=0, callbacks=[early_stop])
+    models = [model1_0, model1_1, model1_2, model2_0, model2_1, model2_2]
 
-    metrics1_0 = pd.DataFrame(model1_0.history.history)
-    metrics1_1 = pd.DataFrame(model1_1.history.history)
-    metrics1_2 = pd.DataFrame(model1_2.history.history)
-    metrics2_0 = pd.DataFrame(model2_0.history.history)
-    metrics2_1 = pd.DataFrame(model2_1.history.history)
-    metrics2_2 = pd.DataFrame(model2_2.history.history)
-    #metrics.plot()    
-    loss.append(np.array(metrics1_0['loss']))
-    val_loss.append(np.array(metrics1_0['val_loss']))
-    m1.append(np.array(metrics1_0['accuracy']))
-    loss_m1.append(np.array(metrics1_0['val_accuracy']))
+    i = 0
+    for model in models:
+        model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+        r = model.fit_generator(train_generator, validation_data=(X2[test], y2[test]), epochs=600,verbose=1, callbacks=[early_stop])
+        metrics = pd.DataFrame(model.history.history)
+        pred = model.predict(test_generator)
+        fpr, tpr, thresholds = roc_curve(y2[test], pred)
+        roc_auc = auc(fpr, tpr)
 
-    plt.figure(1)
-    plt.title('Loss [rmse]')
-    plt.plot(metrics1_0['loss'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics1_0['val_loss'], color=('orange'), alpha=0.1, label='_nolegend_')
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.figure(2)
-    plt.title('accuracy')
-    plt.plot(metrics1_0['accuracy'], color=('blue'), alpha=0.1, label='_nolegend_')
-    plt.plot(metrics1_0['val_accuracy'], color=('orange'), alpha=0.1, label='_nolegend_')
+        print(f'AUC_model{i}', roc_auc)
 
-    # evaluate the model 
-    y_pred_keras = model1_0.predict(X2[test]).ravel()
-    fpr, tpr, thresholds = roc_curve(y2[test], y_pred_keras)
-    tprs1.append(interp(mean_fpr, fpr, tpr))
-    roc_auc = auc(fpr, tpr)
-    #roc_auc5 = metrics.auc(fpr, tpr)
-    aucs1.append(roc_auc)
-    plt.figure(3)
-    plt.title("Receiver operating characteristic example")
-    plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i1, roc_auc))
-    plt.xlim(-0.05, 1.05)
-    plt.ylim(-0.05, 1.05)
+        plt.subplot(211)
+        plt.title('Loss [rmse]')
+        plt.plot(metrics[['loss', 'val_loss']], label=[f'train{i}', 'loss'])
+        plt.legend()
+        plt.subplot(212)
+        plt.title('Mean Absolute Error')
+        plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', 'val_acc'])
+        plt.legend()
+        plt.tight_layout()
 
+        plt.figure(3)
+        plt.title("Receiver operating characteristic example")
+        plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+        plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
+        plt.legend()
+        plt.xlim(-0.05, 1.05)
+        plt.ylim(-0.05, 1.05)
+        i = i+1
     i1= i1+1
     fold_no = fold_no + 1
 
-min_x = min([len(loss[i]) for i in range(len(loss))])
-rloss = [np.array([loss[j][i] for j in range(len(loss))]).mean() for i in range(min_x)]
-r_val_loss = [np.array([val_loss[j][i] for j in range(len(val_loss))]).mean() for i in range(min_x)]
-rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(min_x)]
-r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(min_x)]
+#min_x = min([len(loss[i]) for i in range(len(loss))])
+#rloss = [np.array([loss[j][i] for j in range(len(loss))]).mean() for i in range(min_x)]
+#r_val_loss = [np.array([val_loss[j][i] for j in range(len(val_loss))]).mean() for i in range(min_x)]
+#rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(min_x)]
+#r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(min_x)]
 
-plt.figure(1)
-plt.title('Loss [bce]')
-plt.plot(rloss, label=['train'], color=('blue'))
-plt.plot(r_val_loss, label=['loss'], color=('orange'))
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.savefig('output/loss.png', bbox_inches='tight')
+#plt.figure(1)
+#plt.title('Loss [bce]')
+#plt.plot(rloss, label=['train'], color=('blue'))
+#plt.plot(r_val_loss, label=['loss'], color=('orange'))
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.savefig('output/loss.png', bbox_inches='tight')
 
-plt.figure(2)
-plt.title('accuracy')
-plt.plot(rm1, label=['mean_acc'], color=('blue'))
-plt.plot(r_loss_m1, label=['val_acc'], color=('orange'))
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.savefig('output/acc.png', bbox_inches='tight')
+#plt.figure(2)
+#plt.title('accuracy')
+#plt.plot(rm1, label=['mean_acc'], color=('blue'))
+#plt.plot(r_loss_m1, label=['val_acc'], color=('orange'))
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.savefig('output/acc.png', bbox_inches='tight')
 
-mean_tpr = np.mean(tprs1, axis=0)
-mean_tpr[-1] = 1.0
-mean_auc = auc(mean_fpr, mean_tpr)
+#mean_tpr = np.mean(tprs1, axis=0)
+#mean_tpr[-1] = 1.0
+#mean_auc = auc(mean_fpr, mean_tpr)
 #mean_auc = np.mean(aucs1)
 #roc_auc = metrics.auc(mean_fpr, mean_tpr)
-std_auc = np.std(aucs1)
-std_tpr = np.std(tprs1, axis=0)
-tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
-tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+#std_auc = np.std(aucs1)
+#std_tpr = np.std(tprs1, axis=0)
+#tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+#tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
 
-plt.figure(3)
-plt.title("Receiver operating characteristic example")
-plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-plt.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
-plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
-plt.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
-plt.ylabel('True Positive Rate')
-plt.xlabel('False Positive Rate')
-plt.xlim(-0.05, 1.05)
-plt.ylim(-0.05, 1.05)
-plt.savefig('output/roc_auc.png', bbox_inches='tight')
+#plt.figure(3)
+#plt.title("Receiver operating characteristic example")
+#plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+#plt.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+#plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
+#plt.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+#plt.ylabel('True Positive Rate')
+#plt.xlabel('False Positive Rate')
+#plt.xlim(-0.05, 1.05)
+#plt.ylim(-0.05, 1.05)
+#plt.savefig('output/roc_auc.png', bbox_inches='tight')
 
-print('Mean_auc-->>', mean_auc, std_auc)
+#print('Mean_auc-->>', mean_auc, std_auc)
 
 # %%
