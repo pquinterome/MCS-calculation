@@ -65,6 +65,8 @@ for train, test in kfold.split(X2, y2):
     i = Input(shape=(112,177,1))
     x = Conv2D(filters=64, kernel_size=(2,2), activation='relu')(i)
     x = MaxPool2D(pool_size=(2,2))(x)
+    x = Conv2D(filters=64, kernel_size=(2,2), activation='relu')(x)
+    x = MaxPool2D(pool_size=(2,2))(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
