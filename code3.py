@@ -74,7 +74,7 @@ for train, test in kfold.split(X2, y2):
     model = Model(i, x)
     auc1 = tf.keras.metrics.AUC()
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    early_stop = EarlyStopping(monitor='val_loss', patience=3)
+    early_stop = EarlyStopping(monitor='val_loss', patience=30)
     model.fit(x=X2[train], y= y2[train], validation_data=(X2[test], y2[test]),
                 epochs=6,verbose=0, callbacks=[early_stop]) #batch=size=5
     metrics = pd.DataFrame(model.history.history)
