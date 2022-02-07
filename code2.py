@@ -70,6 +70,10 @@ early_stop = EarlyStopping(monitor='val_loss', patience=3)
 
 r = model1.fit(train_generator, epochs=100, validation_data=(X_test, y_test), callbacks=[early_stop], verbose=1)
 
+
+scores = model1.evaluate(X_test, y_test, verbose=0)
+print(model1.metrics_names[0], 'of',  {scores[0]})
+
 metrics = pd.DataFrame(model1.history.history)
 
 plt.figure(1) 
