@@ -71,6 +71,8 @@ for train, test in kfold.split(X2, y2):
     x = MaxPool2D(pool_size=(2,2))(x)
     #x = GlobalMaxPooling2D()(x)
     x = Flatten()(x)
+    x = Dense(300, activation='relu')(x)
+    x = Dense(300, activation='relu')(x)
     x = Dense(150, activation='relu')(x)
     x = Dense(150, activation='relu')(x)
     x = Dense(1, activation='sigmoid')(x)
