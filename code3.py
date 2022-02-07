@@ -63,8 +63,8 @@ for train, test in kfold.split(X2, y2):
     print(f'fold_no {fold_no}')
     # create model
     i = Input(shape=(112,177,1))
-    x = Conv2D(filters=32, kernel_size=(3,1), activation='relu')(i)
-    x = Conv2D(filters=32, kernel_size=(1,3), activation='relu')(x)
+    x = Conv2D(filters=64, kernel_size=(3,1), activation='relu')(i)
+    x = Conv2D(filters=64, kernel_size=(1,3), activation='relu')(x)
     x = MaxPool2D(pool_size=(2,2))(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
     x = Conv2D(filters=32, kernel_size=(2,2), activation='relu')(x)
