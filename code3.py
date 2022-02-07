@@ -59,6 +59,10 @@ loss_m1=[]
 fold_no = 1
 kfold = StratifiedKFold(n_splits=5, shuffle=True) 
 for train, test in kfold.split(X2, y2):
+
+    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
+    train_generator = data_generator.flow(X2[train], y2[train])
+    test_generator = data_generator.flow(X2[test], y2[test], shuffle=False)
     
     print(f'fold_no {fold_no}')
     # create model
@@ -82,7 +86,7 @@ for train, test in kfold.split(X2, y2):
     auc1 = tf.keras.metrics.AUC()
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     early_stop = EarlyStopping(monitor='val_loss', patience=3)
-    model.fit(x=X2[train], y= y2[train], validation_data=(X2[test], y2[test]),
+    model.fit(x=ImageDataGenerator, validation_data=(X2[test], y2[test]),
                 epochs=600,verbose=0, callbacks=[early_stop]) #batch=size=5
     metrics = pd.DataFrame(model.history.history)
     #metrics.plot()    
