@@ -192,7 +192,7 @@ for train, test in kfold.split(X2, y2):
         plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', 'val_acc'])
         plt.legend()
         plt.tight_layout()
-        plt.savefig('output/lossSSS.png', bbox_inches='tight')
+        plt.savefig(f'output/lossSSS{i}.png', bbox_inches='tight')
 
         plt.figure(3)
         plt.title("Receiver operating characteristic example")
@@ -201,8 +201,10 @@ for train, test in kfold.split(X2, y2):
         plt.legend()
         plt.xlim(-0.05, 1.05)
         plt.ylim(-0.05, 1.05)
-        plt.savefig('output/AUCsss.png', bbox_inches='tight')
+        plt.savefig(f'output/AUCss{i}s.png', bbox_inches='tight')
         i = i+1
+
+    print(f'AUC_model{i}', roc_auc)
     i1= i1+1
     fold_no = fold_no + 1
 
