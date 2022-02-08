@@ -46,7 +46,6 @@ x = MaxPool2D(pool_size=(3,3))(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(36000, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -59,7 +58,6 @@ x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(36000, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -76,7 +74,6 @@ x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(36000, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -92,7 +89,6 @@ x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(36000, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -109,7 +105,6 @@ x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(36000, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -132,7 +127,6 @@ x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(36000, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -140,73 +134,53 @@ model2_2 = Model(i, x)
 # %%
 G = y
 mu=[0 if x >= 0.975 else 1 for x in G]
-X1 = ltm
-X2 = X1.reshape(X1.shape[0],X1.shape[1],X1.shape[2],1)
-y2 = np.array(mu)
-seed =18
-np.random.seed(seed)
-tprs1 = []
-aucs1 = []
-mean_fpr = np.linspace(0, 1, 100)
+y = np.array(mu)
 
-i1 = 1
-loss=[]
-val_loss=[]
-m1=[]
-loss_m1=[]
+X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
+X_train = X_train.reshape(437,112,177,1)
+X_test = X_test.reshape(110,112,177,1)
+
+models = [model1_0, model1_1, model1_2, model2_0, model2_1, model2_2]
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1, validation_split=0.2)
+train_generator = data_generator.flow(X_train, y_train)
+test_generator = data_generator.flow(X_test, y_test, shuffle=False)
+early_stop = EarlyStopping(monitor='val_loss', patience=3)
+auc1 = tf.keras.metrics.AUC()
+i = 0
+for model in models:
+    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    r = model.fit(train_generator, validation_data=(X_test, y_test), epochs=600, verbose=2, callbacks=[early_stop])
+    metrics = pd.DataFrame(model.history.history)
+    pred = model.predict(test_generator)
+    fpr, tpr, thresholds = roc_curve(y_test, pred)
+    roc_auc = auc(fpr, tpr)
+
+    print(f'AUC_model{i}', roc_auc)
+    plt.figure(1)
+    plt.title('Loss [rmse]')
+    plt.plot(metrics[['loss', 'val_loss']], label=[f'train{i}', 'loss'])
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.savefig('output/loss.png', bbox_inches='tight')
+
+    plt.figure(2)
+    plt.title('Mean Absolute Error')
+    plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', 'val_acc'])
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.savefig('output/acc.png', bbox_inches='tight')
+
+    plt.figure(3)
+    plt.title("Receiver operating characteristic example")
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
+    plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.xlim(-0.05, 1.05)
+    plt.ylim(-0.05, 1.05)
+    plt.savefig('output/acc.png', bbox_inches='tight')
+
+    i = i+1
 
 
-#fig, ax = plt.subplots()
-fold_no = 1
-kfold = StratifiedKFold(n_splits=5, shuffle=True) 
-for train, test in kfold.split(X2, y2):
 
-    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1)
-    train_generator = data_generator.flow(X2[train], y2[train])
-    test_generator = data_generator.flow(X2[test], y2[test], shuffle=False)
-    
-    print(f'fold_no {fold_no}')
-    # create model
-    auc1 = tf.keras.metrics.AUC()
-    early_stop = EarlyStopping(monitor='val_loss', patience=3)
-
-    models = [model1_0, model1_1, model1_2, model2_0, model2_1, model2_2]
-
-    i = 0
-    for model in models:
-        model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-        r = model.fit_generator(train_generator, validation_data=(X2[test], y2[test]), epochs=600,verbose=1, callbacks=[early_stop])
-        metrics = pd.DataFrame(model.history.history)
-        pred = model.predict(test_generator)
-        fpr, tpr, thresholds = roc_curve(y2[test], pred)
-        roc_auc = auc(fpr, tpr)
-
-        print(f'AUC_model{i}', roc_auc)
-        auc1.append(roc_auc)
-        plt.subplot(211)
-        plt.title('Loss [rmse]')
-        plt.plot(metrics[['loss', 'val_loss']], label=[f'train{i}', 'loss'])
-        plt.legend()
-        plt.subplot(212)
-        plt.title('Mean Absolute Error')
-        plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', 'val_acc'])
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig(f'output/lossSSS{i}.png', bbox_inches='tight')
-
-        plt.figure(3)
-        plt.title("Receiver operating characteristic example")
-        plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-        plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
-        plt.legend()
-        plt.xlim(-0.05, 1.05)
-        plt.ylim(-0.05, 1.05)
-        plt.savefig(f'output/AUCss{i}s.png', bbox_inches='tight')
-        i = i+1
-
-    print(f'AUC_model{i}', auc1)
-    i1= i1+1
-    fold_no = fold_no + 1
 
 #min_x = min([len(loss[i]) for i in range(len(loss))])
 #rloss = [np.array([loss[j][i] for j in range(len(loss))]).mean() for i in range(min_x)]
