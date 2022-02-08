@@ -149,7 +149,7 @@ auc1 = tf.keras.metrics.AUC()
 i = 0
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(train_generator, validation_data=(X_test, y_test), epochs=600, verbose=2, callbacks=[early_stop])
+    r = model.fit(train_generator, validation_data=(X_test, y_test), epochs=600, verbose=0, callbacks=[early_stop])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(test_generator)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
@@ -175,7 +175,7 @@ for model in models:
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xlim(-0.05, 1.05)
     plt.ylim(-0.05, 1.05)
-    plt.savefig('output/acc.png', bbox_inches='tight')
+    plt.savefig('output/auc.png', bbox_inches='tight')
 
     i = i+1
 
