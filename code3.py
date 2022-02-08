@@ -182,7 +182,7 @@ for train, test in kfold.split(X2, y2):
         roc_auc = auc(fpr, tpr)
 
         print(f'AUC_model{i}', roc_auc)
-
+        auc1.append(roc_auc)
         plt.subplot(211)
         plt.title('Loss [rmse]')
         plt.plot(metrics[['loss', 'val_loss']], label=[f'train{i}', 'loss'])
@@ -204,7 +204,7 @@ for train, test in kfold.split(X2, y2):
         plt.savefig(f'output/AUCss{i}s.png', bbox_inches='tight')
         i = i+1
 
-    print(f'AUC_model{i}', roc_auc)
+    print(f'AUC_model{i}', auc1)
     i1= i1+1
     fold_no = fold_no + 1
 
