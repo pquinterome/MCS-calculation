@@ -136,7 +136,7 @@ train_generator = data_generator.flow(X_train, y_train)
 test_generator = data_generator.flow(X_test, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=3)
 auc1 = tf.keras.metrics.AUC()
-i = 0
+i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     r = model.fit(train_generator, validation_data=(X_test, y_test), epochs=600, verbose=0, callbacks=[early_stop])
@@ -150,13 +150,13 @@ for model in models:
     plt.title('Loss [rmse]')
     plt.plot(metrics[['loss', 'val_loss']], label=[f'train{i}', 'loss'])
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig('output/loss.png', bbox_inches='tight')
+    plt.savefig(f'output/loss{i}.png', bbox_inches='tight')
 
     plt.figure(2)
     plt.title('Mean Absolute Error')
     plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', 'val_acc'])
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig('output/acc.png', bbox_inches='tight')
+    plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
 
     plt.figure(3)
     plt.title("Receiver operating characteristic example")
