@@ -158,13 +158,13 @@ for model in models:
     print(f'AUC_model{i}', roc_auc)
     plt.figure(1)
     plt.title('Loss [rmse]')
-    plt.plot(metrics[['loss', 'val_loss']], label=[f'train{i}', 'loss'])
+    plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/loss{i}.png', bbox_inches='tight')
 
     plt.figure(2)
     plt.title('Mean Absolute Error')
-    plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', 'val_acc'])
+    plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
 
