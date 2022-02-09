@@ -24,7 +24,7 @@ ltm1 = np.load('tlm_3Gy_2arc_HL.npy')
 ltm1 = np.array([ltm1[i][:112,] for i in range(len(ltm1))])     #-->To consider just 112 leaves
 ltm2 = np.load('tlm_3Gy_1arc_HL.npy')
 ltm = np.concatenate((ltm1, ltm2), axis=0)
-ltm = [(ltm[i]+1)/2 for i in range(len(ltm))]
+ltm = np.array([(ltm[i]+1)/2 for i in range(len(ltm))])
 y1 = pd.read_csv('HL_3Gy_2ARC.csv')
 y2 = pd.read_csv('HL_3Gy_1ARC.csv')
 y1['2_1'] = y1['2_1'].fillna(y1['2_1'].mean())
