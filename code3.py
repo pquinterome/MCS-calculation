@@ -66,7 +66,7 @@ x = Dense(1, activation='sigmoid')(x)
 model2 = Model(i, x)
 #Model->3
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
@@ -81,7 +81,7 @@ x = Dense(1, activation='sigmoid')(x)
 model3 = Model(i, x)
 #Model->4
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
@@ -170,7 +170,7 @@ X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #rand
 X_train = X_train.reshape(437,112,177,1)
 X_test = X_test.reshape(110,112,177,1)
 
-models = [model1, model2, model3, model4, model5, model6, model7, model8]
+models = [model1, model2] #, model3, model4, model5, model6, model7, model8]
 data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1, validation_split=0.2)
 train_generator = data_generator.flow(X_train, y_train)
 test_generator = data_generator.flow(X_test, y_test, shuffle=False)
@@ -184,30 +184,31 @@ for model in models:
     pred = model.predict(test_generator)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
     roc_auc = auc(fpr, tpr)
-
-    print(f'AUC_model{i}', roc_auc)
-    plt.figure(1)
-    plt.title('Loss [rmse]')
-    plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(f'output/loss{i}.png', bbox_inches='tight')
-
-    plt.figure(2)
-    plt.title('Mean Absolute Error')
-    plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
-
-    plt.figure(3)
-    plt.title("Receiver operating characteristic example")
-    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
-    plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.xlim(-0.05, 1.05)
-    plt.ylim(-0.05, 1.05)
-    plt.savefig('output/auc.png', bbox_inches='tight')
-
     i = i+1
+
+print(f'AUC_model{i}', roc_auc)
+plt.figure(1)
+plt.title('Loss [rmse]')
+plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.savefig(f'output/loss{i}.png', bbox_inches='tight')
+
+plt.figure(2)
+plt.title('Mean Absolute Error')
+plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
+
+plt.figure(3)
+plt.title("Receiver operating characteristic example")
+plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
+plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.xlim(-0.05, 1.05)
+plt.ylim(-0.05, 1.05)
+plt.savefig('output/auc.png', bbox_inches='tight')
+
+    
 
 
 
