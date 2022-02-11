@@ -200,7 +200,7 @@ for model in models:
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
 
-    plt.figure(i*i+2)
+    plt.figure(15)
     plt.title("Receiver operating characteristic example")
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
     plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
