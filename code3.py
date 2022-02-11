@@ -171,7 +171,9 @@ X_train = X_train.reshape(437,112,177,1)
 X_test = X_test.reshape(110,112,177,1)
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8]
-data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], shear_range=0.1, validation_split=0.2)
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
+                                    shear_range=0.1, validation_split=0.2, featurewise_center=True, 
+                                    featurewise_std_normalization=True)
 train_generator = data_generator.flow(X_train, y_train)
 test_generator = data_generator.flow(X_test, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=3)
