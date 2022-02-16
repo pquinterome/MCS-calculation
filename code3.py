@@ -91,7 +91,7 @@ model4 = Model(i, x)
 i = Input(shape=(112,177,1))
 x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
+x = Conv2D(filters=64, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
@@ -113,14 +113,14 @@ X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, te
 #                                    featurewise_std_normalization=True)
 #train_generator = data_generator.flow(X_train, y_train)
 #test_generator = data_generator.flow(X_test, y_test, shuffle=False)
-#early_stop = EarlyStopping(monitor='val_loss', patience=3)
+early_stop = EarlyStopping(monitor='val_loss', patience=5)
 #auc1 = tf.keras.metrics.AUC()
 
 models = [model1, model2, model3, model4, model5]
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0)
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
