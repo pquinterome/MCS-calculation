@@ -119,11 +119,11 @@ X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, te
 early_stop = EarlyStopping(monitor='val_loss', patience=10)
 #auc1 = tf.keras.metrics.AUC()
 
-models = [model1, model2, model3, model4, model5]
+models = [model1, model2, model3, model4]
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=500, verbose=0, callbacks=[])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
