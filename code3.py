@@ -109,7 +109,7 @@ G = y
 mu=[0 if x >= 0.98 else 1 for x in G]
 y = np.array(mu)
 
-X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, test_size=0.2) #random_state=1
+X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, test_size=0.25) #random_state=1
 X_train = X_train.reshape(220,120,177,1)
 X_test = X_test.reshape(55,120,177,1)
 
