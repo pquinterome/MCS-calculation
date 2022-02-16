@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import pandas as pd
-from pyparsing import alphas
 import seaborn as sns
-from sklearn.tree import plot_tree
-from sklearn.utils import shuffle
 import tensorflow as tf
+from numpy import interp
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
+from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
+from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -16,25 +16,36 @@ from tensorflow.keras.callbacks import EarlyStopping
 from scipy.stats import shapiro
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from numpy import interp
 # %%
-ltm1 = np.load('tlm_3Gy_2arc_HL.npy')
-ltm1 = np.array([ltm1[i][:112,] for i in range(len(ltm1))])     #-->To consider just 112 leaves
-ltm2 = np.load('tlm_3Gy_1arc_HL.npy')
-ltm = np.concatenate((ltm1, ltm2), axis=0)
-#ltm = np.array([(ltm[i]+1)/2 for i in range(len(ltm))])
-y1 = pd.read_csv('HL_3Gy_2ARC.csv')
-y2 = pd.read_csv('HL_3Gy_1ARC.csv')
-y1['2_1'] = y1['2_1'].fillna(y1['2_1'].mean())
-y2['2_1'] = y2['2_1'].fillna(y2['2_1'].mean())
-y1 = np.array(y1['2_1'])
-y2 = np.array(y2['2_1'])
-y = np.concatenate((y1,y2), axis=0)
-y = y.reshape(547)
+ltm1 = np.load('tlm_3Gytb_1arc.npy')
+ltm2 = np.load('tlm_27Gytb_1arc.npy')
+ltm3 = np.load('tlm_2Gy_1arc.npy')
+ltm = np.concatenate((ltm1, ltm2, ltm3), axis=0)
+ltm = np.array([ltm[i].T for i in range(len(ltm))])
+ltm = np.array([(ltm[i]-ltm[i].mean())/ltm[i].std() for i in range(len(ltm))])
+ltm = np.array([ltm[i]/ltm[i].max() for i in range(len(ltm))])
+ltm =np.array([(ltm[i]+1)/2 for i in range(len(ltm))])      #--->>> shift center to 0.5
+y1 = pd.read_csv('id_3Gy.csv')
+y2 = pd.read_csv('id_27Gy.csv')
+y3 = pd.read_csv('id_2Gy.csv')
+y1['2_2'] = y1['2_2'].fillna(y1['2_2'].mean())
+y2['2_2'] = y2['2_2'].fillna(y2['2_2'].mean())
+y3['2_2'] = y3['2_2'].fillna(y3['2_2'].mean())
+y1 = np.array(y1['2_2']/100)
+y2 = np.array(y2['2_2']/100)
+y3 = np.array(y3['2_2']/100)
+y = np.concatenate((y1,y2, y3), axis=0)
 print ('Input size', ltm.shape)
 print('Output size', len(y))
+val_ltm = np.load('tlm_val.npy')
+val_ltm  = np.array([val_ltm[i].T for i in range(len(val_ltm ))])
+#val_ltm = np.array([val_ltm[i][:112,] for i in range(len(val_ltm))])
+y3 = pd.read_csv('id_val.csv')
+y3['2_1'] = y3['2_1'].fillna(y3['2_1'].mean())
+y_val = y3['2_2']/100
+print ('Input_val size', val_ltm.shape)
+print('Output_val size', len(y_val))
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #models---->>>
@@ -47,7 +58,6 @@ x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(360, activation='relu')(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
 model1 = Model(i, x)
@@ -163,14 +173,13 @@ model8 = Model(i, x)
 
 # %%
 G = y
-mu=[0 if x >= 0.975 else 1 for x in G]
+mu=[0 if x >= 0.98 else 1 for x in G]
 y = np.array(mu)
 
-X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
-X_train = X_train.reshape(437,112,177,1)
-X_test = X_test.reshape(110,112,177,1)
+X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 35, test_size=0.2) #random_state=1
+X_train = X_train.reshape(220,120,177,1)
+X_test = X_test.reshape(55,120,177,1)
 
-models = [model1, model2, model3, model4, model5, model6, model7, model8]
 data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
                                     shear_range=0.1, validation_split=0.2, featurewise_center=True, 
                                     featurewise_std_normalization=True)
@@ -178,10 +187,12 @@ train_generator = data_generator.flow(X_train, y_train)
 test_generator = data_generator.flow(X_test, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=3)
 auc1 = tf.keras.metrics.AUC()
+
+models = [model1, model2, model3]
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(train_generator, validation_data=(X_test, y_test), epochs=100, verbose=0)
+    r = model.fit(train_generator, validation_data= test_generator, epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(test_generator)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
