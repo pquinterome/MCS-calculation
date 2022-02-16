@@ -125,7 +125,7 @@ models = [model1, model2, model3, model4, model5]
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(train_generator, validation_data= test_generator, epochs=100, verbose=0)
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(test_generator)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
