@@ -26,7 +26,7 @@ ltm = np.array([ltm[i] for i in range(len(ltm))])
 ltm = np.array([(ltm[i]-ltm[i].mean())/ltm[i].std() for i in range(len(ltm))])
 ltm = np.array([ltm[i]/ltm[i].max() for i in range(len(ltm))])
 ltm_H =np.array([(ltm[i]+1)/2 for i in range(len(ltm))]) 
-print('Halcyon', ltm_H.shape)
+#print('Halcyon', ltm_H.shape)
 ltm1 = np.load('tlm_3Gytb_1arc.npy')
 ltm2 = np.load('tlm_27Gytb_1arc.npy')
 ltm3 = np.load('tlm_2Gy_1arc.npy')
@@ -36,12 +36,8 @@ ltm = np.array([(ltm[i]-ltm[i].mean())/ltm[i].std() for i in range(len(ltm))])
 ltm = np.array([ltm[i]/ltm[i].max() for i in range(len(ltm))])
 ltm_T =np.array([(ltm[i]+1)/2 for i in range(len(ltm))])
 ltm_T = np.array([ltm_T[i][:112,] for i in range(len(ltm_T))])
-print('TrueBeam', ltm_T.shape)
+#print('TrueBeam', ltm_T.shape)
 ltm = np.concatenate((ltm_H, ltm_T), axis=0)
-
-y = np.load('y.npy')
-print('dataset', ltm.shape)
-print('labels', y.shape)
 a=[]
 for i in range(len(ltm)):
     dlb1= pd.DataFrame(ltm[i])
@@ -54,8 +50,45 @@ w1 = w.min()
 w2 = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
 ltm = w2
 ltm= ltm.reshape(822, 112, 177, 1)
+
+val = np.load('tlm_val.npy')
+val = np.array([val[i].T for i in range(len(val))])
+val = np.array([val[i][:112,] for i in range(len(val))])
+val = np.array([(val[i]-val[i].mean())/val[i].std() for i in range(len(val))])
+val = np.array([val[i]/val[i].max() for i in range(len(val))])
+val =np.array([(val[i]+1)/2 for i in range(len(val))])
+a=[]
+for i in range(len(val)):
+    dlb1= pd.DataFrame(val[i])
+    nunique1 = dlb1.apply(pd.Series.nunique)
+    cols_to_drop1 = nunique1[nunique1 == 1].index
+    a1= dlb1.drop(cols_to_drop1, axis=1)
+    a.append(a1)
+w = np.array([a[i].shape[0] for i in range(len(a))])
+w1 = w.min()
+w2 = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
+val = w2
+val= val.reshape(32, 112, 177, 1)
+
+y_val = pd.read_csv('id_val.csv')
+y_val ['2_2'] = y_val ['2_2'].fillna(y_val ['2_2'].mean())
+y_val = np.array(y_val['2_2']/100)
+G = y_val
+mu=[0 if x >= 0.98 else 1 for x in G]
+y_val = np.array(mu)
+
+y = np.load('y.npy')
+G = y
+mu=[0 if x >= 0.98 else 1 for x in G]
+y = np.array(mu)
+
+#print('dataset', ltm.shape)
+#print('labels', y.shape)
+
 print('dataset', ltm.shape)
 print('labels', y.shape)
+print('val_dataset', val.shape)
+print('val_labels', y_val.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #models---->>>
@@ -120,9 +153,7 @@ model5 = Model(i, x)
 
 
 # %%
-G = y
-mu=[0 if x >= 0.98 else 1 for x in G]
-y = np.array(mu)
+
 
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, test_size=0.2) #random_state=1
 
