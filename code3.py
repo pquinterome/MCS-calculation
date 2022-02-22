@@ -14,6 +14,7 @@ from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.utils import to_categorical
 from scipy.stats import shapiro
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
@@ -74,15 +75,12 @@ encoder= OneHotEncoder(sparse=False)
 y_val = pd.read_csv('id_val.csv')
 y_val ['2_2'] = y_val ['2_2'].fillna(y_val ['2_2'].mean())
 y_val = np.array(y_val['2_2']/100)
-#mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y_val])
-#y_val = mu
-#y_val = encoder.fit_transform(mu)
+
 
 y = np.load('y.npy')
 mu=[0 if x >= 0.98 else 1 for x in y]
 y = np.array(mu)
-#mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y])
-#y = encoder.fit_transform(mu)
+
 
 #print('dataset', ltm.shape)
 #print('labels', y.shape)
@@ -102,7 +100,7 @@ x = Conv2D(filters=32, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(2, activation='softmax')(x)
 model1 = Model(i, x)
 #Model->2
 i = Input(shape=(112,177,1))
@@ -110,7 +108,7 @@ x = Conv2D(filters=64, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(2, activation='softmax')(x)
 model2 = Model(i, x)
 #Model->3
 i = Input(shape=(112,177,1))
@@ -118,7 +116,7 @@ x = Conv2D(filters=128, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(2, activation='softmax')(x)
 model3 = Model(i, x)
 #Model->4
 i = Input(shape=(112,177,1))
@@ -126,7 +124,7 @@ x = Conv2D(filters=128, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(2, activation='softmax')(x)
 model4 = Model(i, x)
 #Model->5
 i = Input(shape=(112,177,1))
@@ -135,7 +133,7 @@ x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(2, activation='softmax')(x)
 model5 = Model(i, x)
 
 
@@ -144,7 +142,8 @@ model5 = Model(i, x)
 
 
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, test_size=0.2) #random_state=1
-
+y_cat_train = to_categorical(y_train, 2)
+y_cat_test = to_categorical(y_test, 2)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
 #                                    shear_range=0.1, validation_split=0.2, featurewise_center=True, 
@@ -157,18 +156,19 @@ early_stop = EarlyStopping(monitor='val_loss', patience=5)
 models = [model1, model2, model3, model4, model5]
 i = 1
 for model in models:
-    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model.compile(loss="categorical_crossentropy", optimizer= "rmsprop", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
+    r = model.fit(x=X_train, y= y_cat_train, validation_data= (X_test, y_cat_test), epochs=100, verbose=0, callbacks=[early_stop])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
-    #predictions = np.round(pred)
-    #accuracy = accuracy_score(y_test, predictions)
-    fpr, tpr, thresholds = roc_curve(y_test, pred)
-    roc_auc = auc(fpr, tpr)  
+    predictions = np.round(pred)
+    accuracy = accuracy_score(y_cat_test, predictions)
+    predictions = [0 if predictions[i][0] == 0 else 1 for i in range(len(predictions))]
+    fpr, tpr, thresholds = roc_curve(y_test, predictions)
+    roc_auc = auc(fpr, tpr)
     
-    print(f'AUC_model{i}', roc_auc)
+    print(f'AUC_model{i}', roc_auc, accuracy)
 
     plt.figure(i*i)
     plt.title('Loss [rmse]')
