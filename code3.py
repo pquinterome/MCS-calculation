@@ -168,12 +168,14 @@ for model in models:
     plt.figure(i*i)
     plt.title('Loss [rmse]')
     plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
+    plt.ylim(-0.1, 4)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/loss{i}.png', bbox_inches='tight')
 
     plt.figure(i*i+1)
-    plt.title('Mean Absolute Error')
+    plt.title('Accuracy')
     plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
+    plt.ylim(0.4, 1.1)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
 
