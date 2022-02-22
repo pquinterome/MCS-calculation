@@ -7,7 +7,7 @@ import seaborn as sns
 import tensorflow as tf
 from numpy import asarray, interp, asarray
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
-from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score, classification_report
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from sklearn.preprocessing import OneHotEncoder
 from tensorflow.keras.models import Sequential, Model
@@ -162,8 +162,8 @@ for model in models:
     pred = model.predict(X_test)
     #fpr, tpr, thresholds = roc_curve(y_test, pred)
     #roc_auc = auc(fpr, tpr)  
-
-    print(f'AUC_model{i}', roc_auc)
+    
+    print(f'AUC_model{i}', classification_report(y_test, pred))
 
     plt.figure(i*i)
     plt.title('Loss [rmse]')
