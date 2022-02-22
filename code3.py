@@ -71,11 +71,12 @@ w1 = w.min()
 val = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
 val= val.reshape(32, 112, 177, 1)
 
-encoder= OneHotEncoder(sparse=False)
+
 y_val = pd.read_csv('id_val.csv')
 y_val ['2_2'] = y_val ['2_2'].fillna(y_val ['2_2'].mean())
 y_val = np.array(y_val['2_2']/100)
-
+mu=[0 if x >= 0.98 else 1 for x in y_val]
+y_val = np.array(mu)
 
 y = np.load('y.npy')
 mu=[0 if x >= 0.98 else 1 for x in y]
@@ -96,7 +97,7 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #1 Single layers
 #Model->1
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=32, kernel_size=(4,4), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
@@ -156,7 +157,7 @@ early_stop = EarlyStopping(monitor='val_loss', patience=50)
 models = [model1, model2, model3, model4, model5]
 i = 1
 for model in models:
-    model.compile(loss="categorical_crossentropy", optimizer= "rmsprop", metrics=['accuracy'])
+    model.compile(loss="categorical_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
     r = model.fit(x=X_train, y= y_cat_train, validation_data= (X_test, y_cat_test), epochs=100, verbose=0, callbacks=[early_stop])
