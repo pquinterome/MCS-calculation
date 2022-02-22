@@ -79,7 +79,7 @@ y_val = np.array(y_val['2_2']/100)
 #y_val = encoder.fit_transform(mu)
 
 y = np.load('y.npy')
-mu=[0 if x >= 0.98 else 1 for x in G]
+mu=[0 if x >= 0.98 else 1 for x in y]
 y = np.array(mu)
 #mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y])
 #y = encoder.fit_transform(mu)
