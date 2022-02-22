@@ -159,11 +159,11 @@ for model in models:
     #binary_crossentropy
     r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
     metrics = pd.DataFrame(model.history.history)
-    pred = model.predict(X_test)
+    pred = model.predict_classes(X_test)
     #fpr, tpr, thresholds = roc_curve(y_test, pred)
     #roc_auc = auc(fpr, tpr)  
     
-    print(f'AUC_model{i}', classification_report(y_test, pred))
+    #print(f'AUC_model{i}', classification_report(y_test, pred))
 
     plt.figure(i*i)
     plt.title('Loss [rmse]')
