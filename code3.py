@@ -160,8 +160,8 @@ for model in models:
     r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
-    fpr, tpr, thresholds = roc_curve(y_test, pred)
-    roc_auc = auc(fpr, tpr)  
+    #fpr, tpr, thresholds = roc_curve(y_test, pred)
+    #roc_auc = auc(fpr, tpr)  
 
     print(f'AUC_model{i}', roc_auc)
 
@@ -177,14 +177,14 @@ for model in models:
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/acc{i}.png', bbox_inches='tight')
 
-    plt.figure(15)
-    plt.title("Receiver operating characteristic example")
-    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
-    plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.xlim(-0.05, 1.05)
-    plt.ylim(-0.05, 1.05)
-    plt.savefig('output/auc.png', bbox_inches='tight')
+    #plt.figure(15)
+    #plt.title("Receiver operating characteristic example")
+    #plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
+    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
+    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #plt.xlim(-0.05, 1.05)
+    #plt.ylim(-0.05, 1.05)
+    #plt.savefig('output/auc.png', bbox_inches='tight')
 
     i = i+1
 
