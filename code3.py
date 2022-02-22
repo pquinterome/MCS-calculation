@@ -150,7 +150,7 @@ y_cat_test = to_categorical(y_test, 2)
 #                                    featurewise_std_normalization=True)
 #train_generator = data_generator.flow(X_train, y_train)
 #test_generator = data_generator.flow(X_test, y_test, shuffle=False)
-early_stop = EarlyStopping(monitor='val_loss', patience=5)
+early_stop = EarlyStopping(monitor='val_loss', patience=50)
 #auc1 = tf.keras.metrics.AUC()
 
 models = [model1, model2, model3, model4, model5]
