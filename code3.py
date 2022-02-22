@@ -95,7 +95,7 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #1 Single layers
 #Model->1
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(4,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
@@ -103,7 +103,7 @@ x = Dense(2, activation='softmax')(x)
 model1 = Model(i, x)
 #Model->2
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=64, kernel_size=(4,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
@@ -111,7 +111,7 @@ x = Dense(2, activation='softmax')(x)
 model2 = Model(i, x)
 #Model->3
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=128, kernel_size=(4,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
@@ -119,7 +119,7 @@ x = Dense(2, activation='softmax')(x)
 model3 = Model(i, x)
 #Model->4
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=128, kernel_size=(4,4), activation='relu', padding='same')(i)
+x = Conv2D(filters=128, kernel_size=(4,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
@@ -148,7 +148,7 @@ X_train, X_test, y_train, y_test = train_test_split(ltm, y, random_state = 1, te
 #                                    featurewise_std_normalization=True)
 #train_generator = data_generator.flow(X_train, y_train)
 #test_generator = data_generator.flow(X_test, y_test, shuffle=False)
-early_stop = EarlyStopping(monitor='val_loss', patience=10)
+early_stop = EarlyStopping(monitor='val_loss', patience=5)
 #auc1 = tf.keras.metrics.AUC()
 
 models = [model1, model2, model3, model4, model5]
@@ -157,13 +157,15 @@ for model in models:
     model.compile(loss="categorical_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
+    predictions = np.round(pred)
+    accuracy = accuracy_score(y_test, predictions)
     #fpr, tpr, thresholds = roc_curve(y_test, pred)
     #roc_auc = auc(fpr, tpr)  
     
-    #print(f'AUC_model{i}', classification_report(y_test, pred))
+    print(f'AUC_model{i}', accuracy)
 
     plt.figure(i*i)
     plt.title('Loss [rmse]')
