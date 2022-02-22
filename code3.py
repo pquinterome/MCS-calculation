@@ -5,10 +5,11 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import tensorflow as tf
-from numpy import interp
+from numpy import asarray, interp, asarray
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
+from sklearn.preprocessing import OneHotEncoder
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -66,21 +67,19 @@ for i in range(len(val)):
     a.append(a1)
 w = np.array([a[i].shape[0] for i in range(len(a))])
 w1 = w.min()
-w2 = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
-val = w2
+val = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
 val= val.reshape(32, 112, 177, 1)
 
+encoder= OneHotEncoder(sparse=False)
 y_val = pd.read_csv('id_val.csv')
 y_val ['2_2'] = y_val ['2_2'].fillna(y_val ['2_2'].mean())
 y_val = np.array(y_val['2_2']/100)
-G = y_val
-mu=[0 if x >= 0.98 else 1 for x in G]
-y_val = np.array(mu)
+mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y_val])
+y_val = encoder.fit_transform(mu)
 
 y = np.load('y.npy')
-G = y
-mu=[0 if x >= 0.98 else 1 for x in G]
-y = np.array(mu)
+mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y])
+y = encoder.fit_transform(mu)
 
 #print('dataset', ltm.shape)
 #print('labels', y.shape)
@@ -96,70 +95,46 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #1 Single layers
 #Model->1
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-#x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(2, activation='sofmax')(x)
 model1 = Model(i, x)
 #Model->2
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-#x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(2, activation='sofmax')(x)
 model2 = Model(i, x)
 #Model->3
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(i)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(x)
+=(2,2), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-#x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(2, activation='sofmax')(x)
 model3 = Model(i, x)
 #Model->4
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=128, kernel_size=(2,2), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=64, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = Conv2D(filters=64, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=64, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = Conv2D(filters=64, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
+x = Conv2D(filters=128, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-#x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(2, activation='sofmax')(x)
 model4 = Model(i, x)
 #Model->5
 i = Input(shape=(112,177,1))
-x = Conv2D(filters=64, kernel_size=(2,2), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(2,2), activation='relu', padding='same')(x)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-#x = Dense(180, activation='relu')(x)
-#x = Dense(180, activation='relu')(x)
-x = Dense(1, activation='sigmoid')(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(2, activation='sofmax')(x)
 model5 = Model(i, x)
 
 
@@ -181,7 +156,9 @@ early_stop = EarlyStopping(monitor='val_loss', patience=10)
 models = [model1, model2, model3, model4, model5]
 i = 1
 for model in models:
-    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model.compile(loss="categorical_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    #categorical_crossentropy
+    #binary_crossentropy
     r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
