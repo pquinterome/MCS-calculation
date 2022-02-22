@@ -74,11 +74,13 @@ encoder= OneHotEncoder(sparse=False)
 y_val = pd.read_csv('id_val.csv')
 y_val ['2_2'] = y_val ['2_2'].fillna(y_val ['2_2'].mean())
 y_val = np.array(y_val['2_2']/100)
-mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y_val])
-y_val = mu
+#mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y_val])
+#y_val = mu
 #y_val = encoder.fit_transform(mu)
 
 y = np.load('y.npy')
+mu=[0 if x >= 0.98 else 1 for x in G]
+y = np.array(mu)
 #mu= asarray([['pass'] if x >= 0.98 else ['fail'] for x in y])
 #y = encoder.fit_transform(mu)
 
