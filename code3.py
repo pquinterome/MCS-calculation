@@ -39,6 +39,16 @@ w1 = w.min()
 ltm = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
 print('dataset', ltm.shape)
 print('labels', y.shape)
+
+X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
+print('X_train', X_train.shape)
+print('X_test', X_test.shape)
+X_train = X_train.reshape(657, 32, 177, 1)
+X_test  = X_test.reshape(165, 32, 177)
+print('X_train', X_train.shape)
+print('X_test', X_test.shape)
+
+
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #models---->>>
