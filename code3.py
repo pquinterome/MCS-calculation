@@ -39,7 +39,7 @@ w1 = w.min()
 ltm = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
 print('dataset', ltm.shape)
 print('labels', y.shape)
-
+#%%
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
@@ -55,7 +55,7 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
 #1 Single layers
 #Model->1
-i = Input(shape=(112,177,1))
+i = Input(shape=(32,177,1))
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
@@ -63,7 +63,7 @@ x = Dense(180, activation='relu')(x)
 x = Dense(2, activation='softmax')(x)
 model1 = Model(i, x)
 #Model->2
-i = Input(shape=(112,177,1))
+i = Input(shape=(32,177,1))
 x = Conv2D(filters=64, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
@@ -71,7 +71,7 @@ x = Dense(180, activation='relu')(x)
 x = Dense(2, activation='softmax')(x)
 model2 = Model(i, x)
 #Model->3
-i = Input(shape=(112,177,1))
+i = Input(shape=(32,177,1))
 x = Conv2D(filters=128, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
@@ -79,7 +79,7 @@ x = Dense(180, activation='relu')(x)
 x = Dense(2, activation='softmax')(x)
 model3 = Model(i, x)
 #Model->4
-i = Input(shape=(112,177,1))
+i = Input(shape=(32,177,1))
 x = Conv2D(filters=128, kernel_size=(4,4), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
@@ -87,7 +87,7 @@ x = Dense(180, activation='relu')(x)
 x = Dense(2, activation='softmax')(x)
 model4 = Model(i, x)
 #Model->5
-i = Input(shape=(112,177,1))
+i = Input(shape=(32,177,1))
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
