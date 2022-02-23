@@ -20,8 +20,8 @@ from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 from numpy import interp
 # %%
-ltm_T = np.load('ltm_T.npy')
-ltm_H = np.load('ltm_H.npy')
+ltm_T = np.load('inputs/ltm_T.npy')
+ltm_H = np.load('inputs/ltm_H.npy')
 ltm = np.concatenate((ltm_H, ltm_T), axis=0)
 y = np.load('y.npy')
 y = np.array([0 if x >= 0.98 else 1 for x in y])
