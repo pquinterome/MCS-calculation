@@ -44,7 +44,7 @@ X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #rand
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
 X_train = X_train.reshape(657, 32, 177, 1)
-X_test  = X_test.reshape(165, 32, 177)
+X_test  = X_test.reshape(165, 32, 177, 1)
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
 
