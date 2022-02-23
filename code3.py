@@ -20,76 +20,25 @@ from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 from numpy import interp
 # %%
-ltm1 = np.load('tlm_3Gy_1arc_HL.npy')
-ltm2 = np.load('tlm_3Gy_2arc_HL.npy')
-ltm2 = np.array([ltm2[i][:112,] for i in range(len(ltm2))])
-ltm = np.concatenate((ltm1, ltm2), axis=0)
-ltm = np.array([ltm[i] for i in range(len(ltm))])
-ltm = np.array([(ltm[i]-ltm[i].mean())/ltm[i].std() for i in range(len(ltm))])
-ltm = np.array([ltm[i]/ltm[i].max() for i in range(len(ltm))])
-ltm_H =np.array([(ltm[i]+1)/2 for i in range(len(ltm))]) 
-#print('Halcyon', ltm_H.shape)
-ltm1 = np.load('tlm_3Gytb_1arc.npy')
-ltm2 = np.load('tlm_27Gytb_1arc.npy')
-ltm3 = np.load('tlm_2Gy_1arc.npy')
-ltm = np.concatenate((ltm1, ltm2, ltm3), axis=0)
-ltm = np.array([ltm[i].T for i in range(len(ltm))])
-ltm = np.array([(ltm[i]-ltm[i].mean())/ltm[i].std() for i in range(len(ltm))])
-ltm = np.array([ltm[i]/ltm[i].max() for i in range(len(ltm))])
-ltm_T =np.array([(ltm[i]+1)/2 for i in range(len(ltm))])
-ltm_T = np.array([ltm_T[i][:112,] for i in range(len(ltm_T))])
-#print('TrueBeam', ltm_T.shape)
+ltm_T = np.load('ltm_T.npy')
+ltm_H = np.load('ltm_H.npy')
 ltm = np.concatenate((ltm_H, ltm_T), axis=0)
-a=[]
-for i in range(len(ltm)):
-    dlb1= pd.DataFrame(ltm[i])
-    nunique1 = dlb1.apply(pd.Series.nunique)
-    cols_to_drop1 = nunique1[nunique1 == 1].index
-    a1= dlb1.drop(cols_to_drop1, axis=1)
-    a.append(a1)
-w = np.array([a[i].shape[0] for i in range(len(a))])
-w1 = w.min()
-w2 = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
-ltm = w2
-ltm= ltm.reshape(822, 112, 177, 1)
-
-val = np.load('tlm_val.npy')
-val = np.array([val[i].T for i in range(len(val))])
-val = np.array([val[i][:112,] for i in range(len(val))])
-val = np.array([(val[i]-val[i].mean())/val[i].std() for i in range(len(val))])
-val = np.array([val[i]/val[i].max() for i in range(len(val))])
-val =np.array([(val[i]+1)/2 for i in range(len(val))])
-a=[]
-for i in range(len(val)):
-    dlb1= pd.DataFrame(val[i])
-    nunique1 = dlb1.apply(pd.Series.nunique)
-    cols_to_drop1 = nunique1[nunique1 == 1].index
-    a1= dlb1.drop(cols_to_drop1, axis=1)
-    a.append(a1)
-w = np.array([a[i].shape[0] for i in range(len(a))])
-w1 = w.min()
-val = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
-val= val.reshape(32, 112, 177, 1)
-
-
-y_val = pd.read_csv('id_val.csv')
-y_val ['2_2'] = y_val ['2_2'].fillna(y_val ['2_2'].mean())
-y_val = np.array(y_val['2_2']/100)
-mu=[0 if x >= 0.98 else 1 for x in y_val]
-y_val = np.array(mu)
-
 y = np.load('y.npy')
-mu=[0 if x >= 0.98 else 1 for x in y]
-y = np.array(mu)
-
-
-#print('dataset', ltm.shape)
-#print('labels', y.shape)
-
+y = np.array([0 if x >= 0.98 else 1 for x in y])
 print('dataset', ltm.shape)
 print('labels', y.shape)
-print('val_dataset', val.shape)
-print('val_labels', y_val.shape)
+a=[]
+for i in range(len(ltm)):
+    dlb1= pd.DataFrame(ltm[i].T)
+    nunique1 = dlb1.apply(pd.Series.nunique)
+    cols_to_drop1 = nunique1[nunique1 == 1].index
+    a1= dlb1.drop(cols_to_drop1, axis=1)
+    a.append(a1.T)
+w = np.array([a[i].shape[0] for i in range(len(a))])
+w1 = w.min()
+ltm = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
+print('dataset', ltm.shape)
+print('labels', y.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #models---->>>
