@@ -59,57 +59,81 @@ print('X_test', X_test.shape)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
+activation = 'sigmoid' 
+#softmax
 #models---->>>
 i = Input(shape=(70,177,1))
 #1 Single layers
 #Model->1
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(2, activation='softmax')(x)
+#x = Dense(180, activation='relu')(x)
+x = Dense(1, activation=activation)(x)
 model1 = Model(i, x)
 #Model->2
-x = Conv2D(filters=32, kernel_size=(5,5), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(2, activation='softmax')(x)
+#x = Dense(180, activation='relu')(x)
+x = Dense(1, activation=activation)(x)
 model2 = Model(i, x)
 #Model->3
-x = Conv2D(filters=32, kernel_size=(7,7), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(2, activation='softmax')(x)
-model3 = Model(i, x)
-#Model->4
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(2, activation='softmax')(x)
+#x = Dense(180, activation='relu')(x)
+x = Dense(1, activation=activation)(x)
+model3 = Model(i, x)
+#Model->4
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Flatten()(x)
+#x = Dense(180, activation='relu')(x)
+x = Dense(1, activation=activation)(x)
 model4 = Model(i, x)
 #Model->5
 x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(2, activation='softmax')(x)
+#x = Dense(180, activation='relu')(x)
+x = Dense(1, activation=activation)(x)
 model5 = Model(i, x)
 #Model->6
 x = Conv2D(filters=256, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(2, activation='softmax')(x)
-model5 = Model(i, x)
+#x = Dense(180, activation='relu')(x)
+x = Dense(1, activation=activation)(x)
+model6 = Model(i, x)
 
 
 
 # %%
-y_cat_train = to_categorical(y_train, 2)
-y_cat_test = to_categorical(y_test, 2)
+#y_cat_train = to_categorical(y_train, 2)
+#y_cat_test = to_categorical(y_test, 2)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
 #                                    shear_range=0.1, validation_split=0.2, featurewise_center=True, 
@@ -118,22 +142,28 @@ y_cat_test = to_categorical(y_test, 2)
 #test_generator = data_generator.flow(X_test, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=50)
 
-models = [model1, model2, model3, model4, model5]
+models = [model1, model2, model3, model4, model5, model6]
 i = 1
 for model in models:
-    model.compile(loss="categorical_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_cat_train, validation_data= (X_test, y_cat_test), epochs=50, verbose=0, callbacks=[])
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
     predictions = np.round(pred)
-    accuracy = accuracy_score(y_cat_test, predictions)
-    predictions = [0 if predictions[i][0] == 0 else 1 for i in range(len(predictions))]
-    fpr, tpr, thresholds = roc_curve(y_test, predictions)
+    accuracy = accuracy_score(y_test, predictions)
+    fpr, tpr, thresholds = roc_curve(y_test, pred)
     roc_auc = auc(fpr, tpr)
+    classes=[0,1]
+    con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
     
-    print(f'AUC_model{i}', roc_auc, f'Accuracy{i}', accuracy)
+    print(f'AUC_model{i}',  roc_auc)
+    print(f'Accuracy{i}',   accuracy)
+    print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+    print(f'precision{i}',  precision_score(y_test, predictions))
+    print(f'recall{i}',     recall_score(y_test, predictions))
+    print(f'f1{i}',         f1_score(y_test, predictions))
 
     plt.figure(i*i)
     plt.title('Loss [rmse]')
