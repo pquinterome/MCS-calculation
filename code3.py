@@ -35,8 +35,16 @@ for i in range(len(ltm)):
     a1= dlb1.drop(cols_to_drop1, axis=1)
     a.append(a1.T)
 w = np.array([a[i].shape[0] for i in range(len(a))])
-w1 = w.min()
-ltm = np.array([np.array(a[i])[-w1:,:] for i in range(len(a))])
+padded_array = np.zeros((w.max(), 177))
+z=[]
+for i in range(len(ltm)):
+    q = a[i]
+    shape = np.shape(q)
+    padded_array = np.zeros((w.max(), 177))
+    padded_array[:shape[0],:shape[1]] = q
+    padded_array.shape
+    z.append(padded_array)
+ltm = np.array(z)
 print('dataset', ltm.shape)
 print('labels', y.shape)
 #%%
