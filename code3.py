@@ -45,8 +45,8 @@ for i in range(len(ltm)):
     padded_array.shape
     z.append(padded_array)
 ltm = np.array(z)
-ltm = np.concatenate((ltm, ltm), axis=0)
-y = np.concatenate((y,y), axis=0)
+ltm = np.concatenate((ltm, ltm[411:]), axis=0)
+y = np.concatenate((y,y[411:]), axis=0)
 print('dataset', ltm.shape)
 print('labels', y.shape)
 
@@ -157,11 +157,11 @@ model9 = Model(i, x)
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-#data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
-#                                    shear_range=0.1, validation_split=0.2, featurewise_center=True, 
-#                                    featurewise_std_normalization=True)
-#train_generator = data_generator.flow(X_train, y_train)
-#test_generator = data_generator.flow(X_test, y_test, shuffle=False)
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
+                                    shear_range=0.1, validation_split=0.2, featurewise_center=True, 
+                                    featurewise_std_normalization=True)
+train_generator = data_generator.flow(X_train, y_train)
+test_generator = data_generator.flow(X_test, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
