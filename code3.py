@@ -186,7 +186,7 @@ for model in models:
     print(f'f1{i}',         f1_score(y_test, predictions))
 
     plt.figure(i*i)
-    plt.title('Loss [rmse]')
+    plt.title('Loss')
     plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
     plt.ylim(-0.1, 2)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
