@@ -56,8 +56,8 @@ print('labels', y.shape)
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
-X_train = X_train.reshape(657, 70, 177, 1)
-X_test  = X_test.reshape(165, 70, 177, 1)
+X_train = X_train.reshape(1315, 70, 177,1)
+X_test  = X_test.reshape(329, 70, 177,1)
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
 
@@ -157,14 +157,12 @@ for model in models:
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
     predictions = np.round(pred)
-    accuracy = accuracy_score(y_test, predictions)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
     roc_auc = auc(fpr, tpr)
     classes=[0,1]
     con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
     
     print(f'AUC_model{i}',  roc_auc)
-    print(f'Accuracy{i}',   accuracy)
     print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
     print(f'precision{i}',  precision_score(y_test, predictions))
     print(f'recall{i}',     recall_score(y_test, predictions))
