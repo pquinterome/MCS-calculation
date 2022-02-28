@@ -56,8 +56,8 @@ print('labels', y.shape)
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
-X_train = X_train.reshape(1315, 70, 177,1)
-X_test  = X_test.reshape(329, 70, 177,1)
+X_train = X_train.reshape(986, 70, 177,1)
+X_test  = X_test.reshape(247, 70, 177,1)
 print('X_train', X_train.shape)
 print('X_test', X_test.shape)
 
