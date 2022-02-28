@@ -45,8 +45,8 @@ for i in range(len(ltm)):
     padded_array.shape
     z.append(padded_array)
 ltm = np.array(z)
-ltm = np.concatenate((ltm, ltm[411:]), axis=0)
-y = np.concatenate((y,y[411:]), axis=0)
+ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
+y = np.concatenate((y,y[-411:]), axis=0)
 print('dataset', ltm.shape)
 print('labels', y.shape)
 
@@ -188,7 +188,7 @@ for model in models:
     plt.figure(i*i)
     plt.title('Loss [rmse]')
     plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
-    plt.ylim(-0.1, 4)
+    plt.ylim(-0.1, 2)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig(f'output/loss{i}.png', bbox_inches='tight')
 
