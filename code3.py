@@ -45,8 +45,13 @@ for i in range(len(ltm)):
     padded_array.shape
     z.append(padded_array)
 ltm = np.array(z)
+ltm = np.concatenate((ltm, ltm), axis=0)
+y = np.concatenate((y,y), axis=0)
 print('dataset', ltm.shape)
 print('labels', y.shape)
+
+
+
 #%%
 X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
 print('X_train', X_train.shape)
