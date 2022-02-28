@@ -140,7 +140,7 @@ model6 = Model(i, x)
 #                                    featurewise_std_normalization=True)
 #train_generator = data_generator.flow(X_train, y_train)
 #test_generator = data_generator.flow(X_test, y_test, shuffle=False)
-early_stop = EarlyStopping(monitor='val_loss', patience=50)
+early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
 models = [model1, model2, model3, model4, model5, model6]
 i = 1
@@ -148,7 +148,7 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
     predictions = np.round(pred)
