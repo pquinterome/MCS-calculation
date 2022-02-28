@@ -157,11 +157,10 @@ model9 = Model(i, x)
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, zoom_range=[0.7,1.0], 
-                                    shear_range=0.1, validation_split=0.2, featurewise_center=True, 
-                                    featurewise_std_normalization=True)
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
 train_generator = data_generator.flow(X_train, y_train)
 test_generator = data_generator.flow(X_test, y_test, shuffle=False)
+
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
@@ -170,7 +169,8 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
+    #r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
+    r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=20, verbose=1)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
     predictions = np.round(pred)
