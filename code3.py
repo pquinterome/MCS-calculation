@@ -47,8 +47,10 @@ for i in range(len(ltm)):
 ltm = np.array(z)
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 y = np.concatenate((y,y[-411:]), axis=0)
+mu = np.load('mu_cp.npy')
 print('dataset', ltm.shape)
 print('labels', y.shape)
+print('MU_cp', mu.shape)
 
 
 
@@ -173,7 +175,7 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[])
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
