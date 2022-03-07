@@ -11,7 +11,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_sc
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from sklearn.preprocessing import OneHotEncoder
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D
+from tensorflow.keras.layers import Input, Dense, Conv1D, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.utils import to_categorical
@@ -48,20 +48,31 @@ ltm = np.array(z)
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 y = np.concatenate((y,y[-411:]), axis=0)
 mu = np.load('mu_cp.npy')
+mu= np.concatenate((mu, mu[-411:]), axis=0)
 print('dataset', ltm.shape)
 print('labels', y.shape)
 print('MU_cp', mu.shape)
 
-
+X_train1, X_test1, X_train2, X_test2, y_train, y_test = train_test_split(ltm, mu, y, test_size=0.2) #random_state=1
+X_train1 = X_train1.reshape(986, 70, 177, 1)
+X_test1  = X_test1.reshape(247, 70, 177, 1)
+X_train2 = X_train2.reshape(986, 176, 1)
+X_test2  = X_test2.reshape(247, 176, 1)
+print('X_train1', X_train1.shape)
+print('X_test1', X_test1.shape)
+print('X_train2', X_train2.shape)
+print('X_test2', X_test2.shape)
+print('y_train2', y_train.shape)
+print('y_test2', y_test.shape)
 
 #%%
-X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
-print('X_train', X_train.shape)
-print('X_test', X_test.shape)
-X_train = X_train.reshape(986, 70, 177,1)
-X_test  = X_test.reshape(247, 70, 177,1)
-print('X_train', X_train.shape)
-print('X_test', X_test.shape)
+#X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
+#print('X_train', X_train.shape)
+#print('X_test', X_test.shape)
+#X_train = X_train.reshape(986, 70, 177,1)
+#X_test  = X_test.reshape(247, 70, 177,1)
+#print('X_train', X_train.shape)
+#print('X_test', X_test.shape)
 
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
@@ -164,8 +175,10 @@ model9 = Model(i, x)
 #y_cat_test = to_categorical(y_test, 2)
 
 data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
-train_generator = data_generator.flow(X_train, y_train)
-test_generator = data_generator.flow(X_test, y_test, shuffle=False)
+#train_generator = data_generator.flow(X_train, y_train)
+#test_generator = data_generator.flow(X_test, y_test, shuffle=False)
+train_generator = data_generator.flow([X_train1, X_train2], y_train)
+test_generator = data_generator.flow([X_test1, X_test2], y_test, shuffle=False)
 
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
