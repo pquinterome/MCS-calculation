@@ -135,9 +135,9 @@ model9 = Model(i, x)
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
-train_generator = data_generator.flow(X_train, y_train)
-test_generator = data_generator.flow(X_test, y_test, shuffle=False)
+#data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
+#train_generator = data_generator.flow(X_train, y_train)
+#test_generator = data_generator.flow(X_test, y_test, shuffle=False)
 
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
