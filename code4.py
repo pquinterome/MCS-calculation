@@ -72,10 +72,9 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 activation = 'sigmoid' 
 #softmax
 #models---->>>
-i = Input(shape=(70,177,1))
+i = Input(shape=(176, 1))
 #1 Single layers
 #Model->1
-i = Input(shape=(176, 1))
 x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
