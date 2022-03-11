@@ -185,7 +185,7 @@ test_generator = data_generator.flow(X_test1, y_test, shuffle=False)
 #test_generator = data_generator.flow([X_test1, X_test2], y_test, shuffle=False)
 
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
-reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
+reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.0001)
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
 i = 1
