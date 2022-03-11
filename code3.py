@@ -188,10 +188,10 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=100, verbose=0, callbacks=[early_stop])
+    r = model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=100, verbose=0, callbacks=[early_stop])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
-    pred = model.predict(X_test)
+    pred = model.predict(X_test1)
     predictions = np.round(pred)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
     roc_auc = auc(fpr, tpr)
