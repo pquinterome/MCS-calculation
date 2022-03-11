@@ -13,7 +13,7 @@ from sklearn.preprocessing import OneHotEncoder
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Input, Dense, Conv1D, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.utils import to_categorical
 from scipy.stats import shapiro
 from scipy.stats import spearmanr
@@ -185,6 +185,7 @@ test_generator = data_generator.flow(X_test1, y_test, shuffle=False)
 #test_generator = data_generator.flow([X_test1, X_test2], y_test, shuffle=False)
 
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
+reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
 i = 1
@@ -193,7 +194,7 @@ for model in models:
     #categorical_crossentropy
     #binary_crossentropy
     #r = model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=100, verbose=0, callbacks=[early_stop])
-    r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=100, verbose=0)
+    r = model.fit(train_generator, validation_data= test_generator, callbacks=[reduce_lr] ,epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test1)
     predictions = np.round(pred)
