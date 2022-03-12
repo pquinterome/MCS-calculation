@@ -75,7 +75,7 @@ activation = 'sigmoid'
 i = Input(shape=(176, 1))
 #1 Single layers
 #Model->1
-x = Conv1D(filters=32, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(x)
 x = MaxPool1D(pool_size=(2))(x)
@@ -83,52 +83,52 @@ x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model1 = Model(i, x)
 #Model->2
-x = Conv1D(filters=64, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=64, kernel_size=(5), activation='relu', padding='same')(i)
 x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(x)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model2 = Model(i, x)
 #Model->3
-x = Conv1D(filters=128, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=128, kernel_size=(5), activation='relu', padding='same')(i)
 x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(x)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model3 = Model(i, x)
 #Model->4
-x = Conv1D(filters=256, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=256, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model4 = Model(i, x)
 #Model->5
-x = Conv1D(filters=32, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(i)
 x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(x)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model5 = Model(i, x)
 #Model->6
-x = Conv1D(filters=32, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=32, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model6 = Model(i, x)
 #Model->7
-x = Conv1D(filters=64, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=64, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model7 = Model(i, x)
 #Model->8
-x = Conv1D(filters=64, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=64, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
 model8 = Model(i, x)
 #Model->9
-x = Conv1D(filters=128, kernel_size=(9), activation='relu', padding='same')(i)
+x = Conv1D(filters=128, kernel_size=(5), activation='relu', padding='same')(i)
 x = MaxPool1D(pool_size=(2))(x)
 x = Flatten()(x)
 x = Dense(1, activation='sigmoid')(x)
@@ -148,13 +148,13 @@ early_stop = EarlyStopping(monitor='val_loss', patience=5)
 #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
-reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
+#reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=400, verbose=0, callbacks=[reduce_lr])
+    r = model.fit(x=X_train, y= y_train, validation_data= (X_test, y_test), epochs=400, verbose=0, callbacks=[])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test)
