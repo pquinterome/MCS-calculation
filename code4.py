@@ -93,7 +93,7 @@ roc = tf.keras.metrics.AUC(name='roc')
 #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
 early_stop = EarlyStopping(monitor='val_loss', patience=3)
 model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-model1.fit(train_generator, validation_data= test_generator, callbacks=[ ] ,epochs=400, verbose=0)
+model1.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=400, verbose=0)
 
 metrics = pd.DataFrame(model1.history.history)
 
