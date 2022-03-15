@@ -193,12 +193,12 @@ for train, test in kfold.split(X, y):
     #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
-    model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=600, batch_size=5, verbose=0, callbacks=[early_stop, reduce_lr])
+    model2.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
+    model2.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=600, batch_size=5, verbose=0, callbacks=[early_stop, reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 # evaluate the model  
-    y_pred_keras = model1.predict(X[test]).ravel()
+    y_pred_keras = model2.predict(X[test]).ravel()
  
     fpr, tpr, thresholds = roc_curve(y[test], y_pred_keras)
     #fprs1.append(fpr)
@@ -231,9 +231,9 @@ ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
-plt.savefig('output/five_AUC_ltm.png', bbox_inches='tight')
+plt.savefig('output/five_AUC_MU.png', bbox_inches='tight')
 
-print('LTM model done')
+print('MU model done')
 ##############################################
 seed =18
 np.random.seed(seed)
@@ -301,5 +301,5 @@ ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
-plt.savefig('output/five_AUC_MU.png', bbox_inches='tight')
+plt.savefig('output/five_AUC_LTM.png', bbox_inches='tight')
 print('MU model done')
