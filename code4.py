@@ -93,7 +93,7 @@ roc = tf.keras.metrics.AUC(name='roc')
 #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
 early_stop = EarlyStopping(monitor='val_loss', patience=3)
 model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-model1.fit(train_generator, validation_data= test_generator, callbacks=[ ] ,epochs=40, verbose=2)
+model1.fit(train_generator, validation_data= test_generator, callbacks=[ ] ,epochs=400, verbose=0)
 
 metrics = pd.DataFrame(model1.history.history)
 
@@ -110,7 +110,7 @@ plt.plot(metrics[['accuracy', 'val_accuracy']], label=['acc', 'val_acc'])
 plt.subplot(2,3,3)
 plt.title('roc_auc')
 plt.plot(metrics[['roc', 'val_roc']], label=['auc', 'val_auc'])
-plt.savefig('Performance', bbox_inches='tight')
+plt.savefig('output/Performance.png', bbox_inches='tight')
 
 pred = model1.predict(X_test1)
 predictions = np.round(pred)
@@ -129,4 +129,4 @@ plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.xlim(-0.05, 1.05)
 plt.ylim(-0.05, 1.05)
-plt.savefig('AUC{ltm}', bbox_inches='tight')
+plt.savefig('output/AUC_ltm.png', bbox_inches='tight')
