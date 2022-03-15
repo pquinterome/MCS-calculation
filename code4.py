@@ -173,7 +173,7 @@ aucs1 = []
 fprs1 = []
 mean_fpr = np.linspace(0, 1, 100)
 i = 1
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(5)
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
 X = mu.reshape(1233, 176,1)
@@ -227,11 +227,14 @@ ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
                 label=r'$\pm$ 1 std. dev.')
 
 ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
-       title="Receiver operating characteristic example")
+       title="Receiver operating characteristic LTM")
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/five_AUC_ltm.png', bbox_inches='tight')
+
+
+##############################################
 seed =18
 np.random.seed(seed)
 tprs1 = []
@@ -239,7 +242,7 @@ aucs1 = []
 fprs1 = []
 mean_fpr = np.linspace(0, 1, 100)
 i = 1
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(6)
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
 X = ltm.reshape(1233, 70, 177,1)
@@ -294,7 +297,7 @@ ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
                 label=r'$\pm$ 1 std. dev.')
 
 ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
-       title="Receiver operating characteristic example")
+       title="Receiver operating characteristic MU")
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
