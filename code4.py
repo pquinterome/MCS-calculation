@@ -130,7 +130,7 @@ x = Dense(1, activation='sigmoid')(x)
 model2 = Model(i, x)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
 model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy', roc])
-model2.fit(x= X_train2, y =y_train, validation_data= (X_test2, y_test), callbacks=[reduce_lr], epochs=100, verbose=0)
+model2.fit(x= X_train2, y =y_train, validation_data= (X_test2, y_test), callbacks=[reduce_lr], epochs=400, verbose=0)
 metrics = pd.DataFrame(model2.history.history)
 fig = plt.figure(3)
 fig.set_size_inches(13, 5)
@@ -226,8 +226,7 @@ tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
 ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
                 label=r'$\pm$ 1 std. dev.')
 
-ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
-       title="Receiver operating characteristic LTM")
+ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic MU")
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
@@ -242,7 +241,7 @@ aucs1 = []
 fprs1 = []
 mean_fpr = np.linspace(0, 1, 100)
 i = 1
-fig1, ax1 = plt.subplots(6)
+fig1, ax1 = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
 X = ltm.reshape(1233, 70, 177,1)
@@ -287,7 +286,7 @@ std_tpr = np.std(tprs1, axis=0)
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
 tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
 ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
-ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic MU")
+ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic LTM")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
