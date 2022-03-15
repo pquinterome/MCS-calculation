@@ -129,7 +129,7 @@ x = Dense(1, activation='sigmoid')(x)
 model2 = Model(i, x)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
 model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy', roc])
-model2.fit(x= X_train2, y =y_train, validation_data= (X_test2, y_test), callbacks=[reduce_lr], epochs=100, verbose=2)
+model2.fit(x= X_train2, y =y_train, validation_data= (X_test2, y_test), callbacks=[reduce_lr], epochs=100, verbose=0)
 metrics = pd.DataFrame(model2.history.history)
 
 fig = plt.figure(3)
@@ -187,7 +187,7 @@ for train, test in kfold.split(X, y):
     x = MaxPool1D(pool_size=(5))(x)
     x = Flatten()(x)
     x = Dense(1, activation='sigmoid')(x)
-    model2 = Model(i, x)
+    model2 = Model(i1, x)
     #model1.summary()
 ##- compile model    
     roc = tf.keras.metrics.AUC(name='roc')
