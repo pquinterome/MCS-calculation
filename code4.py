@@ -207,7 +207,7 @@ for train, test in kfold.split(X, y):
     roc_auc = auc(fpr, tpr)
     #roc_auc5 = metrics.auc(fpr, tpr)
     aucs1.append(roc_auc)
-    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+    plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
     i= i+1
 
 #mean_tpr = np.mean
