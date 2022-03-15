@@ -233,7 +233,7 @@ plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/five_AUC_ltm.png', bbox_inches='tight')
 
-
+print('LTM model done')
 ##############################################
 seed =18
 np.random.seed(seed)
@@ -302,3 +302,4 @@ ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/five_AUC_MU.png', bbox_inches='tight')
+print('MU model done')
