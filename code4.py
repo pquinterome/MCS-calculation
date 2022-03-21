@@ -182,6 +182,7 @@ kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 X = mu.reshape(1233, 176,1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
+    
 #-  create model
     i1 = Input(shape=(176, 1))
     x = Conv1D(filters=128, kernel_size=(9), activation='relu', padding='same')(i1)
@@ -247,6 +248,9 @@ kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 X = ltm.reshape(1233, 70, 177,1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
+    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
+    train_generator = data_generator.flow(X[train], y[train], batch_size=5)
+    test_generator = data_generator.flow(X[test], y[test], shuffle=False)
 #-  create model
     i1 = Input(shape=(70,177,1))
     x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
@@ -263,7 +267,7 @@ for train, test in kfold.split(X, y):
     #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=600, batch_size=5, verbose=0, callbacks=[early_stop, reduce_lr])
+    model1.fit(train_generator, validation_data= test_generator ,epochs=600, batch_size=5, verbose=0, callbacks=[early_stop, reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 #-  evaluate the model  
