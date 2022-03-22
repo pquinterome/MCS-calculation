@@ -189,6 +189,9 @@ early_stop = EarlyStopping(monitor='val_loss', patience=5)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
+
+print('all ok')
+
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
