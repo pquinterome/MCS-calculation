@@ -47,15 +47,18 @@ ltm = np.array(z)
 ltm = ltm [:820,:]
 mu = np.load('inputs/mu_cp.npy')
 mu = mu[:820,]
-p = np.load('inputs/portal.npy', allow_pickle=True)
+
+p = np.load('inputs/portal.npy')
+
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
 y = np.concatenate((y,y[-411:]), axis=0)
 
-#print('dataset', ltm.shape)
-#print('labels', y.shape)
-#print('MU_cp', mu.shape)
+print('LTM_dataset', ltm.shape)
+print('MUcp_dataset', mu.shape)
+print('Portal_dataset', p.shape)
+print('labels', y.shape)
 #%%
 X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test = train_test_split(ltm, mu, p, y, test_size=0.2, random_state= 35)
 #print('X_train', X_train1.shape)

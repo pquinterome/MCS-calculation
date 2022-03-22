@@ -81,7 +81,7 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 activation = 'sigmoid' 
 #softmax
 #models---->>>
-i = Input(shape=(70,177,1))
+i = Input(shape=(512, 512, 1))
 #1 Single layers
 #Model->1
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
@@ -176,8 +176,8 @@ model9 = Model(i, x)
 #y_cat_test = to_categorical(y_test, 2)
 
 data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
-train_generator = data_generator.flow(X_train1, y_train)
-test_generator = data_generator.flow(X_test1, y_test, shuffle=False)
+train_generator = data_generator.flow(X_train3, y_train)
+test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
 #train_generator = data_generator.flow(X_train, y_train)
@@ -194,10 +194,10 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=400, verbose=0, callbacks=[reduce_lr])
+    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400, verbose=0, callbacks=[reduce_lr])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[reduce_lr] ,epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
-    pred = model.predict(X_test1)
+    pred = model.predict(X_test3)
     predictions = np.round(pred)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
     roc_auc = auc(fpr, tpr)
