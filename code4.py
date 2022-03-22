@@ -200,6 +200,7 @@ early_stop = EarlyStopping(monitor='val_loss', patience=3)
 model3.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
 model3.fit(train_generator, validation_data= test_generator, callbacks=[early_stop] ,epochs=400, verbose=0)
 metrics = pd.DataFrame(model3.history.history)
+
 fig = plt.figure(5)
 fig.set_size_inches(13, 5)
 plt.subplot(2,3,1)

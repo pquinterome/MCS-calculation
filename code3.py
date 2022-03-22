@@ -9,7 +9,7 @@ from numpy import asarray, interp, asarray
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score, classification_report
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Input, Dense, Conv1D, Conv2D, MaxPool2D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -23,10 +23,9 @@ from numpy import interp
 ltm_T = np.load('inputs/ltm_T.npy')
 ltm_H = np.load('inputs/ltm_H.npy')
 ltm = np.concatenate((ltm_H, ltm_T), axis=0)
-y = np.load('y.npy')
+y = np.load('inputs/y.npy')
+y = y[:820,]
 y = np.array([0 if x >= 0.98 else 1 for x in y])
-print('dataset', ltm.shape)
-print('labels', y.shape)
 a=[]
 for i in range(len(ltm)):
     dlb1= pd.DataFrame(ltm[i].T)
@@ -45,36 +44,38 @@ for i in range(len(ltm)):
     padded_array.shape
     z.append(padded_array)
 ltm = np.array(z)
+ltm = ltm [:820,:]
+mu = np.load('inputs/mu_cp.npy')
+mu = mu[:820,]
+p = np.load('inputs/portal.npy')
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
-y = np.concatenate((y,y[-411:]), axis=0)
-mu = np.load('mu_cp.npy')
+p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
-print('dataset', ltm.shape)
-print('labels', y.shape)
-print('MU_cp', mu.shape)
+y = np.concatenate((y,y[-411:]), axis=0)
 
-X_train1, X_test1, X_train2, X_test2, y_train, y_test = train_test_split(ltm, mu, y, test_size=0.2) #random_state=1
-X_train1 = X_train1.reshape(986, 70, 177, 1)
+#print('dataset', ltm.shape)
+#print('labels', y.shape)
+#print('MU_cp', mu.shape)
+#%%
+X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test = train_test_split(ltm, mu, p, y, test_size=0.2, random_state= 35)
+#print('X_train', X_train1.shape)
+#print('X_test', X_test1.shape)
+X_train1 = X_train1.reshape(984, 70, 177, 1)
 X_test1  = X_test1.reshape(247, 70, 177, 1)
-X_train2 = X_train2.reshape(986, 176, 1)
+scaler= MinMaxScaler()
+X_train2 = scaler.fit_transform(X_train2)
+X_test2 = scaler.fit_transform(X_test2)
+X_train2 = X_train2.reshape(984, 176, 1)
 X_test2  = X_test2.reshape(247, 176, 1)
+X_train3 = X_train3.reshape(984, 512, 512, 1)
+X_test3 = X_test3.reshape(247, 512, 512, 1)
 print('X_train1', X_train1.shape)
 print('X_test1', X_test1.shape)
 print('X_train2', X_train2.shape)
 print('X_test2', X_test2.shape)
-print('y_train2', y_train.shape)
-print('y_test2', y_test.shape)
-
-#%%
-#X_train, X_test, y_train, y_test = train_test_split(ltm, y, test_size=0.2) #random_state=1
-#print('X_train', X_train.shape)
-#print('X_test', X_test.shape)
-#X_train = X_train.reshape(986, 70, 177,1)
-#X_test  = X_test.reshape(247, 70, 177,1)
-#print('X_train', X_train.shape)
-#print('X_test', X_test.shape)
-
-
+print('X_train3', X_train3.shape)
+print('X_test3', X_test3.shape)
+print('y_test', y_test.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 activation = 'sigmoid' 
