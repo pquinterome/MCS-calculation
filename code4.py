@@ -47,7 +47,7 @@ ltm = np.array(z)
 ltm = ltm [:820,:]
 mu = np.load('inputs/mu_cp.npy')
 mu = mu[:820,]
-p = np.load('inputs/portal.npy')
+p = np.load('inputs/portal.npy', allow_pickle=True)
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
