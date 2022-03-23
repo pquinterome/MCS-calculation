@@ -138,8 +138,8 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=100, verbose=0, callbacks=[reduce_lr, early_stop])
-    #r = model.fit(train_generator, validation_data= test_generator, callbacks=[reduce_lr, early_stop], epochs=100, verbose=0)
+    #r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=100, verbose=0, callbacks=[reduce_lr, early_stop])
+    r = model.fit(train_generator, validation_data= test_generator, callbacks=[reduce_lr, early_stop], epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test3)
     predictions = np.round(pred)
