@@ -84,7 +84,7 @@ activation = 'sigmoid'
 i = Input(shape=(512, 512, 1))
 #1 Single layers
 #Model->1
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
@@ -105,70 +105,11 @@ model2 = Model(i, x)
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
 x = Dense(1, activation=activation)(x)
 model3 = Model(i, x)
-#Model->4
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model4 = Model(i, x)
-#Model->5
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model5 = Model(i, x)
-#Model->6
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(360, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model6 = Model(i, x)
-#Model->7
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(90, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model7 = Model(i, x)
-#Model->8
-x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(360, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model8 = Model(i, x)
-#Model->9
-x = Conv2D(filters=128, kernel_size=(3,3), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model9 = Model(i, x)
-
 
 
 # %%
@@ -188,7 +129,7 @@ test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
-models = [model1, model2, model3, model4, model5, model6, model7, model8, model9]
+models = [model1, model2, model3]
 
 print('all ok')
 
