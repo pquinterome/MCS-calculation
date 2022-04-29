@@ -19,7 +19,7 @@ from scipy.stats import shapiro
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 from numpy import interp
-# %%
+#%%
 ltm_T = np.load('inputs/ltm_T.npy')
 ltm_H = np.load('inputs/ltm_H.npy')
 ltm = np.concatenate((ltm_H, ltm_T), axis=0)
@@ -47,18 +47,15 @@ ltm = np.array(z)
 ltm = ltm [:820,:]
 mu = np.load('inputs/mu_cp.npy')
 mu = mu[:820,]
-
 p = np.load('inputs/portal.npy')
-
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
 y = np.concatenate((y,y[-411:]), axis=0)
 
-print('LTM_dataset', ltm.shape)
-print('MUcp_dataset', mu.shape)
-print('Portal_dataset', p.shape)
-print('labels', y.shape)
+#print('dataset', ltm.shape)
+#print('labels', y.shape)
+#print('MU_cp', mu.shape)
 #%%
 X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test = train_test_split(ltm, mu, p, y, test_size=0.2, random_state= 35)
 #print('X_train', X_train1.shape)
@@ -85,11 +82,10 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 i = Input(shape=(70,177,1))
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
-#x = Dense(360, activation='relu')(x)
-#x = Dense(2, activation='softmax')(x)
+x = Dense(90, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
 model1 = Model(i, x)
 #model1.summary()
