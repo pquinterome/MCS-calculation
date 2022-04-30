@@ -106,21 +106,14 @@ model2 = Model(i, x)
 #Model->3
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(3,3))(x)
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(3,3))(x)
+x = Conv2D(filters=64, kernel_size=(3,1), activation='relu', padding='same')(x)
+x = Conv2D(filters=64, kernel_size=(1,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(90, activation='relu')(x)
 x = Dense(1, activation=activation)(x)
 model3 = Model(i, x)
-#Model->4
-x = Conv2D(filters=64, kernel_size=(3,3), activation='elu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=64, kernel_size=(3,3), activation='elu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Flatten()(x)
-x = Dense(90, activation='relu')(x)
-x = Dense(1, activation=activation)(x)
-model4 = Model(i, x)
+
 
 
 # %%
@@ -140,7 +133,7 @@ test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
-models = [model1, model2, model3, model4]
+models = [model1, model2, model3]
 
 print('all ok')
 
