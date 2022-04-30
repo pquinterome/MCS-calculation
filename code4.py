@@ -313,7 +313,7 @@ i = 1
 fig1, ax1 = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
-X = ltm.reshape(1233, 70, 177,1)
+X = ltm.reshape(1231, 70, 177,1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
     data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
