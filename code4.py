@@ -245,7 +245,7 @@ i = 1
 fig, ax = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
-X = mu.reshape(1233, 176,1)
+X = mu.reshape(1231, 176,1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
     
