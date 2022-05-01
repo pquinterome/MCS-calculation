@@ -81,10 +81,11 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 activation = 'sigmoid' 
 #softmax
 #models---->>>
-i = Input(shape=(70,177,1))
+#i = Input(shape=(70,177,1))
+i = Input(shape=(512,512,1))
 #1 Single layers
 #Model->1
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
@@ -92,28 +93,25 @@ x = Flatten()(x)
 x = Dense(90, activation='relu')(x)
 x = Dense(1, activation=activation)(x)
 model1 = Model(i, x)
-model1.summary()
 #Model->2
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=64, kernel_size=(1,3), activation='relu', padding='same')(x)
-x = Conv2D(filters=64, kernel_size=(3,1), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(90, activation='relu')(x)
 x = Dense(1, activation=activation)(x)
 model2 = Model(i, x)
 #Model->3
-x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(3,3))(x)
-x = Conv2D(filters=64, kernel_size=(3,1), activation='relu', padding='same')(x)
-x = Conv2D(filters=64, kernel_size=(1,3), activation='relu', padding='same')(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(90, activation='relu')(x)
 x = Dense(1, activation=activation)(x)
 model3 = Model(i, x)
-
 
 
 # %%
@@ -142,10 +140,10 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=100, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=100, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
-    pred = model.predict(X_test1)
+    pred = model.predict(X_test3)
     predictions = np.round(pred)
     fpr, tpr, thresholds = roc_curve(y_test, pred)
     roc_auc = auc(fpr, tpr)
@@ -193,7 +191,8 @@ i = 1
 fig1, ax1 = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
-X = ltm.reshape(1231, 70, 177,1)
+#X = ltm.reshape(1231, 70, 177,1)
+X = p.reshape(1231, 512, 512, 1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
     data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
