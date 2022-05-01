@@ -217,8 +217,8 @@ for train, test in kfold.split(X, y):
     #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-    #model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=100, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    model1.fit(train_generator, validation_data= test_generator ,epochs=600, batch_size=5, verbose=0, callbacks=[ reduce_lr])
+    model1.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=100, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    #model1.fit(train_generator, validation_data= test_generator ,epochs=600, batch_size=5, verbose=0, callbacks=[ reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 #-  evaluate the model  
