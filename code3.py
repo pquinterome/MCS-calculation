@@ -199,7 +199,7 @@ for train, test in kfold.split(X, y):
     train_generator = data_generator.flow(X[train], y[train], batch_size=5)
     test_generator = data_generator.flow(X[test], y[test], shuffle=False)
     #-  create model
-    i1 = Input(shape=(70,177,1))
+    i1 = Input(shape=(512,512,1))
     #1 Single layers
     # Model->1
     x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
