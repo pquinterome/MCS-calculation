@@ -78,7 +78,7 @@ print('X_test3', X_test3.shape)
 print('y_test', y_test.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
-#activation = 'sigmoid' 
+activation = 'sigmoid' 
 ##softmax
 ##models---->>>
 ##i = Input(shape=(70,177,1))
