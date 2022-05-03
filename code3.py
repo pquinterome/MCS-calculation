@@ -206,7 +206,7 @@ for train, test in kfold.split(X, y):
     x = MaxPool2D(pool_size=(2,2))(x)
     x = Flatten()(x)
     x = Dense(90, activation='relu')(x)
-    x = Dense(1, activation=activation)(x)
+    x = Dense(1, activation='sigmoid')(x)
     model1 = Model(i1, x)
     #model1.summary()
 #- compile model    
