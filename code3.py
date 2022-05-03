@@ -85,11 +85,11 @@ activation = 'sigmoid'
 i = Input(shape=(512,512,1))
 #1 Single layers
 #Model->1
-x = Conv2D(filters=168, kernel_size=(7,7), activation='elu', padding=(3,3))(i)
+x = Conv2D(filters=128, kernel_size=(7,7), activation='relu', padding=(3,3))(i)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = Flatten()(x)
-x = Conv2D(filters=34, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = Flatten()(x)
 x = Dense(1, activation=activation)(x)
 model1 = Model(i, x)
