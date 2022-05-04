@@ -225,6 +225,7 @@ for train, test in kfold.split(X, y):
     #roc_auc5 = metrics.auc(fpr, tpr)
     aucs1.append(roc_auc)
     #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+
     i= i+1
 ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
@@ -241,6 +242,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
+i=0
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -306,6 +314,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_01.png', bbox_inches='tight')
+i=0
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
