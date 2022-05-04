@@ -78,7 +78,7 @@ print('X_test3', X_test3.shape)
 print('y_test', y_test.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
-activation = 'sigmoid' 
+#activation = 'sigmoid' 
 ##softmax
 ##models---->>>
 ##i = Input(shape=(70,177,1))
@@ -116,9 +116,9 @@ activation = 'sigmoid'
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=90)
-train_generator = data_generator.flow(X_train3, y_train,  batch_size=10)
-test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
+#data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=90)
+#train_generator = data_generator.flow(X_train3, y_train,  batch_size=10)
+#test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
 #train_generator = data_generator.flow(X_train, y_train)
@@ -126,8 +126,8 @@ test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 #train_generator = data_generator.flow([X_train1, X_train2], y_train)
 #test_generator = data_generator.flow([X_test1, X_test2], y_test, shuffle=False)
 
-early_stop = EarlyStopping(monitor='val_loss', patience=5)
-reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
+#early_stop = EarlyStopping(monitor='val_loss', patience=5)
+#reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 #models = [model1, model2, model3]
 
@@ -188,18 +188,15 @@ mean_fpr = np.linspace(0, 1, 100)
 i = 1
 fig1, ax1 = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
-#for i, (train, test) in enumerate(cv.split(X_13 , target)):
+# for i, (train, test) in enumerate(cv.split(X_13 , target)):
 X = ltm.reshape(1231, 70, 177,1)
-#X = p.reshape(1231, 512, 512, 1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
     data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
     train_generator = data_generator.flow(X[train], y[train], batch_size=5)
     test_generator = data_generator.flow(X[test], y[test], shuffle=False)
-    #-  create model
+#-  create model
     i1 = Input(shape=(70,177,1))
-    #1 Single layers
-    # Model->1
     x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
     x = MaxPool2D(pool_size=(2,2))(x)
     x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
@@ -209,14 +206,13 @@ for train, test in kfold.split(X, y):
     x = Dense(1, activation='sigmoid')(x)
     model1 = Model(i1, x)
     #model1.summary()
-#- compile model    
+##- compile model    
     roc = tf.keras.metrics.AUC(name='roc')
     #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
-    #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
     model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=100, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    #model1.fit(train_generator, validation_data= test_generator ,epochs=600, batch_size=5, verbose=0, callbacks=[ reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 #-  evaluate the model  
@@ -243,7 +239,10 @@ ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating charac
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
-plt.savefig('output/AUC_model1.png', bbox_inches='tight')
+plt.savefig('output/five_AUC_LTM.png', bbox_inches='tight')
+##############################################
+print('LTM model done')
+##############################################
 ####################
 
 

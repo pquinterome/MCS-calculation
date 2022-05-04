@@ -299,7 +299,7 @@ ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating charact
 ax.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
-plt.savefig('output/five_AUC_MU.png', bbox_inches='tight')
+#plt.savefig('output/five_AUC_MU.png', bbox_inches='tight')
 ##############################################
 print('MU model done')
 ##############################################
