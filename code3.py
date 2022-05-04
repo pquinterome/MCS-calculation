@@ -314,7 +314,7 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_01.png', bbox_inches='tight')
-i=0
+i=0.1
 pred = model1.predict(X_test1)
 predictions = np.round(pred)
 print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
@@ -387,6 +387,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_02.png', bbox_inches='tight')
+i=0.2
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -453,6 +460,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop03.png', bbox_inches='tight')
+i=0.3
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -519,6 +533,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop04.png', bbox_inches='tight')
+i=0.4
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -585,6 +606,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop05.png', bbox_inches='tight')
+i=0.5
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -651,6 +679,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop06.png', bbox_inches='tight')
+i=0.6
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -717,6 +752,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop07.png', bbox_inches='tight')
+i=0.7
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -783,6 +825,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop08.png', bbox_inches='tight')
+i=0.8
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -850,6 +899,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop09.png', bbox_inches='tight')
+i=0.9
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
@@ -916,6 +972,13 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop10.png', bbox_inches='tight')
+i=0.99
+pred = model1.predict(X_test1)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
 ##############################################
 print('LTM model done')
 ##############################################
