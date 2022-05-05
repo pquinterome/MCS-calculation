@@ -325,6 +325,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -398,6 +402,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -471,6 +479,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -544,6 +556,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -617,6 +633,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -690,6 +710,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -763,6 +787,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -836,6 +864,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -910,6 +942,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
@@ -983,6 +1019,10 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 ##############################################
 print('LTM model done')
 ##############################################
