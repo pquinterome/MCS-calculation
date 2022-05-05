@@ -90,7 +90,7 @@ x1 = Dense(1, activation='sigmoid')(x)
 x2 = Dense(1, activation='linear')(x)
 model1 = Model(i, x1)
 model2 = Model(i, x2)
-model1 = Model(i, x)
+
 #model1.summary()
 data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
 train_generator = data_generator.flow(X_train1, y_train, batch_size=10)
