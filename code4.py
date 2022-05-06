@@ -112,8 +112,8 @@ roc = tf.keras.metrics.AUC(name='roc')
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
-model1.fit(x= X_train1, y =y_train, validation_data= (X_test1, y_test), callbacks=[reduce_lr], epochs=200, verbose=0)
-model2.fit(x= X_train1, y =y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr] ,epochs=200, verbose=0)
+model1.fit(x= X_train1, y =y_train, validation_data= (X_test1, y_test), callbacks=[ early_stop, reduce_lr], epochs=400, verbose=0)
+model2.fit(x= X_train1, y =y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
 
 metrics = pd.DataFrame(model1.history.history)
 fig = plt.figure(1)
