@@ -79,6 +79,7 @@ print('X_test2', X_test2.shape)
 print('X_train3', X_train3.shape)
 print('X_test3', X_test3.shape)
 print('y_test', y_test.shape)
+print('y_test2', y_test.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #'X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X'
