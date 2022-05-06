@@ -161,6 +161,7 @@ plt.savefig('output/Performance_regression.png', bbox_inches='tight')
 
 pred2 = model2.predict(X_test1)
 mae = mean_absolute_error(y_test2, pred2)
+rmse = mean_squared_error(y_test2, pred2)
 print('MAE', mae)
 
 fig = plt.figure(4)
