@@ -165,6 +165,9 @@ rmse = mean_squared_error(y_test2, pred2)
 print('MAE', mae)
 print('RMSE', rmse)
 
+print('y_test2>>>','', y_test2)
+print('pred2>>>','', pred2)
+
 fig = plt.figure(4)
 plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7)
 plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
