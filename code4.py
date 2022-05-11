@@ -166,8 +166,8 @@ rmse = mean_squared_error(y_test2, pred2)
 print('MAE', mae)
 print('RMSE', rmse)
 
-print('y_test2>>>','', np.array(y_test2))
-print('pred2>>>','', np.array(pred2.ravel()))
+#print('y_test2>>>','', np.array(y_test2))
+#print('pred2>>>','', np.array(pred2.ravel()))
 
 fig = plt.figure(4)
 plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7)
