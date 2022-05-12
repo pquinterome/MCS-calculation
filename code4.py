@@ -98,7 +98,7 @@ x = Dropout(rate=0.1)(x)
 x = Flatten()(x)
 x = BatchNormalization()(x)
 x = Dense(90, activation='relu')(x)
-
+x = Dense(30, activation='relu')(x)
 x1 = Dense(1, activation='sigmoid')(x)
 x2 = Dense(1, activation='linear')(x)
 model1 = Model(i, x1)
