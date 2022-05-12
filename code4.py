@@ -91,6 +91,7 @@ x = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
 x = Dense(180, activation='relu')(x)
+x = Dense(90, activation='relu')(x)
 x1 = Dense(1, activation='sigmoid')(x)
 x2 = Dense(1, activation='linear')(x)
 model1 = Model(i, x1)
@@ -114,7 +115,7 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
 model1.fit(x= X_train3, y =y_train, validation_data= (X_test3, y_test), callbacks=[early_stop, reduce_lr], epochs=100, verbose=0)
-model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=100, verbose=0)
+model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[early_stop, reduce_lr] ,epochs=100, verbose=0)
 
 print('all ok (:')
 
