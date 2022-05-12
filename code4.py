@@ -11,7 +11,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_sc
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Input, Dense, Conv1D, Conv2D, MaxPool2D, MaxPool1D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
+from tensorflow.keras.layers import Input, Dense, Conv1D, BatchNormalization ,Conv2D, MaxPool2D, MaxPool1D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.utils import to_categorical
@@ -90,6 +90,7 @@ x = MaxPool2D(pool_size=(2,2))(x)
 x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = Flatten()(x)
+x = BatchNormalization()(x)
 x = Dense(180, activation='relu')(x)
 x1 = Dense(1, activation='sigmoid')(x)
 x2 = Dense(1, activation='linear')(x)
