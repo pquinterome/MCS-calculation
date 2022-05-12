@@ -113,8 +113,8 @@ roc = tf.keras.metrics.AUC(name='roc')
 #reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
 early_stop = EarlyStopping(monitor='val_loss', patience=3)
 
-model1.compile(loss="binary_crossentropy", optimizer= 'sgd', metrics=['accuracy', roc])
-model2.compile(loss='mean_squared_error', optimizer='sgd', metrics=['mean_absolute_error'])
+model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
+model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
 
 roc = tf.keras.metrics.AUC(name='roc')
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
