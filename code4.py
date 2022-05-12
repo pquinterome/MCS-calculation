@@ -11,7 +11,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_sc
 from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Input, Dense, Conv1D, Conv2D, MaxPool2D, MaxPool1D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
+from tensorflow.keras.layers import Input, Dense, BatchNormalization ,Conv1D, Conv2D, MaxPool2D, MaxPool1D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.utils import to_categorical
@@ -84,13 +84,21 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #'X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X'
 #i = Input(shape=(70,177,1))
-i = Input(shape=(512, 512, 1))
-x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
+#i = Input(shape=(512, 512, 1))
+i = Input(shape=(176, 1))
+#x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(i)
+#x = MaxPool2D(pool_size=(2,2))(x)
+#x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
+#x = MaxPool2D(pool_size=(2,2))(x)
+#x = Flatten()(x)
+#x = Dense(180, activation='relu')(x)
+x = Conv1D(filters=40, kernel_size=(5), activation='relu', padding='same')(i)
+x = MaxPool1D(pool_size=(3))(x)
+x = Dropout(rate=0.1)(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
+x = BatchNormalization()(x)
+x = Dense(90, activation='relu')(x)
+
 x1 = Dense(1, activation='sigmoid')(x)
 x2 = Dense(1, activation='linear')(x)
 model1 = Model(i, x1)
@@ -113,8 +121,8 @@ roc = tf.keras.metrics.AUC(name='roc')
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 
-model1.fit(x= X_train3, y =y_train, validation_data= (X_test3, y_test), callbacks=[early_stop, reduce_lr], epochs=100, verbose=0)
-model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
+model1.fit(x= X_train2, y =y_train, validation_data= (X_test2, y_test), callbacks=[early_stop, reduce_lr], epochs=100, verbose=0)
+model2.fit(x= X_train2, y =y_train2, validation_data= (X_test2, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
 
 print('all ok (:')
 
@@ -133,7 +141,7 @@ plt.subplot(2,3,3)
 plt.title('roc_auc')
 plt.plot(metrics[['roc', 'val_roc']], label=['auc', 'val_auc'])
 plt.savefig('output/Performance_classification.png', bbox_inches='tight')
-pred = model1.predict(X_test3)
+pred = model1.predict(X_test2)
 predictions = np.round(pred)
 print('LTM_Model Classification Report')
 print(classification_report(y_test, predictions))
@@ -162,7 +170,7 @@ plt.plot(metrics2[['mean_absolute_error', 'val_mean_absolute_error']], label=['m
 plt.legend()
 plt.savefig('output/Performance_regression.png', bbox_inches='tight')
 
-pred2 = model2.predict(X_test3)
+pred2 = model2.predict(X_test2)
 mae = mean_absolute_error(y_test2, pred2)
 rmse = mean_squared_error(y_test2, pred2)
 print('MAE', mae)
