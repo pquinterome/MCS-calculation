@@ -25,6 +25,8 @@ ltm_H = np.load('inputs/ltm_H.npy')
 ltm = np.concatenate((ltm_H, ltm_T), axis=0)
 y = np.load('inputs/y.npy')
 y = y[:820,]
+y2 = np.load('inputs/y.npy')
+y2 = y2[:820,]
 y = np.array([0 if x >= 0.98 else 1 for x in y])
 a=[]
 for i in range(len(ltm)):
@@ -52,12 +54,13 @@ ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
 y = np.concatenate((y,y[-411:]), axis=0)
+y2 = np.concatenate((y2,y2[-411:]), axis=0)
 
 #print('dataset', ltm.shape)
 #print('labels', y.shape)
 #print('MU_cp', mu.shape)
 #%%
-X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test = train_test_split(ltm, mu, p, y, test_size=0.2, random_state= 35)
+X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2, random_state= 35)
 #print('X_train', X_train1.shape)
 #print('X_test', X_test1.shape)
 X_train1 = X_train1.reshape(984, 70, 177, 1)
@@ -76,6 +79,7 @@ print('X_test2', X_test2.shape)
 print('X_train3', X_train3.shape)
 print('X_test3', X_test3.shape)
 print('y_test', y_test.shape)
+print('y_test2', y_test.shape)
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #%%
 #activation = 'sigmoid' 
@@ -205,7 +209,10 @@ for train, test in kfold.split(X, y):
     x = BatchNormalization()(x)
     x = Dense(90, activation='relu')(x)
     x = Dense(1, activation='sigmoid')(x)
+    x2 = Dense(1, activation='linear')(x)
     model1 = Model(i1, x)
+    model2 = Model(i1, x2)
+    
     #model1.summary()
 ##- compile model    
     roc = tf.keras.metrics.AUC(name='roc')
@@ -258,7 +265,30 @@ print(f'Specificity1{i}',   specificity)
 print('LTM model done')
 ##############################################
 
+model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+model2.fit(x= X_train2, y =y_train2, validation_data= (X_test2, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
+pred2 = model2.predict(X_test2)
+mae = mean_absolute_error(y_test2, pred2)
+rmse = mean_squared_error(y_test2, pred2)
+print('MAE', mae)
+print('RMSE', rmse)
 
+#print('y_test2>>>','', np.array(y_test2))
+#print('pred2>>>','', np.array(pred2.ravel()))
+
+fig = plt.figure(4)
+plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7)
+plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
+plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
+plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
+plt.xlim(0.85, 1.01)
+plt.ylim(0.85, 1.01)
+plt.ylabel('predicted')
+plt.xlabel('Measured')
+plt.title('Leaf Trajectory Map - MUcp')
+plt.legend()
+plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 
 #min_x = min([len(loss[i]) for i in range(len(loss))])
 #rloss = [np.array([loss[j][i] for j in range(len(loss))]).mean() for i in range(min_x)]
