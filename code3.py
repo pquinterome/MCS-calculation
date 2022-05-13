@@ -202,9 +202,9 @@ for train, test in kfold.split(X, y):
     #test_generator = data_generator.flow(X[test], y[test], shuffle=False)
 #-  create model
     i1 = Input(shape=(176,1))
-    x = Conv1D(filters=40, kernel_size=(5), activation='relu', padding='same')(i1)
+    x = Conv1D(filters=90, kernel_size=(5), activation='relu', padding='same')(i1)
     x = MaxPool1D(pool_size=(3))(x)
-    x = Dropout(rate=0.1)(x)
+    #x = Dropout(rate=0.1)(x)
     x = Flatten()(x)
     x = BatchNormalization()(x)
     x = Dense(90, activation='relu')(x)
