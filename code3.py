@@ -193,9 +193,9 @@ kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 X = mu.reshape(1231, 176,1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
-    data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
-    train_generator = data_generator.flow(X[train], y[train], batch_size=5)
-    test_generator = data_generator.flow(X[test], y[test], shuffle=False)
+    #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
+    #train_generator = data_generator.flow(X[train], y[train], batch_size=5)
+    #test_generator = data_generator.flow(X[test], y[test], shuffle=False)
 #-  create model
     i1 = Input(shape=(176,1))
     x = Conv1D(filters=40, kernel_size=(5), activation='relu', padding='same')(i1)
