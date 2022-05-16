@@ -8,7 +8,7 @@ import tensorflow as tf
 from numpy import asarray, interp, asarray
 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score, classification_report
-from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve
+from sklearn.metrics import plot_roc_curve, auc, precision_score, recall_score, f1_score, roc_curve, confusion_matrix
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Input, Dense, BatchNormalization ,Conv1D, Conv2D, MaxPool2D, MaxPool1D, Flatten, Dropout, GlobalMaxPooling2D, concatenate, SimpleRNN
