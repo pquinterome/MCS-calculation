@@ -265,6 +265,16 @@ print(f'Specificity1{i}',   specificity)
 print('LTM model done')
 ##############################################
 
+i1 = Input(shape=(176,1))
+x = Conv1D(filters=90, kernel_size=(5), activation='relu', padding='same')(i1)
+x = MaxPool1D(pool_size=(3))(x)
+#x = Dropout(rate=0.1)(x)
+x = Flatten()(x)
+x = BatchNormalization()(x)
+x = Dense(90, activation='relu')(x)
+x2 = Dense(1, activation='linear')(x)
+model2 = Model(i1, x2)
+
 early_stop = EarlyStopping(monitor='val_loss', patience=10)
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
 model2.fit(x= X_train2, y =y_train2, validation_data= (X_test2, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
