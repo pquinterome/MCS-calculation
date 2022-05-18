@@ -130,8 +130,8 @@ model3 = Model(i, x)
 #train_generator = data_generator.flow([X_train1, X_train2], y_train)
 #test_generator = data_generator.flow([X_test1, X_test2], y_test, shuffle=False)
 
-#early_stop = EarlyStopping(monitor='val_loss', patience=5)
-#reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
+early_stop = EarlyStopping(monitor='val_loss', patience=5)
+reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 models = [model1, model2, model3]
 
@@ -142,7 +142,7 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=100, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test3)
