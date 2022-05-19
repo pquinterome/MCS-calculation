@@ -286,7 +286,7 @@ print(f'recall{i}_0.07',     recall_score(y_test, predictions))
 print(f'f1{i}_0.07',         f1_score(y_test, predictions))
 tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
 specificity = tn / (tn+fp)
-
+print(f'Specificity1{i}_0.07',   specificity)
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
 model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
