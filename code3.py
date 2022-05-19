@@ -290,7 +290,7 @@ plt.xlim(0.85, 1.01)
 plt.ylim(0.85, 1.01)
 plt.ylabel('predicted')
 plt.xlabel('Measured')
-plt.title('Leaf Trajectory Map - MUcp')
+plt.title('Dose blended images for Portal Dosimetry - DBIP')
 plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 
