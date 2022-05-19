@@ -269,11 +269,27 @@ specificity = tn / (tn+fp)
 specificity
 print(f'Specificity1{i}',   specificity)
 
+
+
+
+
 ##############################################
 print('LTM model done')
 ##############################################
+model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
+model1.fit(x=X_train2, y= y_train, validation_data=(X_test2, y_test) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+pred = model1.predict(X_test2)
+predictions = np.round(pred)
+print(f'Accuracy{i}_0.07',   accuracy_score(y_test, predictions))
+print(f'precision{i}_0.07',  precision_score(y_test, predictions))
+print(f'recall{i}_0.07',     recall_score(y_test, predictions))
+print(f'f1{i}_0.07',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+
+
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=100, verbose=0)
+model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
 pred2 = model2.predict(X_test3)
 mae = mean_absolute_error(y_test2, pred2)
 rmse = mean_squared_error(y_test2, pred2)
