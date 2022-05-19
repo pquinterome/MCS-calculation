@@ -196,7 +196,7 @@ fig1, ax1 = plt.subplots()
 kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 # for i, (train, test) in enumerate(cv.split(X_13 , target)):
 #X = ltm.reshape(1231, 70, 177,1)
-X = mu.reshape(1231, 176,1)
+#X = mu.reshape(1231, 176,1)
 X = p.reshape(512,512,1)
 for train, test in kfold.split(X, y):
     #!rm -rf ./logs/
@@ -236,7 +236,7 @@ for train, test in kfold.split(X, y):
     aucs1.append(roc_auc)
     #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
     
-   i= i+1
+    i= i+1
 
 ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
