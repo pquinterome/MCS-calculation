@@ -144,7 +144,7 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #categorical_crossentropy
     #binary_crossentropy
-    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[reduce_lr])
     #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test3)
@@ -199,7 +199,7 @@ for model in models:
 #X = mu.reshape(1231, 176,1)
 #for train, test in kfold.split(X, y):
 #    #!rm -rf ./logs/
-#    #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
+#    #data_generator = ImageD co    ataGenerator(horizontal_flip=True, vertical_flip=True)
 #    #train_generator = data_generator.flow(X[train], y[train], batch_size=5)
 #    #test_generator = data_generator.flow(X[test], y[test], shuffle=False)
 ##-  create model
