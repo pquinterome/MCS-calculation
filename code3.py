@@ -343,6 +343,9 @@ plt.ylim(-0.1, 2)
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.savefig(f'output/loss_regression{i}.png', bbox_inches='tight')
 
+print('y_test2>>>','', np.array(y_test2))
+print('pred2>>>','', np.array(pred2.ravel()))
+
 #i1 = Input(shape=(176,1))
 #x = Conv1D(filters=90, kernel_size=(5), activation='relu', padding='same')(i1)
 #x = MaxPool1D(pool_size=(3))(x)
