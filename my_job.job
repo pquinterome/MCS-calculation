@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J prostate_calc 
-#SBATCH -n 1
+#SBATCH -n 10
 #SBATCH -o %j.out 
 #SBATCH -e %j.err 
 #SBATCH -p gpu05,gpu
