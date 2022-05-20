@@ -277,6 +277,25 @@ i=1
 ##############################################
 print('LTM model done')
 ##############################################
+
+i = Input(shape=(512,512,1))
+##1 Single layers
+##Model->1
+x = Conv2D(filters=64, kernel_size=(7,7), activation='relu', padding='same')(i)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = BatchNormalization()(x)
+x = Flatten()(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(90, activation='relu')(x)
+x1 = Dense(1, activation=activation)(x)
+x2 = Dense(1, activation='linear')(x)
+model1 = Model(i, x1)
+model2 = Model(i, x2)
+
 roc = tf.keras.metrics.AUC(name='roc')
 model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
 model1.fit(x=X_train3, y= y_train, validation_data=(X_test3, y_test) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
@@ -293,7 +312,7 @@ print(f'Specificity1{i}_0.07',   specificity)
 metrics = pd.DataFrame(model1.history.history)
 plt.figure(i*i)
 plt.title('Loss')
-plt.plot(metrics[['binary_crossentropy', 'val_binary_crossentropy']], label=[f'loss{i}', f'val_loss{i}'])
+plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
 plt.ylim(-0.1, 2)
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.savefig(f'output/loss_classification{i}.png', bbox_inches='tight')
@@ -315,23 +334,7 @@ plt.savefig(f'output/acc{i}.png', bbox_inches='tight')##
 #    plt.savefig('output/auc.png', bbox_inches='tight')
 
 
-i = Input(shape=(512,512,1))
-##1 Single layers
-##Model->1
-x = Conv2D(filters=64, kernel_size=(7,7), activation='relu', padding='same')(i)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
-x = MaxPool2D(pool_size=(2,2))(x)
-x = BatchNormalization()(x)
-x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-x = Dense(90, activation='relu')(x)
-x1 = Dense(1, activation=activation)(x)
-x2 = Dense(1, activation='linear')(x)
-model1 = Model(i, x1)
-model2 = Model(i, x2)
+
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
 model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
