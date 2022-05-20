@@ -272,7 +272,7 @@ print(f'Specificity1{i}',   specificity)
 
 
 
-i=1
+
 
 ##############################################
 print('LTM model done')
@@ -309,6 +309,7 @@ tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
 specificity = tn / (tn+fp)
 print(f'Specificity1{i}_0.07',   specificity)
 
+i=1
 metrics = pd.DataFrame(model1.history.history)
 plt.figure(i*i)
 plt.title('Loss')
