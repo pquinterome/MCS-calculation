@@ -190,85 +190,85 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_l
     
 #    i = i+1#########################
 #########################
-#seed =18
-#np.random.seed(seed)
-#tprs1 = []
-#aucs1 = []
-#fprs1 = []
-#mean_fpr = np.linspace(0, 1, 100)
-#i = 1
-#fig1, ax1 = plt.subplots()
-#kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
-## for i, (train, test) in enumerate(cv.split(X_13 , target)):
-##X = ltm.reshape(1231, 70, 177,1)
-##X = mu.reshape(1231, 176,1)
-#X = p.reshape(1231, 512, 512, 1)
-#for train, test in kfold.split(X, y):
-#    #!rm -rf ./logs/
-#    #data_generator = ImageD co    ataGenerator(horizontal_flip=True, vertical_flip=True)
-#    #train_generator = data_generator.flow(X[train], y[train], batch_size=5)
-#    #test_generator = data_generator.flow(X[test], y[test], shuffle=False)
-##-  create model
-#    #i1 = Input(shape=(176,1))
-#    #x = Conv1D(filters=90, kernel_size=(5), activation='relu', padding='same')(i1)
-#    #x = MaxPool1D(pool_size=(3))(x)
-#    ##x = Dropout(rate=0.1)(x)
-#    #x = Flatten()(x)
-#    #x = BatchNormalization()(x)
-#    #x = Dense(90, activation='relu')(x)
-#    #x = Dense(1, activation='sigmoid')(x)
-#    #x2 = Dense(1, activation='linear')(x)
-#    #model1 = Model(i1, x)
-#    #model2 = Model(i1, x2)
-#    
-#    #model1.summary()
-###- compile model    
-#    roc = tf.keras.metrics.AUC(name='roc')
-#    #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
-#    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
-#    early_stop = EarlyStopping(monitor='val_loss', patience=5)
-#    model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-#    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
-#    #metrics = pd.DataFrame(model.history.history)
-#    #metrics.plot()  
-##-  evaluate the model  
-#    y_pred_keras = model1.predict(X[test]).ravel() 
-#    fpr, tpr, thresholds = roc_curve(y[test], y_pred_keras)
-#    #fprs1.append(fpr)
-#    tprs1.append(interp(mean_fpr, fpr, tpr))
-#    roc_auc = auc(fpr, tpr)
-#    #roc_auc5 = metrics.auc(fpr, tpr)
-#    aucs1.append(roc_auc)
-#    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
-#    
-#    i= i+1
+seed =18
+np.random.seed(seed)
+tprs1 = []
+aucs1 = []
+fprs1 = []
+mean_fpr = np.linspace(0, 1, 100)
+i = 1
+fig1, ax1 = plt.subplots()
+kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
+# for i, (train, test) in enumerate(cv.split(X_13 , target)):
+#X = ltm.reshape(1231, 70, 177,1)
+#X = mu.reshape(1231, 176,1)
+X = p.reshape(1231, 512, 512, 1)
+for train, test in kfold.split(X, y):
+    #!rm -rf ./logs/
+    #data_generator = ImageD co    ataGenerator(horizontal_flip=True, vertical_flip=True)
+    #train_generator = data_generator.flow(X[train], y[train], batch_size=5)
+    #test_generator = data_generator.flow(X[test], y[test], shuffle=False)
+#-  create model
+    #i1 = Input(shape=(176,1))
+    #x = Conv1D(filters=90, kernel_size=(5), activation='relu', padding='same')(i1)
+    #x = MaxPool1D(pool_size=(3))(x)
+    ##x = Dropout(rate=0.1)(x)
+    #x = Flatten()(x)
+    #x = BatchNormalization()(x)
+    #x = Dense(90, activation='relu')(x)
+    #x = Dense(1, activation='sigmoid')(x)
+    #x2 = Dense(1, activation='linear')(x)
+    #model1 = Model(i1, x)
+    #model2 = Model(i1, x2)
+    
+    #model1.summary()
+##- compile model    
+    roc = tf.keras.metrics.AUC(name='roc')
+    #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
+    early_stop = EarlyStopping(monitor='val_loss', patience=5)
+    model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
+    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+    #metrics = pd.DataFrame(model.history.history)
+    #metrics.plot()  
+#-  evaluate the model  
+    y_pred_keras = model1.predict(X[test]).ravel() 
+    fpr, tpr, thresholds = roc_curve(y[test], y_pred_keras)
+    #fprs1.append(fpr)
+    tprs1.append(interp(mean_fpr, fpr, tpr))
+    roc_auc = auc(fpr, tpr)
+    #roc_auc5 = metrics.auc(fpr, tpr)
+    aucs1.append(roc_auc)
+    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+    
+    i= i+1
 
-#ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-#mean_tpr = np.mean(tprs1, axis=0)
-#mean_tpr[-1] = 1.0
-#mean_auc = np.mean(aucs1)
-#std_auc = np.std(aucs1)
-#ax1.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
-#std_tpr = np.std(tprs1, axis=0)
-#tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
-#tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
-#ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
-#ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic LTM")
-#ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
-##plt.ylabel('True Positive Rate')
-#plt.xlabel('False Positive Rate')
-#plt.savefig('output/drop_00.png', bbox_inches='tight')
-#i=0
-#pred = model1.predict(X_test3)
-#predictions = np.round(pred)
-#print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
-#print(f'precision{i}',  precision_score(y_test, predictions))
-#print(f'recall{i}',     recall_score(y_test, predictions))
-#print(f'f1{i}',         f1_score(y_test, predictions))
-#tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
-#specificity = tn / (tn+fp)
-#specificity
-#print(f'Specificity1{i}',   specificity)
+ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+mean_tpr = np.mean(tprs1, axis=0)
+mean_tpr[-1] = 1.0
+mean_auc = np.mean(aucs1)
+std_auc = np.std(aucs1)
+ax1.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+std_tpr = np.std(tprs1, axis=0)
+tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
+ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic LTM")
+ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+#plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+plt.savefig('output/drop_00.png', bbox_inches='tight')
+i=0
+pred = model1.predict(X_test3)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity1{i}',   specificity)
 
 
 
@@ -314,6 +314,25 @@ plt.savefig(f'output/acc{i}.png', bbox_inches='tight')##
 #    #plt.ylim(-0.05, 1.05)
 #    plt.savefig('output/auc.png', bbox_inches='tight')
 
+
+i = Input(shape=(512,512,1))
+##1 Single layers
+##Model->1
+x = Conv2D(filters=64, kernel_size=(7,7), activation='relu', padding='same')(i)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
+x = MaxPool2D(pool_size=(2,2))(x)
+x = BatchNormalization()(x)
+x = Flatten()(x)
+x = Dense(180, activation='relu')(x)
+x = Dense(90, activation='relu')(x)
+x1 = Dense(1, activation=activation)(x)
+x2 = Dense(1, activation='linear')(x)
+model1 = Model(i, x1)
+model2 = Model(i, x2)
+
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
 model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
 pred2 = model2.predict(X_test3)
@@ -337,7 +356,7 @@ plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 
 metrics2 = pd.DataFrame(model2.history.history)
-plt.figure(i*i)
+plt.figure(6)
 plt.title('Loss')
 plt.plot(metrics2[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
 plt.ylim(-0.1, 2)
