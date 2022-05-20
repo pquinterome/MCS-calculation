@@ -313,19 +313,19 @@ tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
 specificity = tn / (tn+fp)
 print(f'Specificity1{i}_0.07',   specificity)
 
-plt.figure(i*i)
-plt.title('Loss')
-plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
-plt.ylim(-0.1, 2)
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.savefig(f'output/loss_classification{i}.png', bbox_inches='tight')
+#plt.figure(i*i)
+#plt.title('Loss')
+#plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+##plt.ylim(-0.1, 2)
+#plt.savefig(f'output/loss_classification{i}.png', bbox_inches='tight')
 
-plt.figure(i*i+1)
-plt.title('Accuracy')
-plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
-plt.ylim(0.4, 1.1)
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.savefig(f'output/acc{i}.png', bbox_inches='tight')##
+#plt.figure(i*i+1)
+#plt.title('Accuracy')
+#plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
+#plt.ylim(0.4, 1.1)
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.savefig(f'output/acc{i}.png', bbox_inches='tight')##
 #
 #    plt.figure(15)
 #    plt.title("Receiver operating characteristic example")
@@ -335,8 +335,6 @@ plt.savefig(f'output/acc{i}.png', bbox_inches='tight')##
 #    #plt.xlim(-0.05, 1.05)
 #    #plt.ylim(-0.05, 1.05)
 #    plt.savefig('output/auc.png', bbox_inches='tight')
-
-
 
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
