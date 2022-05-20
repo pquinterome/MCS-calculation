@@ -272,7 +272,7 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_l
 
 
 
-
+i=1
 
 ##############################################
 print('LTM model done')
