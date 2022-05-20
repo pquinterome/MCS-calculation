@@ -300,7 +300,11 @@ roc = tf.keras.metrics.AUC(name='roc')
 model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
 model1.fit(x=X_train3, y= y_train, validation_data=(X_test3, y_test) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
 pred = model1.predict(X_test3)
+
+i=1
 predictions = np.round(pred)
+metrics = pd.DataFrame(model1.history.history)
+
 print(f'Accuracy{i}_0.07',   accuracy_score(y_test, predictions))
 print(f'precision{i}_0.07',  precision_score(y_test, predictions))
 print(f'recall{i}_0.07',     recall_score(y_test, predictions))
@@ -309,8 +313,6 @@ tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
 specificity = tn / (tn+fp)
 print(f'Specificity1{i}_0.07',   specificity)
 
-i=1
-metrics = pd.DataFrame(model1.history.history)
 plt.figure(i*i)
 plt.title('Loss')
 plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
@@ -360,7 +362,7 @@ plt.xlabel('Measured')
 plt.title('Dose blended images for Portal Dosimetry - DBIP')
 plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
-
+i=1
 metrics2 = pd.DataFrame(model2.history.history)
 plt.figure(6)
 plt.title('Loss')
