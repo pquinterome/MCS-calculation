@@ -219,10 +219,9 @@ plt.xlabel('Measured')
 plt.title('Dose blended images for Portal Dosimetry - DBIP')
 plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
-i=1
 
 metrics2 = pd.DataFrame(model2.history.history)
-print(metrics2.columns)
+print('metrics_model2', metrics2.columns)
 
 #plt.figure(6)
 #plt.title('Loss')
