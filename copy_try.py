@@ -207,6 +207,7 @@ plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 i=1
 metrics2 = pd.DataFrame(model2.history.history)
+print(metrics2.columns)
 plt.figure(6)
 plt.title('Loss')
 #plt.plot(metrics2[['mean_squared_error', 'val_mean_squared_error']], label=[f'loss{i}', f'val_loss{i}'])
