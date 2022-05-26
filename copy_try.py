@@ -183,7 +183,7 @@ print('LTM model done')
 
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[early_stop, reduce_lr], epochs=200, verbose=0)
 pred2 = model2.predict(X_test3)
 mae = mean_absolute_error(y_test2, pred2)
 rmse = mean_squared_error(y_test2, pred2)
