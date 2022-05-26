@@ -208,14 +208,15 @@ plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 i=1
 metrics2 = pd.DataFrame(model2.history.history)
 print(metrics2.columns)
-plt.figure(6)
-plt.title('Loss')
+
+#plt.figure(6)
+#plt.title('Loss')
 #plt.plot(metrics2[['mean_squared_error', 'val_mean_squared_error']], label=[f'loss{i}', f'val_loss{i}'])
-plt.plot(metrics2.iloc[:,0], label='loss', color='b')
-plt.plot(metrics2.iloc[:,1], label='loss', color='orange')
-plt.ylim(-0.1, 2)
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.savefig(f'output/loss_regression{i}.png', bbox_inches='tight')
+#plt.plot(metrics2.iloc[:,0], label='loss', color='b')
+#plt.plot(metrics2.iloc[:,1], label='loss', color='orange')
+#plt.ylim(-0.1, 2)
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.savefig(f'output/loss_regression{i}.png', bbox_inches='tight')
 
 
 
