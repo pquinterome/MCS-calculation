@@ -176,7 +176,21 @@ specificity = tn / (tn+fp)
 specificity
 print(f'Specificity1{i}',   specificity)
 
-
+metrics = pd.DataFrame(model1.history.history)
+fig = plt.figure(1)
+fig.set_size_inches(13, 5)
+plt.subplot(2,3,1)
+plt.title('Loss')
+plt.plot(metrics[['loss', 'val_loss']], label=['loss', f'val_loss'])
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.subplot(2,3,2)
+plt.title('Accuracy')
+plt.plot(metrics[['accuracy', 'val_accuracy']], label=['acc', 'val_acc'])
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.subplot(2,3,3)
+plt.title('roc_auc')
+plt.plot(metrics[['roc', 'val_roc']], label=['auc', 'val_auc'])
+plt.savefig('output/Performance_classification.png', bbox_inches='tight')
 ##############################################
 print('LTM model done')
 ##############################################
@@ -206,6 +220,7 @@ plt.title('Dose blended images for Portal Dosimetry - DBIP')
 plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 i=1
+
 metrics2 = pd.DataFrame(model2.history.history)
 print(metrics2.columns)
 
