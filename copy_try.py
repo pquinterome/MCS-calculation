@@ -134,7 +134,7 @@ for train, test in kfold.split(X, y):
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+    history1 = model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 #-  evaluate the model  
@@ -176,7 +176,7 @@ specificity = tn / (tn+fp)
 specificity
 print(f'Specificity{i}',   specificity)
 
-metrics = pd.DataFrame(model1.history.history)
+metrics = pd.DataFrame(history1.history)
 print('metrics_model1', np.array(metrics.columns))
 
 ##############################################
@@ -185,7 +185,7 @@ print('LTM model done')
 
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[early_stop, reduce_lr], epochs=200, verbose=0)
+history2 = model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[early_stop, reduce_lr], epochs=200, verbose=0)
 pred2 = model2.predict(X_test3)
 mae = mean_absolute_error(y_test2, pred2)
 rmse = mean_squared_error(y_test2, pred2)
@@ -208,7 +208,7 @@ plt.title('Dose blended images for Portal Dosimetry - DBIP')
 plt.legend()
 plt.savefig('output/Plot_egression.png', bbox_inches='tight')
 
-metrics2 = pd.DataFrame(model2.history.history)
+metrics2 = pd.DataFrame(history2.history)
 print('metrics_model2', np.array(metrics2.columns))
 
 #plt.figure(6)
