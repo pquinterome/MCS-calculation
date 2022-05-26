@@ -19,4 +19,4 @@ echo ">>> Installing Requirements";
 conda run -n custom_env pip install -r requirements.txt
 echo ">>> Running Code";
 
-/usr/bin/env time -v conda run -n custom_env python code3.py
+/usr/bin/env time -v conda run -n custom_env python copy.py
