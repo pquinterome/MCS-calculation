@@ -134,7 +134,7 @@ for train, test in kfold.split(X, y):
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-    history1 = model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 #-  evaluate the model  
@@ -164,6 +164,19 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 #plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
+
+
+
+
+##############################################
+print('LTM model done')
+##############################################
+
+
+
+model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
+history1 = model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+metrics = pd.DataFrame(history1.history)
 i=0
 pred = model1.predict(X_test3)
 predictions = np.round(pred)
@@ -175,8 +188,6 @@ tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
 specificity = tn / (tn+fp)
 specificity
 print(f'Specificity{i}',   specificity)
-
-metrics = pd.DataFrame(history1.history)
 print('metrics_model1', np.array(metrics.columns))
 fig = plt.figure(5)
 fig.set_size_inches(13, 5)
@@ -193,11 +204,9 @@ plt.title('roc_auc')
 plt.plot(metrics[['roc', 'val_roc']], label=['auc', 'val_auc'])
 plt.savefig('output/Performance_classification.png', bbox_inches='tight')
 
-
 ##############################################
 print('LTM model done')
 ##############################################
-
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
 history2 = model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[early_stop, reduce_lr], epochs=200, verbose=0)
