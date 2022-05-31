@@ -131,7 +131,7 @@ model3 = Model(i, x)
 #train_generator = data_generator.flow([X_train1, X_train2], y_train)
 #test_generator = data_generator.flow([X_test1, X_test2], y_test, shuffle=False)
 
-early_stop = EarlyStopping(monitor='val_loss', patience=5)
+early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 models = [model1, model2, model3]
