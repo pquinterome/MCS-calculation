@@ -136,7 +136,7 @@ model3 = Model(i, x)
 early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
-models = [model1, model2, model3]
+models = [model3, model3, model3]
 
 print('all ok')
 
