@@ -99,7 +99,7 @@ x = Dense(128, activation='relu')(x)
 x = Dense(1, activation=activation)(x)
 model1 = Model(i, x)
 ##Model->2
-x = Conv2D(filters=32, kernel_size=(5,5), activation='relu', padding='same')(i)
+x = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(i)
 x = MaxPool2D(pool_size=(3,3))(x)
 x = Dropout(0.2)(x)
 x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
