@@ -95,12 +95,10 @@ x = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x)
 x = MaxPool2D(pool_size=(2,2))(x)
 x = BatchNormalization()(x)
 x = Flatten()(x)
-x = Dense(180, activation='relu')(x)
-#x = Dense(90, activation='relu')(x)
+x = Dense(128, activation='relu')(x)
 x1 = Dense(1, activation=activation)(x)
-x2 = Dense(1, activation='linear')(x)
 model1 = Model(i, x1)
-model2 = Model(i, x2)
+#model2 = Model(i, x2)
 ##Model->2
 #x = Conv2D(filters=64, kernel_size=(7,7), activation='relu', padding='same')(i)
 #x = MaxPool2D(pool_size=(3,3))(x)
@@ -378,106 +376,3 @@ plt.plot(metrics2[['mean_squared_error', 'val_mean_squared_error']], label=[f'lo
 plt.ylim(-0.1, 2)
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.savefig(f'output/loss_regression{i}.png', bbox_inches='tight')
-
-
-
-#i1 = Input(shape=(176,1))
-#x = Conv1D(filters=90, kernel_size=(5), activation='relu', padding='same')(i1)
-#x = MaxPool1D(pool_size=(3))(x)
-#x = Dropout(rate=0.6)(x)
-#x = Flatten()(x)
-#x = BatchNormalization()(x)
-#x = Dense(90, activation='relu')(x)
-#x = Dropout(rate=0.6)(x)
-#x1 = Dense(1, activation='sigmoid')(x)
-#x2 = Dense(1, activation='linear')(x)
-#model1 = Model(i1, x1)
-#model2 = Model(i1, x2)
-#
-#early_stop = EarlyStopping(monitor='val_loss', patience=10)
-#model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-#model1.fit(x=X_train2, y= y_train, validation_data=(X_test2, y_test) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
-#pred = model1.predict(X_test2)
-#predictions = np.round(pred)
-#print(f'Accuracy{i}_0.06',   accuracy_score(y_test, predictions))
-#print(f'precision{i}_0.06',  precision_score(y_test, predictions))
-#print(f'recall{i}_0.06',     recall_score(y_test, predictions))
-#print(f'f1{i}_0.06',         f1_score(y_test, predictions))
-#tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
-#specificity = tn / (tn+fp)
-
-#specificity
-#print(f'Specificity1{i}',   specificity)
-#model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-#model2.fit(x= X_train2, y =y_train2, validation_data= (X_test2, y_test2), callbacks=[reduce_lr] ,epochs=400, verbose=0)
-#pred2 = model2.predict(X_test2)
-#mae = mean_absolute_error(y_test2, pred2)
-#rmse = mean_squared_error(y_test2, pred2)
-#print('MAE_0.06', mae)
-#print('RMSE-0.06', rmse)
-
-#print('y_test2>>>','', np.array(y_test2))
-#print('pred2>>>','', np.array(pred2.ravel()))
-
-#fig = plt.figure(4)
-#plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7)
-#plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-#plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
-#plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
-#plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
-#plt.xlim(0.85, 1.01)
-#plt.ylim(0.85, 1.01)
-#plt.ylabel('predicted')
-#plt.xlabel('Measured')
-#plt.title('Leaf Trajectory Map - MUcp')
-#plt.legend()
-#plt.savefig('output/Plot_egression.png', bbox_inches='tight')
-
-
-
-
-#min_x = min([len(loss[i]) for i in range(len(loss))])
-#rloss = [np.array([loss[j][i] for j in range(len(loss))]).mean() for i in range(min_x)]
-#r_val_loss = [np.array([val_loss[j][i] for j in range(len(val_loss))]).mean() for i in range(min_x)]
-#rm1 = [np.array([m1[j][i] for j in range(len(m1))]).mean() for i in range(min_x)]
-#r_loss_m1 = [np.array([loss_m1[j][i] for j in range(len(loss_m1))]).mean() for i in range(min_x)]
-
-#plt.figure(1)
-#plt.title('Loss [bce]')
-#plt.plot(rloss, label=['train'], color=('blue'))
-#plt.plot(r_val_loss, label=['loss'], color=('orange'))
-#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.savefig('output/loss.png', bbox_inches='tight')
-
-#plt.figure(2)
-#plt.title('accuracy')
-#plt.plot(rm1, label=['mean_acc'], color=('blue'))
-#plt.plot(r_loss_m1, label=['val_acc'], color=('orange'))
-#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-#plt.savefig('output/acc.png', bbox_inches='tight')
-
-#mean_tpr = np.mean(tprs1, axis=0)
-#mean_tpr[-1] = 1.0
-#mean_auc = auc(mean_fpr, mean_tpr)
-#mean_auc = np.mean(aucs1)
-#roc_auc = metrics.auc(mean_fpr, mean_tpr)
-#std_auc = np.std(aucs1)
-#std_tpr = np.std(tprs1, axis=0)
-#tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
-#tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
-
-#plt.figure(3)
-#plt.title("Receiver operating characteristic example")
-#plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-#plt.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
-#plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
-#plt.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
-#plt.ylabel('True Positive Rate')
-#plt.xlabel('False Positive Rate')
-#plt.xlim(-0.05, 1.05)
-#plt.ylim(-0.05, 1.05)
-#plt.savefig('output/roc_auc.png', bbox_inches='tight')
-
-#print('Mean_auc-->>', mean_auc, std_auc)
-
-# %%
