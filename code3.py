@@ -126,9 +126,9 @@ model3 = Model(i, x)
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-#data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=90)
-#train_generator = data_generator.flow(X_train3, y_train,  batch_size=10)
-#test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=90)
+train_generator = data_generator.flow(X_train3, y_train,  batch_size=10)
+test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
 #train_generator = data_generator.flow(X_train, y_train)
@@ -146,8 +146,8 @@ print('all ok')
 i = 1
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[])
-    #r = model.fit(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
+    #r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
+    r = model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test3)
     predictions = np.round(pred)
