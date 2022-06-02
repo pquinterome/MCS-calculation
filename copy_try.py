@@ -182,7 +182,7 @@ print('LTM model done')
 
 
 model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-history1 = model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+history1 = model1.fit(train_generator, validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
 metrics = pd.DataFrame(history1.history)
 i=0
 pred = model1.predict(X_test3)
@@ -216,7 +216,7 @@ print('LTM model done')
 ##############################################
 
 model2.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-history2 = model2.fit(x= X_train3, y =y_train2, validation_data= (X_test3, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+history2 = model2.fit(train_generator, validation_data= (X_test3, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
 pred2 = model2.predict(X_test3)
 mae = mean_absolute_error(y_test2, pred2)
 rmse = mean_squared_error(y_test2, pred2)
