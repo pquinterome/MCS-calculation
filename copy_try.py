@@ -172,7 +172,9 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
 
-
+model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
+history1 = model1.fit(x= X_train3, y= y_train, validation_data=(X_test3, y_test) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+metrics = pd.DataFrame(history1.history)
 pred = model1.predict(X_test3)
 predictions = np.round(pred)
 print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
