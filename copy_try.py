@@ -106,8 +106,8 @@ model1 = Model(i, x1)
 model2 = Model(i, x2)
 #%%
 
-#data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=90)
-#train_generator = data_generator.flow(X_train3, y_train,  batch_size=10)
+#data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=45)
+#train_generator = data_generator.flow(X_train3, y_train,  batch_size=32)
 #test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
@@ -119,6 +119,7 @@ model2 = Model(i, x2)
 early_stop = EarlyStopping(monitor='val_loss', patience=5)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 roc = tf.keras.metrics.AUC(name='roc')
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=45)
 
 #########################
 seed =18
@@ -135,10 +136,12 @@ kfold = StratifiedKFold(n_splits=5, shuffle=True) #, random_state=seed)
 X = p.reshape(1231, 512, 512, 1)
 for train, test in kfold.split(X, y):
     #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
+    train_generator = data_generator.flow(X[train], y[train],  batch_size=32)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
     early_stop = EarlyStopping(monitor='val_loss', patience=5)
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
-    model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+    #model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
+    model1.fit(train_generator, validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
     #metrics = pd.DataFrame(model.history.history)
     #metrics.plot()  
 #-  evaluate the model  
