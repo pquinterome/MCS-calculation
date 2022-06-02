@@ -173,7 +173,17 @@ plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
-
+pred = model1.predict(X_test3)
+predictions = np.round(pred)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))
+tn, fp, fn, tp = confusion_matrix(y_test, predictions).ravel()
+specificity = tn / (tn+fp)
+specificity
+print(f'Specificity{i}',   specificity)
+print('metrics_model1', np.array(metrics.columns))
 
 ##############################################
 print('LTM model done')
