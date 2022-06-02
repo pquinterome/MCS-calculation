@@ -138,7 +138,7 @@ for train, test in kfold.split(X, y):
     #adam= tf.keras.optimizers.Adam(learning_rate=0.0005, name='adam')
     train_generator = data_generator.flow(X[train], y[train],  batch_size=32)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, min_lr=0.01)
-    early_stop = EarlyStopping(monitor='roc', patience=5)
+    early_stop = EarlyStopping(monitor='roc', patience=5, mode='max')
     model1.compile(loss="binary_crossentropy", optimizer= 'adam', metrics=['accuracy', roc])
     model1.fit(x=X[train], y= y[train], validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
     #model1.fit(train_generator, validation_data=(X[test], y[test]) ,epochs=400, verbose=0, callbacks=[early_stop, reduce_lr])
