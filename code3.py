@@ -151,7 +151,7 @@ i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
+    model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
     #r = model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
     metrics = pd.DataFrame(model.history.history)
     pred = model.predict(X_test3)
@@ -171,31 +171,7 @@ for model in models:
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
     roc_auc = auc(fpr, tpr)
-    aucs1.append(roc_auc)
-
-    #plt.figure(i*i)
-    #plt.title('Loss')
-    #plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
-    #plt.ylim(-0.1, 2)
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    #plt.savefig(f'output/loss.png', bbox_inches='tight')#
-
-    #plt.figure(i*i+1)
-    #plt.title('Accuracy')
-    #plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
-    ##plt.ylim(0.4, 1.1)
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    #plt.savefig(f'output/acc.png', bbox_inches='tight')##
-
-    #plt.figure(15)
-    #plt.title("Receiver operating characteristic example")
-    #plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
-    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
-    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    #plt.xlim(-0.05, 1.05)
-    #plt.ylim(-0.05, 1.05)
-    #plt.savefig('output/auc.png', bbox_inches='tight')
-    
+    aucs1.append(roc_auc)    
     i = i+1
 
 ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
@@ -210,6 +186,6 @@ tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
 ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic LTM")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
-#plt.ylabel('True Positive Rate')
+plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
