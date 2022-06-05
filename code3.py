@@ -173,28 +173,28 @@ for model in models:
     roc_auc = auc(fpr, tpr)
     aucs1.append(roc_auc)
 
-    plt.figure(i*i)
-    plt.title('Loss')
-    plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
+    #plt.figure(i*i)
+    #plt.title('Loss')
+    #plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
     #plt.ylim(-0.1, 2)
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(f'output/loss.png', bbox_inches='tight')#
+    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #plt.savefig(f'output/loss.png', bbox_inches='tight')#
 
-    plt.figure(i*i+1)
-    plt.title('Accuracy')
-    plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
-    #plt.ylim(0.4, 1.1)
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(f'output/acc.png', bbox_inches='tight')##
+    #plt.figure(i*i+1)
+    #plt.title('Accuracy')
+    #plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
+    ##plt.ylim(0.4, 1.1)
+    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #plt.savefig(f'output/acc.png', bbox_inches='tight')##
 
-    plt.figure(15)
-    plt.title("Receiver operating characteristic example")
-    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
-    plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    #plt.figure(15)
+    #plt.title("Receiver operating characteristic example")
+    #plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.2)
+    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label=(f'ROC{i}', roc_auc))
+    #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     #plt.xlim(-0.05, 1.05)
     #plt.ylim(-0.05, 1.05)
-    plt.savefig('output/auc.png', bbox_inches='tight')
+    #plt.savefig('output/auc.png', bbox_inches='tight')
     
     i = i+1
 
