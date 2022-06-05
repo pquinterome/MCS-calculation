@@ -176,16 +176,16 @@ plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
 
-#metrics = pd.DataFrame(model.history.history)
-#pred = model.predict(X_test3)
-#predictions = np.round(pred)
-#fpr, tpr, thresholds = roc_curve(y_test, pred)
-#roc_auc = auc(fpr, tpr)
-#classes=[0,1]
-#con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
+metrics = pd.DataFrame(model.history.history)
+pred = model.predict(X_test3)
+predictions = np.round(pred)
+fpr, tpr, thresholds = roc_curve(y_test, pred)
+roc_auc = auc(fpr, tpr)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
 
-#print(f'AUC_model{i}',  roc_auc)
-#print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
-#print(f'precision{i}',  precision_score(y_test, predictions))
-#print(f'recall{i}',     recall_score(y_test, predictions))
-#print(f'f1{i}',         f1_score(y_test, predictions))#
+print(f'AUC_model{i}',  roc_auc)
+print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+print(f'precision{i}',  precision_score(y_test, predictions))
+print(f'recall{i}',     recall_score(y_test, predictions))
+print(f'f1{i}',         f1_score(y_test, predictions))#
