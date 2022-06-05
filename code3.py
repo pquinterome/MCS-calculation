@@ -142,8 +142,12 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_l
 models = [model3, model3, model3, model3, model3]
 
 print('all ok')
-
+tprs1 = []
+aucs1 = []
+fprs1 = []
+mean_fpr = np.linspace(0, 1, 100)
 i = 1
+fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     r = model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
@@ -162,19 +166,25 @@ for model in models:
     print(f'recall{i}',     recall_score(y_test, predictions))
     print(f'f1{i}',         f1_score(y_test, predictions))#
 
+    y_pred_keras = model1.predict(X_test3).ravel() 
+    fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
+    tprs1.append(interp(mean_fpr, fpr, tpr))
+    roc_auc = auc(fpr, tpr)
+    aucs1.append(roc_auc)
+
     plt.figure(i*i)
     plt.title('Loss')
     plt.plot(metrics[['loss', 'val_loss']], label=[f'loss{i}', f'val_loss{i}'])
     #plt.ylim(-0.1, 2)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(f'output/loss{i}.png', bbox_inches='tight')#
+    plt.savefig(f'output/loss.png', bbox_inches='tight')#
 
     plt.figure(i*i+1)
     plt.title('Accuracy')
     plt.plot(metrics[['accuracy', 'val_accuracy']], label=[f'acc{i}', f'val_acc{i}'])
     #plt.ylim(0.4, 1.1)
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.savefig(f'output/acc{i}.png', bbox_inches='tight')##
+    plt.savefig(f'output/acc.png', bbox_inches='tight')##
 
     plt.figure(15)
     plt.title("Receiver operating characteristic example")
@@ -186,3 +196,19 @@ for model in models:
     plt.savefig('output/auc.png', bbox_inches='tight')
     
     i = i+1
+
+ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+mean_tpr = np.mean(tprs1, axis=0)
+mean_tpr[-1] = 1.0
+mean_auc = np.mean(aucs1)
+std_auc = np.std(aucs1)
+ax1.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+std_tpr = np.std(tprs1, axis=0)
+tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
+ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic LTM")
+ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+#plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+plt.savefig('output/drop_00.png', bbox_inches='tight')
