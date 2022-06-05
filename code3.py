@@ -154,12 +154,11 @@ for model in models:
     model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
     #r = model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
   
-    y_pred_keras = model1.predict(X_test3).ravel() 
+    y_pred_keras = model.predict(X_test3).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
     roc_auc = auc(fpr, tpr)
     aucs1.append(roc_auc)    
-    i = i+1
 
 ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
