@@ -153,20 +153,7 @@ for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
     #r = model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
-    metrics = pd.DataFrame(model.history.history)
-    pred = model.predict(X_test3)
-    predictions = np.round(pred)
-    fpr, tpr, thresholds = roc_curve(y_test, pred)
-    roc_auc = auc(fpr, tpr)
-    classes=[0,1]
-    con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
-    
-    print(f'AUC_model{i}',  roc_auc)
-    print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
-    print(f'precision{i}',  precision_score(y_test, predictions))
-    print(f'recall{i}',     recall_score(y_test, predictions))
-    print(f'f1{i}',         f1_score(y_test, predictions))#
-
+  
     y_pred_keras = model1.predict(X_test3).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
@@ -189,3 +176,17 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
+
+#metrics = pd.DataFrame(model.history.history)
+#pred = model.predict(X_test3)
+#predictions = np.round(pred)
+#fpr, tpr, thresholds = roc_curve(y_test, pred)
+#roc_auc = auc(fpr, tpr)
+#classes=[0,1]
+#con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
+
+#print(f'AUC_model{i}',  roc_auc)
+#print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
+#print(f'precision{i}',  precision_score(y_test, predictions))
+#print(f'recall{i}',     recall_score(y_test, predictions))
+#print(f'f1{i}',         f1_score(y_test, predictions))#
