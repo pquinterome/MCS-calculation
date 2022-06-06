@@ -127,8 +127,8 @@ model3 = Model(i, x)
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=90)
-train_generator = data_generator.flow(X_train3, y_train,  batch_size=10)
+data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=10)
+train_generator = data_generator.flow(X_train3, y_train,  batch_size=64)
 test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
@@ -151,8 +151,8 @@ i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
-    #r = model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=100, verbose=0)
+    #model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200, batch_size=10 ,verbose=0, callbacks=[early_stop])
+    model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
   
     y_pred_keras = model.predict(X_test3).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
