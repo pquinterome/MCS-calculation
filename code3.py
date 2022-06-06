@@ -206,7 +206,7 @@ print(f'f1{i}',         f1_score(y_test, predictions))#
 print('now regression')
 
 model4.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-history2 = model4.fit(train_generator, validation_data= (X_test1, X_test2, X_test3), callbacks=[reduce_lr], epochs=200, verbose=0)
+model4.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), callbacks=[reduce_lr], epochs=200, verbose=0)
 pred2 = model4.predict((X_test1, X_test2, X_test3))
 mae = mean_absolute_error(y_test2, pred2)
 rmse = mean_squared_error(y_test2, pred2)
