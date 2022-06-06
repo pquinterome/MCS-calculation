@@ -128,9 +128,12 @@ x3 = Flatten()(x3)
 #####################
 #merge
 merge = concatenate([x1,x2, x3])
-x = Dense(180, activation='relu')(merge)
-x = Dense(1, activation='sigmoid')(x)
-model3 = Model(inputs=[i1, i2, i3], outputs=x)
+x = Dense(360, activation='relu')(merge)
+x = Dense(180, activation='relu')(x)
+x1 = Dense(1, activation='sigmoid')(x)
+x2 = Dense(1, activation='linear')(x)
+model3 = Model(inputs=[i1, i2, i3], outputs=x1)
+model4 = Model(inputs=[i1, i2, i3], outputs=x2)
 
 
 # %%
@@ -199,3 +202,29 @@ print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
 print(f'precision{i}',  precision_score(y_test, predictions))
 print(f'recall{i}',     recall_score(y_test, predictions))
 print(f'f1{i}',         f1_score(y_test, predictions))#
+
+print('now regression')
+
+model4.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+history2 = model4.fit(train_generator, validation_data= (X_test1, X_test2, X_test3), callbacks=[reduce_lr], epochs=200, verbose=0)
+pred2 = model4.predict((X_test1, X_test2, X_test3))
+mae = mean_absolute_error(y_test2, pred2)
+rmse = mean_squared_error(y_test2, pred2)
+print('MAE_0.06', mae)
+print('RMSE-0.06', rmse)
+print('y_test2>>>','', np.array(y_test2))
+print('pred2>>>','', np.array(pred2.ravel()))
+
+fig = plt.figure(4)
+plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7)
+plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
+plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
+plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
+plt.xlim(0.85, 1.01)
+plt.ylim(0.85, 1.01)
+plt.ylabel('predicted')
+plt.xlabel('Measured')
+plt.title('Dose Blended Images for Portal Dosimetry')
+plt.legend()
+plt.savefig('output/Plot_egression.png', bbox_inches='tight')
