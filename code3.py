@@ -212,30 +212,31 @@ print(f'f1{i}',         f1_score(y_test, predictions))#
 print('now regression')
 
 
-#model = [model4, model4, model4, model4]
-#for model in models:
+model = [model4, model4, model4, model4]
 i = 0
-model4.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-model4.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=400, verbose=0)
-pred2 = model4.predict((X_test1, X_test2, X_test3))
-mae = mean_absolute_error(y_test2, pred2)
-rmse = mean_squared_error(y_test2, pred2)
-print(f'MAE{i}', mae)
-print(f'RMSE{i}', rmse)
-print(f'y_test2{i}>>>','', np.array(y_test2))
-print(f'pred2>>>{i}','', np.array(pred2.ravel()))
+for model in models:
 
-plt.figure(4+i)
-plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7, label='Predict')
-plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', alpha=.8)
-plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
-plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
-plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
-plt.xlim(0.85, 1.01)
-plt.ylim(0.85, 1.01)
-plt.ylabel('predicted')
-plt.xlabel('Measured')
-plt.title('Dose Blended Images for Portal Dosimetry')
-plt.legend()
-plt.savefig(f'output/Plot_egression{i}.png', bbox_inches='tight')
-#    i = i=1
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+    model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=400, verbose=0)
+    pred2 = model4.predict((X_test1, X_test2, X_test3))
+    mae = mean_absolute_error(y_test2, pred2)
+    rmse = mean_squared_error(y_test2, pred2)
+    print(f'MAE{i}', mae)
+    print(f'RMSE{i}', rmse)
+    print(f'y_test2{i}>>>','', np.array(y_test2))
+    print(f'pred2>>>{i}','', np.array(pred2.ravel()))
+
+    plt.figure(4+i)
+    plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7, label='Predict')
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', alpha=.8)
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
+    plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
+    plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
+    plt.xlim(0.85, 1.01)
+    plt.ylim(0.85, 1.01)
+    plt.ylabel('predicted')
+    plt.xlabel('Measured')
+    plt.title('Dose Blended Images for Portal Dosimetry')
+    plt.legend()
+    plt.savefig(f'output/Plot_egression{i}.png', bbox_inches='tight')
+    i = i+1
