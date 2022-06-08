@@ -217,7 +217,7 @@ i = 0
 for model in models:
 
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-    model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=400, verbose=0)
+    model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[early_stop, reduce_lr], epochs=400, verbose=0)
     pred2 = model4.predict((X_test1, X_test2, X_test3))
     mae = mean_absolute_error(y_test2, pred2)
     rmse = mean_squared_error(y_test2, pred2)
