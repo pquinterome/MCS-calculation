@@ -212,7 +212,7 @@ print(f'f1{i}',         f1_score(y_test, predictions))#
 print('now regression')
 
 
-model = [model4, model4, model4, model4]
+models = [model4, model4, model4, model4]
 i = 0
 for model in models:
 
