@@ -130,14 +130,14 @@ x3 = Flatten()(x3)
 #####################
 #merge
 #merge = concatenate([x1,x2, x3])
-merge = concatenate([x1, x2])
+merge = concatenate([x2, x3])
 x = Dense(360, activation='relu')(merge)
 x = Dense(180, activation='relu')(x)
 #x = Dense(90, activation='relu')(x)
 x1 = Dense(1, activation='sigmoid')(x)
 x2 = Dense(1, activation='linear')(x)
-model3 = Model(inputs=[i1, i2], outputs=x1)
-model4 = Model(inputs=[i1, i2], outputs=x2)
+model3 = Model(inputs=[i2, i3], outputs=x1)
+model4 = Model(inputs=[i2, i3], outputs=x2)
 #model3 = Model(inputs=[i1, i3], outputs=x1)
 #model4 = Model(inputs=[i1, i3], outputs=x2)
 
@@ -170,10 +170,10 @@ i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    model.fit(x=[X_train1, X_train2], y= y_train, validation_data= ([X_test1, X_test2], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    model.fit(x=[X_train2, X_train3], y= y_train, validation_data= ([X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
   
-    y_pred_keras = model.predict((X_test1, X_test2)).ravel() 
+    y_pred_keras = model.predict((X_test2, X_test3)).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
     roc_auc = auc(fpr, tpr)
@@ -196,7 +196,7 @@ plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 metrics = pd.DataFrame(model.history.history)
-pred = model.predict((X_test1, X_test2))
+pred = model.predict((X_test2, X_test3))
 predictions = np.round(pred)
 fpr, tpr, thresholds = roc_curve(y_test, pred)
 roc_auc = auc(fpr, tpr)
@@ -217,8 +217,8 @@ i = 0
 for model in models:
 
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-    model.fit(x=[X_train1, X_train2], y= y_train2, validation_data= ([X_test1, X_test2], y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
-    pred2 = model4.predict((X_test1, X_test2))
+    model.fit(x=[X_train2, X_train3], y= y_train2, validation_data= ([X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+    pred2 = model4.predict((X_test2, X_test3))
     mae = mean_absolute_error(y_test2, pred2)
     rmse = mean_squared_error(y_test2, pred2)
     print(f'MAE{i}', mae)
