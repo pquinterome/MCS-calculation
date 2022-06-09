@@ -130,7 +130,7 @@ x3 = Flatten()(x3)
 #####################
 #merge
 #merge = concatenate([x1,x2, x3])
-merge = concatenate([x1, x3])
+merge = concatenate([x1, x2, x3])
 x = Dense(360, activation='relu')(merge)
 x = Dense(180, activation='relu')(x)
 #x = Dense(90, activation='relu')(x)
