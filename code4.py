@@ -32,7 +32,7 @@ a=[]
 for i in range(len(ltm)):
     dlb1= pd.DataFrame(ltm[i].T)
     nunique1 = dlb1.apply(pd.Series.nunique)
-    cols_to_drop1 = nunique1[nunique1 == 1].index
+    cols_to_drop1 = nunique1[nunique1 == 1].index # hola
     a1= dlb1.drop(cols_to_drop1, axis=1)
     a.append(a1.T)
 w = np.array([a[i].shape[0] for i in range(len(a))])
