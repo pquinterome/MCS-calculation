@@ -50,6 +50,7 @@ ltm = ltm [:820,:]
 mu = np.load('inputs/mu_cp.npy')
 mu = mu[:820,]
 p = np.load('inputs/portal.npy')
+p = np.array([(p[i]/p[i].max()) for i in range(len(p))])
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
