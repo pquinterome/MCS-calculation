@@ -184,7 +184,7 @@ fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    model.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    model.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
   
     y_pred_keras = model.predict(X_test2).ravel() 
@@ -213,12 +213,8 @@ plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
 
-
-
-
-
-metrics = pd.DataFrame(model1.history.history)
-pred = model1.predict(X_test1)
+metrics = pd.DataFrame(model2.history.history)
+pred = model1.predict(X_test2)
 predictions = np.round(pred)
 fpr, tpr, thresholds = roc_curve(y_test, pred)
 roc_auc = auc(fpr, tpr)
