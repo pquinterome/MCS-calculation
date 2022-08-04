@@ -19,6 +19,7 @@ from scipy.stats import shapiro
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 from numpy import interp
+print('TensorFlow version', tf.__version__)
 # %%
 ltm_T = np.load('inputs/ltm_T.npy')
 ltm_H = np.load('inputs/ltm_H.npy')
@@ -99,7 +100,7 @@ x1 = Dropout(rate=0.2)(x1)
 x1 = Flatten()(x1)
 #x1 = BatchNormalization()(x1)
 x1 = Dense(90, activation='relu')(x1)
-x1 = Dense(1, activation=activation)(x1)
+x1 = Dense(1, activation='sigmoid')(x1)
 model1 = Model(i1, x1)
 ##Model->2
 i2 = Input(shape=(176,1))
@@ -126,7 +127,7 @@ x3 = Flatten()(x3)
 #x3 = BatchNormalization()(x3)
 x3 = Dense(360, activation='relu')(x3)
 x3 = Dense(90, activation='relu')(x3)
-x3 = Dense(1, activation=activation)(x3)
+x3 = Dense(1, activation='sigmoid')(x3)
 model3 = Model(i3, x3)
 #####################
 #merge
@@ -164,16 +165,18 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_l
 
 
 #model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-#model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 #model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-#model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
-model2.save('output/model_2.h5')
+#model1.save('output/model_1.h5')
+#model2.save('output/model_2.h5')
+model2.save('output/model_3.h5')
 
 
-models = [model2, model2, model2, model2, model2]
+models = [model3, model3, model3, model3, model3]
 print('all ok')
 tprs1 = []
 aucs1 = []
@@ -184,10 +187,10 @@ fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    model.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
   
-    y_pred_keras = model.predict(X_test2).ravel() 
+    y_pred_keras = model.predict(X_test3).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
     roc_auc = auc(fpr, tpr)
@@ -213,8 +216,8 @@ plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
 
-metrics = pd.DataFrame(model2.history.history)
-pred = model2.predict(X_test2)
+metrics = pd.DataFrame(model3.history.history)
+pred = model3.predict(X_test3)
 predictions = np.round(pred)
 fpr, tpr, thresholds = roc_curve(y_test, pred)
 roc_auc = auc(fpr, tpr)
