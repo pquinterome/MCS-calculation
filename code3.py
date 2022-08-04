@@ -108,9 +108,9 @@ x2 = MaxPool1D(pool_size=(3))(x2)
 x2 = Dropout(rate=0.1)(x2)
 x2 = Flatten()(x2)
 x2 = BatchNormalization()(x2)
-#x = Dense(90, activation='relu')(x)
-#x = Dense(1, activation='sigmoid')(x)
-#model2 = Model(i, x)
+x2 = Dense(90, activation='relu')(x2)
+x2 = Dense(1, activation='sigmoid')(x2)
+model2 = Model(i2, x2)
 ###Model->3
 i3 = Input(shape=(512,512,1))
 x3 = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(i3)
@@ -124,10 +124,10 @@ x3 = MaxPool2D(pool_size=(2,2))(x3)
 x3 = Dropout(0.2)(x3)
 x3 = Flatten()(x3)
 #x3 = BatchNormalization()(x3)
-#x = Dense(360, activation='relu')(x)
-#x = Dense(90, activation='relu')(x)
-#x = Dense(1, activation=activation)(x)
-#model3 = Model(i, x)
+x = Dense(360, activation='relu')(x3)
+x = Dense(90, activation='relu')(x3)
+x = Dense(1, activation=activation)(x3)
+model3 = Model(i3, x3)
 #####################
 #merge
 merge = concatenate([x1, x2, x3])
@@ -161,6 +161,16 @@ early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 models = [model1, model1, model1, model1, model1]
+
+
+model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+
+model1.save('output/model_1.h5')
 
 print('all ok')
 tprs1 = []
@@ -196,6 +206,14 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
+
+
+
+
+
+
+
+
 
 metrics = pd.DataFrame(model1.history.history)
 pred = model1.predict(X_test1)
