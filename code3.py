@@ -98,9 +98,9 @@ x1 = MaxPool2D(pool_size=(2,2))(x1)
 x1 = Dropout(rate=0.2)(x1)
 x1 = Flatten()(x1)
 #x1 = BatchNormalization()(x1)
-#x = Dense(90, activation='relu')(x)
-#x = Dense(1, activation=activation)(x)
-#model1 = Model(i, x)
+x1 = Dense(90, activation='relu')(x1)
+x1 = Dense(1, activation=activation)(x1)
+model1 = Model(i1, x1)
 ##Model->2
 i2 = Input(shape=(176,1))
 x2 = Conv1D(filters=70, kernel_size=(5), activation='relu', padding='same')(i2)
@@ -160,7 +160,7 @@ test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
-models = [model3, model3, model3, model3, model3]
+models = [model1, model1, model1, model1, model1]
 
 print('all ok')
 tprs1 = []
