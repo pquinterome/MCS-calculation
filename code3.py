@@ -124,9 +124,9 @@ x3 = MaxPool2D(pool_size=(2,2))(x3)
 x3 = Dropout(0.2)(x3)
 x3 = Flatten()(x3)
 #x3 = BatchNormalization()(x3)
-x = Dense(360, activation='relu')(x3)
-x = Dense(90, activation='relu')(x3)
-x = Dense(1, activation=activation)(x3)
+x3 = Dense(360, activation='relu')(x3)
+x3 = Dense(90, activation='relu')(x3)
+x3 = Dense(1, activation=activation)(x3)
 model3 = Model(i3, x3)
 #####################
 #merge
