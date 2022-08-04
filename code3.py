@@ -160,18 +160,20 @@ test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
-models = [model1, model1, model1, model1, model1]
 
 
-model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+
+#model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
-model1.save('output/model_1.h5')
+model2.save('output/model_2.h5')
 
+
+models = [model2, model2, model2, model2, model2]
 print('all ok')
 tprs1 = []
 aucs1 = []
@@ -182,10 +184,10 @@ fig1, ax1 = plt.subplots()
 for model in models:
     model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     #model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    model.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
   
-    y_pred_keras = model.predict(X_test1).ravel() 
+    y_pred_keras = model.predict(X_test2).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
     roc_auc = auc(fpr, tpr)
