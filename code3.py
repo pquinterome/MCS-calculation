@@ -214,7 +214,7 @@ plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
 metrics = pd.DataFrame(model2.history.history)
-pred = model1.predict(X_test2)
+pred = model2.predict(X_test2)
 predictions = np.round(pred)
 fpr, tpr, thresholds = roc_curve(y_test, pred)
 roc_auc = auc(fpr, tpr)
