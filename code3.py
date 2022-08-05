@@ -198,7 +198,10 @@ for model in models:
     ##model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     ##model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
+    ltm = ltm[-411:]
     
+
+
     X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
     print('X_train', X_train1.shape)
     print('X_test', X_test1.shape)
@@ -244,7 +247,7 @@ mean_auc3 = np.mean(aucs3)
 std_auc = np.std(aucs1)
 std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
-ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
+#ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
 std_tpr = np.std(tprs1, axis=0)
 ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.2)
 std_tpr2 = np.std(tprs2, axis=0)
@@ -260,11 +263,12 @@ tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
 
 
 ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
-ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
+#ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
 ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
