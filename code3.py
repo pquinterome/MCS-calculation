@@ -162,9 +162,9 @@ early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 
-model1 = tf.keras.models.load_model('/models/model_1.h5')
-model2 = tf.keras.models.load_model('/models/model_2.h5')
-model3 = tf.keras.models.load_model('/models/model_3.h5')
+model1 = tf.keras.models.load_model('models/model_1.h5')
+model2 = tf.keras.models.load_model('models/model_2.h5')
+model3 = tf.keras.models.load_model('models/model_3.h5')
 
 model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
