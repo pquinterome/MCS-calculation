@@ -179,7 +179,7 @@ model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy
 
 
 
-models= [model1, model1, model1, model1]
+models= [model1, model1, model1, model1, model1, model1, model1, model1, model1, model1]
 print('all ok')
 tprs1 = []
 aucs1 = []
@@ -191,6 +191,11 @@ tprs3 = []
 aucs3 = []
 fprs3 = []
 mean_fpr = np.linspace(0, 1, 100)
+ltm = ltm[-411:]
+mu = mu[-411:]
+p = p[-411:]
+y = y[-411:]
+y2 = y2[-411:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
@@ -198,22 +203,20 @@ for model in models:
     ##model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     ##model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
-    
-    
 
 
-    X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
-    print('X_train', X_train1.shape)
-    print('X_test', X_test1.shape)
-    X_train1 = X_train1.reshape(984, 70, 177, 1)
-    X_test1  = X_test1.reshape(247, 70, 177, 1)
+    X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
+    print('X_train', X_train0.shape)
+    print('X_test', X_test0.shape)
+    X_train1 = X_train0.reshape(X_train0.shape[0], 70, 177, 1)
+    X_test1  = X_test0.reshape(X_test0.shape[0], 70, 177, 1)
     scaler= MinMaxScaler()
     X_train2 = scaler.fit_transform(X_train2)
     X_test2 = scaler.fit_transform(X_test2)
-    X_train2 = X_train2.reshape(984, 176, 1)
-    X_test2  = X_test2.reshape(247, 176, 1)
-    X_train3 = X_train3.reshape(984, 512, 512, 1)
-    X_test3 = X_test3.reshape(247, 512, 512, 1)
+    X_train2 = X_train2.reshape(X_test0.shape[0], 176, 1)
+    X_test2  = X_test2.reshape(X_test0.shape[0], 176, 1)
+    X_train3 = X_train3.reshape(X_test0.shape[0], 512, 512, 1)
+    X_test3 = X_test3.reshape(X_test0.shape[0], 512, 512, 1)
 
     y_pred_keras = model1.predict(X_test1).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
@@ -247,7 +250,7 @@ mean_auc3 = np.mean(aucs3)
 std_auc = np.std(aucs1)
 std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
-#ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
+ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
 std_tpr = np.std(tprs1, axis=0)
 ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.2)
 std_tpr2 = np.std(tprs2, axis=0)
@@ -263,7 +266,7 @@ tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
 
 
 ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
-#ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
+ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
 ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
