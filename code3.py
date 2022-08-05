@@ -254,7 +254,7 @@ std_auc3 = np.std(aucs3)
 std_tpr = np.std(tprs1, axis=0)
 ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.5)
 std_tpr2 = np.std(tprs2, axis=0)
-#ax1.plot(mean_fpr, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.2)
+ax1.plot(mean_fpr, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.2)
 std_tpr3 = np.std(tprs3, axis=0)
 
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
@@ -267,7 +267,7 @@ tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
 
 #ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
 ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
-#ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
+ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
