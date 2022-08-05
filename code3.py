@@ -173,7 +173,7 @@ model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=20
 
 #model1.save('output/model_1.h5')
 #model2.save('output/model_2.h5')
-model2.save('output/model_3.h5')
+model3.save('output/model_3.h5')
 
 
 models = [model3, model3, model3, model3, model3]
