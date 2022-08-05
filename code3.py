@@ -162,55 +162,153 @@ early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
 
+model1 = tf.keras.models.load_model('output/model_1.h5')
+model2 = tf.keras.models.load_model('output/model_2.h5')
+model3 = tf.keras.models.load_model('output/model_3.h5')
 
-
-#model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-#model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 #model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 #model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
 #model1.save('output/model_1.h5')
 #model2.save('output/model_2.h5')
-model3.save('output/model_3.h5')
+#model3.save('output/model_3.h5')
 
 
-models = [model3, model3, model3, model3, model3]
+
+models= [model1, model1, model1, model1]
 print('all ok')
 tprs1 = []
 aucs1 = []
 fprs1 = []
+tprs2 = []
+aucs2 = []
+fprs2 = []
+tprs3 = []
+aucs3 = []
+fprs3 = []
 mean_fpr = np.linspace(0, 1, 100)
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
-    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    #model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
-  
-    y_pred_keras = model.predict(X_test3).ravel() 
+    #model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    ##model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    #model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    ##model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
+    
+    X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
+    print('X_train', X_train1.shape)
+    print('X_test', X_test1.shape)
+    X_train1 = X_train1.reshape(984, 70, 177, 1)
+    X_test1  = X_test1.reshape(247, 70, 177, 1)
+    scaler= MinMaxScaler()
+    X_train2 = scaler.fit_transform(X_train2)
+    X_test2 = scaler.fit_transform(X_test2)
+    X_train2 = X_train2.reshape(984, 176, 1)
+    X_test2  = X_test2.reshape(247, 176, 1)
+    X_train3 = X_train3.reshape(984, 512, 512, 1)
+    X_test3 = X_test3.reshape(247, 512, 512, 1)
+
+    y_pred_keras = model1.predict(X_test1).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
     tprs1.append(interp(mean_fpr, fpr, tpr))
     roc_auc = auc(fpr, tpr)
-    aucs1.append(roc_auc)    
+    aucs1.append(roc_auc) 
+
+    y_pred_keras2 = model2.predict(X_test2).ravel() 
+    fpr2, tpr2, thresholds2 = roc_curve(y_test, y_pred_keras2)
+    tprs2.append(interp(mean_fpr, fpr2, tpr2))
+    roc_auc2 = auc(fpr2, tpr2)
+    aucs2.append(roc_auc2)
+
+    y_pred_keras3 = model3.predict(X_test3).ravel() 
+    fpr3, tpr3, thresholds3 = roc_curve(y_test, y_pred_keras3)
+    tprs3.append(interp(mean_fpr, fpr3, tpr3))
+    roc_auc3 = auc(fpr3, tpr3)
+    aucs3.append(roc_auc3)
+    
 
 ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
+mean_tpr2 = np.mean(tprs2, axis=0)
+mean_tpr3 = np.mean(tprs2, axis=0)
 mean_tpr[-1] = 1.0
+mean_tpr2[-1] = 1.0
+mean_tpr3[-1] = 1.0
 mean_auc = np.mean(aucs1)
+mean_auc2 = np.mean(aucs2)
+mean_auc3 = np.mean(aucs3)
 std_auc = np.std(aucs1)
-ax1.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+std_auc2 = np.std(aucs2)
+std_auc3 = np.std(aucs3)
+ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
 std_tpr = np.std(tprs1, axis=0)
+ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.8)
+std_tpr2 = np.std(tprs2, axis=0)
+ax1.plot(mean_fpr, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.8)
+std_tpr3 = np.std(tprs3, axis=0)
+
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
 tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
-ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
+tprs_upper2 = np.minimum(mean_tpr2 + std_tpr2, 1)
+tprs_lower2 = np.maximum(mean_tpr2 - std_tpr2, 0)
+tprs_upper3 = np.minimum(mean_tpr3 + std_tpr3, 1)
+tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
+
+
+ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
+ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
+ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
+
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_00.png', bbox_inches='tight')
+
+
+
+
+
+
+#models = [model3, model3, model3, model3, model3]
+#print('all ok')
+#tprs1 = []
+#aucs1 = []
+#fprs1 = []
+#mean_fpr = np.linspace(0, 1, 100)
+#i = 1
+#fig1, ax1 = plt.subplots()
+#for model in models:
+#    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#    #model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#    model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#    #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
+#  
+#    y_pred_keras = model.predict(X_test3).ravel() 
+#    fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
+#    tprs1.append(interp(mean_fpr, fpr, tpr))
+#    roc_auc = auc(fpr, tpr)
+#    aucs1.append(roc_auc)    
+#
+#ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+#mean_tpr = np.mean(tprs1, axis=0)
+#mean_tpr[-1] = 1.0
+#mean_auc = np.mean(aucs1)
+#std_auc = np.std(aucs1)
+#ax1.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
+#std_tpr = np.std(tprs1, axis=0)
+#tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+#tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+#ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
+#ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
+#ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+#plt.ylabel('True Positive Rate')
+#plt.xlabel('False Positive Rate')
+#plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
 
