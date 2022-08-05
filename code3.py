@@ -213,9 +213,9 @@ for model in models:
     scaler= MinMaxScaler()
     X_train2 = scaler.fit_transform(X_train2)
     X_test2 = scaler.fit_transform(X_test2)
-    X_train2 = X_train2.reshape(X_test0.shape[0], 176, 1)
+    X_train2 = X_train2.reshape(X_train0.shape[0], 176, 1)
     X_test2  = X_test2.reshape(X_test0.shape[0], 176, 1)
-    X_train3 = X_train3.reshape(X_test0.shape[0], 512, 512, 1)
+    X_train3 = X_train3.reshape(X_train0.shape[0], 512, 512, 1)
     X_test3 = X_test3.reshape(X_test0.shape[0], 512, 512, 1)
 
     y_pred_keras = model1.predict(X_test1).ravel() 
