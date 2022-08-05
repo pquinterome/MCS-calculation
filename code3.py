@@ -20,7 +20,6 @@ from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 from numpy import interp
 print('TensorFlow version', tf.__version__)
-print('Jola')
 # %%
 ltm_T = np.load('inputs/ltm_T.npy')
 ltm_H = np.load('inputs/ltm_H.npy')
