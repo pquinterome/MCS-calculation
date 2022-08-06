@@ -206,7 +206,9 @@ for model in models:
     ##model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     #model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
     ##model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
-
+    model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
     X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
     print('X_train', X_train0.shape)
@@ -268,8 +270,8 @@ tprs_upper3 = np.minimum(mean_tpr3 + std_tpr3, 1)
 tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
 
 
-#ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
-#ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
+ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
+ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
 ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
