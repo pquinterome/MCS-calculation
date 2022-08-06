@@ -182,7 +182,7 @@ model2 = tf.keras.models.load_model('models/model_2.h5')
 model3 = tf.keras.models.load_model('models/model_3.h5')
 
 
-models= [model1, model1, model1, model1, model1, model1, model1, model1, model1, model1]
+models= [model1, model1, model1, model1, model1]
 print('all ok')
 tprs1 = []
 aucs1 = []
