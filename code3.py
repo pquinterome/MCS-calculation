@@ -169,14 +169,17 @@ model3 = tf.keras.models.load_model('models/model_3.h5')
 model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-#model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-#model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-#model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
-#model1.save('models/model_1.h5')
-#model2.save('models/model_2.h5')
-#model3.save('models/model_3.h5')
+model1.save('models/model_1.h5')
+model2.save('models/model_2.h5')
+model3.save('models/model_3.h5')
 
+model1 = tf.keras.models.load_model('models/model_1.h5')
+model2 = tf.keras.models.load_model('models/model_2.h5')
+model3 = tf.keras.models.load_model('models/model_3.h5')
 
 
 models= [model1, model1, model1, model1, model1, model1, model1, model1, model1, model1]
