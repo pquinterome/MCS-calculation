@@ -173,9 +173,9 @@ model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy
 #model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 #model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
-#model1.save('output/model_1.h5')
-#model2.save('output/model_2.h5')
-#model3.save('output/model_3.h5')
+#model1.save('models/model_1.h5')
+#model2.save('models/model_2.h5')
+#model3.save('models/model_3.h5')
 
 
 
@@ -252,7 +252,7 @@ std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
 #ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
 std_tpr = np.std(tprs1, axis=0)
-ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.5)
+#ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.5)
 std_tpr2 = np.std(tprs2, axis=0)
 ax1.plot(mean_fpr, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.2)
 std_tpr3 = np.std(tprs3, axis=0)
@@ -266,7 +266,7 @@ tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
 
 
 #ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
-ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
+#ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
 ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
