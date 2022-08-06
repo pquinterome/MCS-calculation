@@ -191,11 +191,11 @@ tprs3 = []
 aucs3 = []
 fprs3 = []
 mean_fpr = np.linspace(0, 1, 100)
-ltm = ltm[-411:]
-mu = mu[-411:]
-p = p[-411:]
-y = y[-411:]
-y2 = y2[-411:]
+#ltm = ltm[-411:]
+#mu = mu[-411:]
+#p = p[-411:]
+#y = y[-411:]
+#y2 = y2[-411:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
