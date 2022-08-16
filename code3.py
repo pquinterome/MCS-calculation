@@ -143,6 +143,18 @@ model5 = Model(inputs=[i1, i2, i3], outputs=x2)
 #model3 = Model(inputs=[i1, i3], outputs=x1)
 #model4 = Model(inputs=[i1, i3], outputs=x2)
 
+i1 = Input(shape=(70,177,1))
+x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
+x1 = MaxPool2D(pool_size=(2,2))(x1)
+x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x1)
+x1 = MaxPool2D(pool_size=(2,2))(x1)                                                
+x1 = Dropout(rate=0.2)(x1)
+x1 = Flatten()(x1)
+#x1 = BatchNormalization()(x1)
+x1 = Dense(90, activation='relu')(x1)
+x1 = Dense(1, activation='sigmoid')(x1)
+model6 = Model(i1, x1)
+
 
 # %%
 #y_cat_train = to_categorical(y_train, 2)
@@ -339,31 +351,34 @@ print(f'f1{i}',         f1_score(y_test, predictions))#
 print('now regression')
 
 
-#models = [model4, model4, model4, model4]
-#i = 0
-#for model in models:
-#
-#    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-#    model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
-#    pred2 = model4.predict((X_test1, X_test2, X_test3))
-#    mae = mean_absolute_error(y_test2, pred2)
-#    rmse = mean_squared_error(y_test2, pred2)
-#    print(f'MAE{i}', mae)
-#    print(f'RMSE{i}', rmse)
-#    print(f'y_test2{i}>>>','', np.array(y_test2))
-#    print(f'pred2>>>{i}','', np.array(pred2.ravel()))#
-#
-#    plt.figure(4+i)
-#    plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7, label='Predict')
-#    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', alpha=.8)
-#    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
-#    plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
-#    plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
-#    plt.xlim(0.85, 1.01)
-#    plt.ylim(0.85, 1.01)
-#    plt.ylabel('predicted')
-#    plt.xlabel('Measured')
-#    plt.title('Dose Blended Images for Portal Dosimetry')
-#    plt.legend()
-#    plt.savefig(f'output/Plot_egression{i}.png', bbox_inches='tight')
-#    i = i+1
+models = [model6, model6, model6, model6]
+i = 0
+for model in models:
+
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+    #model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+    model.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+    #pred2 = model4.predict((X_test1, X_test2, X_test3))
+    pred2 = model4.predict(X_test1)
+    mae = mean_absolute_error(y_test2, pred2)
+    rmse = mean_squared_error(y_test2, pred2)
+    print(f'MAE{i}', mae)
+    print(f'RMSE{i}', rmse)
+    print(f'y_test2{i}>>>','', np.array(y_test2))
+    print(f'pred2>>>{i}','', np.array(pred2.ravel()))#
+
+    plt.figure(4+i)
+    plt.scatter(x=y_test2, y=pred2, edgecolors='k', color='g', alpha=0.7, label='Predict')
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', alpha=.8)
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='0%', alpha=.8)
+    plt.plot([0.03, 1], [0, 0.97], 'g--', linewidth=0.8)
+    plt.plot([0, 0.97], [0.03, 1],    'g--', linewidth=0.8, label='$\pm$ 3%')
+    plt.xlim(0.85, 1.01)
+    plt.ylim(0.85, 1.01)
+    plt.ylabel('predicted')
+    plt.xlabel('Measured')
+    plt.title('Dose Blended Images for Portal Dosimetry')
+    plt.legend()
+    plt.savefig(f'output/Plot_egression{i}.png', bbox_inches='tight')
+    i = i+1
+print('all  ok')
