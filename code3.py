@@ -212,11 +212,11 @@ mean_fpr1 = np.linspace(0, 1, 100)
 mean_fpr2 = np.linspace(0, 1, 100)
 mean_fpr3 = np.linspace(0, 1, 100)
 mean_fpr4 = np.linspace(0, 1, 100)
-#ltm = ltm[-411:]
-#mu = mu[-411:]
-#p = p[-411:]
-#y = y[-411:]
-#y2 = y2[-411:]
+ltm = ltm[-411:]
+mu = mu[-411:]
+p = p[-411:]
+y = y[-411:]
+y2 = y2[-411:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
@@ -308,7 +308,7 @@ ax1.fill_between(mean_fpr2, tprs_lower2, tprs_upper2, color='green', alpha=.2, l
 ax1.fill_between(mean_fpr3, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 ax1.fill_between(mean_fpr4, tprs_lower4, tprs_upper4, color='red', alpha=.2, label=r'$\pm$ 1 std. dev. M_123')
 
-ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
+ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 
 plt.ylabel('True Positive Rate')
