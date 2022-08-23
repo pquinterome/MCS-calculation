@@ -267,7 +267,7 @@ for model in models:
     aucs4.append(roc_auc4)
     
 
-ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
+ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='k', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr2 = np.mean(tprs2, axis=0)
 mean_tpr3 = np.mean(tprs3, axis=0)
@@ -284,13 +284,13 @@ std_auc = np.std(aucs1)
 std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
 std_auc4 = np.std(aucs4)
-ax1.plot(mean_fpr1, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
+ax1.plot(mean_fpr1, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.7)
 std_tpr = np.std(tprs1, axis=0)
-ax1.plot(mean_fpr2, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.5)
+ax1.plot(mean_fpr2, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.7)
 std_tpr2 = np.std(tprs2, axis=0)
-ax1.plot(mean_fpr3, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.2)
+ax1.plot(mean_fpr3, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.7)
 std_tpr3 = np.std(tprs3, axis=0)
-ax1.plot(mean_fpr4, mean_tpr4, color='red',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc4, std_auc4), lw=2, alpha=.2)
+ax1.plot(mean_fpr4, mean_tpr4, color='red',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc4, std_auc4), lw=2, alpha=.7)
 std_tpr4 = np.std(tprs4, axis=0)
 
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
@@ -357,20 +357,44 @@ plt.savefig('output/drop_00.png', bbox_inches='tight')
 #plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
-
-metrics = pd.DataFrame(model3.history.history)
-pred = model3.predict(X_test3)
-predictions = np.round(pred)
-fpr, tpr, thresholds = roc_curve(y_test, pred)
-roc_auc = auc(fpr, tpr)
+metrics1 = pd.DataFrame(model1.history.history)
+pred1 = model1.predict(X_test1)
+predictions1 = np.round(pred1)
+fpr1, tpr1, thresholds1 = roc_curve(y_test, pred1)
+roc_auc1 = auc(fpr1, tpr1)
 classes=[0,1]
-con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions).numpy()
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions1).numpy()
+print(f'AUC_model{1}',  roc_auc)
+print(f'Accuracy{1}',   accuracy_score(y_test, predictions1))
+print(f'precision{1}',  precision_score(y_test, predictions1))
+print(f'recall{1}',     recall_score(y_test, predictions1))
+print(f'f1{1}',         f1_score(y_test, predictions1))#
 
-print(f'AUC_model{i}',  roc_auc)
-print(f'Accuracy{i}',   accuracy_score(y_test, predictions))
-print(f'precision{i}',  precision_score(y_test, predictions))
-print(f'recall{i}',     recall_score(y_test, predictions))
-print(f'f1{i}',         f1_score(y_test, predictions))#
+metrics2 = pd.DataFrame(model2.history.history)
+pred2 = model2.predict(X_test2)
+predictions2 = np.round(pred2)
+fpr2, tpr2, thresholds2 = roc_curve(y_test, pred2)
+roc_auc2 = auc(fpr2, tpr2)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions2).numpy()
+print(f'AUC_model{2}',  roc_auc)
+print(f'Accuracy{2}',   accuracy_score(y_test, predictions2))
+print(f'precision{2}',  precision_score(y_test, predictions2))
+print(f'recall{2}',     recall_score(y_test, predictions2))
+print(f'f1{2}',         f1_score(y_test, predictions2))#
+
+metrics3 = pd.DataFrame(model3.history.history)
+pred3 = model3.predict(X_test3)
+predictions3 = np.round(pred3)
+fpr3, tpr3, thresholds3 = roc_curve(y_test, pred3)
+roc_auc3 = auc(fpr3, tpr3)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions3).numpy()
+print(f'AUC_model{3}',  roc_auc3)
+print(f'Accuracy{3}',   accuracy_score(y_test, predictions3))
+print(f'precision{3}',  precision_score(y_test, predictions3))
+print(f'recall{3}',     recall_score(y_test, predictions3))
+print(f'f1{3}',         f1_score(y_test, predictions3))#
 
 print('now regression')
 
