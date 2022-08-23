@@ -364,7 +364,7 @@ fpr1, tpr1, thresholds1 = roc_curve(y_test, pred1)
 roc_auc1 = auc(fpr1, tpr1)
 classes=[0,1]
 con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions1).numpy()
-print(f'AUC_model{1}',  roc_auc)
+print(f'AUC_model{1}',  roc_auc1)
 print(f'Accuracy{1}',   accuracy_score(y_test, predictions1))
 print(f'precision{1}',  precision_score(y_test, predictions1))
 print(f'recall{1}',     recall_score(y_test, predictions1))
@@ -377,7 +377,7 @@ fpr2, tpr2, thresholds2 = roc_curve(y_test, pred2)
 roc_auc2 = auc(fpr2, tpr2)
 classes=[0,1]
 con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions2).numpy()
-print(f'AUC_model{2}',  roc_auc)
+print(f'AUC_model{2}',  roc_auc2)
 print(f'Accuracy{2}',   accuracy_score(y_test, predictions2))
 print(f'precision{2}',  precision_score(y_test, predictions2))
 print(f'recall{2}',     recall_score(y_test, predictions2))
@@ -395,6 +395,19 @@ print(f'Accuracy{3}',   accuracy_score(y_test, predictions3))
 print(f'precision{3}',  precision_score(y_test, predictions3))
 print(f'recall{3}',     recall_score(y_test, predictions3))
 print(f'f1{3}',         f1_score(y_test, predictions3))#
+
+metrics4 = pd.DataFrame(model4.history.history)
+pred4 = model4.predict((X_test1, X_test2, X_test3))
+predictions4 = np.round(pred4)
+fpr4, tpr4, thresholds4 = roc_curve(y_test, pred4)
+roc_auc4 = auc(fpr4, tpr4)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions4).numpy()
+print(f'AUC_model{4}',  roc_auc4)
+print(f'Accuracy{4}',   accuracy_score(y_test, predictions4))
+print(f'precision{4}',  precision_score(y_test, predictions4))
+print(f'recall{4}',     recall_score(y_test, predictions4))
+print(f'f1{4}',         f1_score(y_test, predictions4))#
 
 print('now regression')
 
