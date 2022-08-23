@@ -360,18 +360,17 @@ model6 = Model(i1, x1)
 
 
 model6.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
-model6.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
 
-model6.save('models/model_3.h5')
 
 models = [model6, model6, model6, model6]
 i = 0
 for model in models:
 
-    #model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
     #model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
-    #model.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+    model.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
     #pred2 = model4.predict((X_test1, X_test2, X_test3))
+    model6.save(f'models/model_6_{i}.h5')
     pred2 = model.predict(X_test1)
     mae = mean_absolute_error(y_test2, pred2)
     rmse = mean_squared_error(y_test2, pred2)
