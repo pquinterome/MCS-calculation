@@ -290,7 +290,7 @@ ax1.plot(mean_fpr2, mean_tpr2, color='green',label=r'M_2 Mean ROC (AUC = %0.2f $
 std_tpr2 = np.std(tprs2, axis=0)
 ax1.plot(mean_fpr3, mean_tpr3, color='orange',label=r'M_3 Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.7)
 std_tpr3 = np.std(tprs3, axis=0)
-ax1.plot(mean_fpr4, mean_tpr4, color='red',label=r'M_123 Mean ROC \n (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc4, std_auc4), lw=2, alpha=.7)
+ax1.plot(mean_fpr4, mean_tpr4, color='red',label=r'M_123 Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc4, std_auc4), lw=2, alpha=.7)
 std_tpr4 = np.std(tprs4, axis=0)
 
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
