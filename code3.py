@@ -99,9 +99,9 @@ x1 = MaxPool2D(pool_size=(2,2))(x1)
 x1 = Dropout(rate=0.2)(x1)
 x1 = Flatten()(x1)
 #x1 = BatchNormalization()(x1)
-x1 = Dense(90, activation='relu')(x1)
-x1 = Dense(1, activation='sigmoid')(x1)
-model1 = Model(i1, x1)
+x11 = Dense(90, activation='relu')(x1)
+x11 = Dense(1, activation='sigmoid')(x11)
+model1 = Model(i1, x11)
 ##Model->2
 i2 = Input(shape=(176,1))
 x2 = Conv1D(filters=70, kernel_size=(5), activation='relu', padding='same')(i2)
@@ -109,9 +109,9 @@ x2 = MaxPool1D(pool_size=(3))(x2)
 x2 = Dropout(rate=0.1)(x2)
 x2 = Flatten()(x2)
 x2 = BatchNormalization()(x2)
-x2 = Dense(90, activation='relu')(x2)
-x2 = Dense(1, activation='sigmoid')(x2)
-model2 = Model(i2, x2)
+x22 = Dense(90, activation='relu')(x2)
+x22 = Dense(1, activation='sigmoid')(x22)
+model2 = Model(i2, x22)
 ###Model->3
 i3 = Input(shape=(512,512,1))
 x3 = Conv2D(filters=64, kernel_size=(5,5), activation='relu', padding='same')(i3)
@@ -125,10 +125,10 @@ x3 = MaxPool2D(pool_size=(2,2))(x3)
 x3 = Dropout(0.2)(x3)
 x3 = Flatten()(x3)
 #x3 = BatchNormalization()(x3)
-x3 = Dense(360, activation='relu')(x3)
-x3 = Dense(90, activation='relu')(x3)
-x3 = Dense(1, activation='sigmoid')(x3)
-model3 = Model(i3, x3)
+x33 = Dense(360, activation='relu')(x3)
+x33 = Dense(90, activation='relu')(x33)
+x33 = Dense(1, activation='sigmoid')(x33)
+model3 = Model(i3, x33)
 #####################
 #merge
 merge = concatenate([x1, x2, x3])
@@ -136,24 +136,14 @@ merge = concatenate([x1, x2, x3])
 x = Dense(360, activation='relu')(merge)
 x = Dense(180, activation='relu')(x)
 #x = Dense(90, activation='relu')(x)
-x1 = Dense(1, activation='sigmoid')(x)
+x1 = Dense(1, activation='sigmoid')(x)  #Classification Hybrid model
 x2 = Dense(1, activation='linear')(x)
 model4 = Model(inputs=[i1, i2, i3], outputs=x1)
 model5 = Model(inputs=[i1, i2, i3], outputs=x2)
 #model3 = Model(inputs=[i1, i3], outputs=x1)
 #model4 = Model(inputs=[i1, i3], outputs=x2)
 
-i1 = Input(shape=(70,177,1))
-x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
-x1 = MaxPool2D(pool_size=(2,2))(x1)
-x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x1)
-x1 = MaxPool2D(pool_size=(2,2))(x1)                                                
-x1 = Dropout(rate=0.2)(x1)
-x1 = Flatten()(x1)
-#x1 = BatchNormalization()(x1)
-x1 = Dense(90, activation='relu')(x1)
-x1 = Dense(1, activation='sigmoid')(x1)
-model6 = Model(i1, x1)
+
 
 
 # %%
@@ -201,7 +191,9 @@ fprs2 = []
 tprs3 = []
 aucs3 = []
 fprs3 = []
-mean_fpr = np.linspace(0, 1, 100)
+mean_fpr1 = np.linspace(0, 1, 100)
+mean_fpr2 = np.linspace(0, 1, 100)
+mean_fpr3 = np.linspace(0, 1, 100)
 #ltm = ltm[-411:]
 #mu = mu[-411:]
 #p = p[-411:]
@@ -233,19 +225,19 @@ for model in models:
 
     y_pred_keras = model1.predict(X_test1).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
-    tprs1.append(interp(mean_fpr, fpr, tpr))
+    tprs1.append(interp(mean_fpr1, fpr, tpr))
     roc_auc = auc(fpr, tpr)
     aucs1.append(roc_auc) 
 
     y_pred_keras2 = model2.predict(X_test2).ravel() 
     fpr2, tpr2, thresholds2 = roc_curve(y_test, y_pred_keras2)
-    tprs2.append(interp(mean_fpr, fpr2, tpr2))
+    tprs2.append(interp(mean_fpr2, fpr2, tpr2))
     roc_auc2 = auc(fpr2, tpr2)
     aucs2.append(roc_auc2)
 
     y_pred_keras3 = model3.predict(X_test3).ravel() 
     fpr3, tpr3, thresholds3 = roc_curve(y_test, y_pred_keras3)
-    tprs3.append(interp(mean_fpr, fpr3, tpr3))
+    tprs3.append(interp(mean_fpr3, fpr3, tpr3))
     roc_auc3 = auc(fpr3, tpr3)
     aucs3.append(roc_auc3)
     
@@ -253,7 +245,7 @@ for model in models:
 ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
 mean_tpr = np.mean(tprs1, axis=0)
 mean_tpr2 = np.mean(tprs2, axis=0)
-mean_tpr3 = np.mean(tprs2, axis=0)
+mean_tpr3 = np.mean(tprs3, axis=0)
 mean_tpr[-1] = 1.0
 mean_tpr2[-1] = 1.0
 mean_tpr3[-1] = 1.0
@@ -263,11 +255,11 @@ mean_auc3 = np.mean(aucs3)
 std_auc = np.std(aucs1)
 std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
-ax1.plot(mean_fpr, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
+ax1.plot(mean_fpr1, mean_tpr, color='blue',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.2)
 std_tpr = np.std(tprs1, axis=0)
-ax1.plot(mean_fpr, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.5)
+ax1.plot(mean_fpr2, mean_tpr2, color='green',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.5)
 std_tpr2 = np.std(tprs2, axis=0)
-ax1.plot(mean_fpr, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.2)
+ax1.plot(mean_fpr3, mean_tpr3, color='orange',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.2)
 std_tpr3 = np.std(tprs3, axis=0)
 
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
@@ -278,9 +270,9 @@ tprs_upper3 = np.minimum(mean_tpr3 + std_tpr3, 1)
 tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
 
 
-ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
-ax1.fill_between(mean_fpr, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
-ax1.fill_between(mean_fpr, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
+ax1.fill_between(mean_fpr1, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
+ax1.fill_between(mean_fpr2, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
+ax1.fill_between(mean_fpr3, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
@@ -350,6 +342,20 @@ print(f'f1{i}',         f1_score(y_test, predictions))#
 
 print('now regression')
 
+
+
+
+i1 = Input(shape=(70,177,1))
+x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
+x1 = MaxPool2D(pool_size=(2,2))(x1)
+x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x1)
+x1 = MaxPool2D(pool_size=(2,2))(x1)                                                
+x1 = Dropout(rate=0.2)(x1)
+x1 = Flatten()(x1)
+#x1 = BatchNormalization()(x1)
+x1 = Dense(90, activation='relu')(x1)
+x1 = Dense(1, activation='linear')(x1)
+model6 = Model(i1, x1)
 
 models = [model6, model6, model6, model6]
 i = 0
