@@ -52,6 +52,7 @@ mu = np.load('inputs/mu_cp.npy')
 mu = mu[:820,]
 p = np.load('inputs/portal.npy')
 p = np.array([(p[i]/p[i].max()) for i in range(len(p))])
+#########################################################
 ltm = np.concatenate((ltm, ltm[-411:]), axis=0)
 p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
@@ -357,13 +358,19 @@ x1 = Dense(90, activation='relu')(x1)
 x1 = Dense(1, activation='linear')(x1)
 model6 = Model(i1, x1)
 
+
+model6.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+model6.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+
+model6.save('models/model_3.h5')
+
 models = [model6, model6, model6, model6]
 i = 0
 for model in models:
 
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
+    #model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mean_absolute_error'])
     #model.fit(x=[X_train1, X_train2, X_train3], y= y_train2, validation_data= ([X_test1, X_test2, X_test3], y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
-    model.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
+    #model.fit(x=X_train1, y= y_train2, validation_data= (X_test1, y_test2), callbacks=[reduce_lr], epochs=200, verbose=0)
     #pred2 = model4.predict((X_test1, X_test2, X_test3))
     pred2 = model.predict(X_test1)
     mae = mean_absolute_error(y_test2, pred2)
