@@ -182,9 +182,9 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_l
 #model2.save('models/model_2.h5')
 #model3.save('models/model_3.h5')
 
-model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model4.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model4.save('models/model_4.h5')
+#model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model4.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model4.save('models/model_4.h5')
 
 model1 = tf.keras.models.load_model('models/model_1.h5')
 model2 = tf.keras.models.load_model('models/model_2.h5')
