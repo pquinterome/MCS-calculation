@@ -212,11 +212,11 @@ mean_fpr1 = np.linspace(0, 1, 100)
 mean_fpr2 = np.linspace(0, 1, 100)
 mean_fpr3 = np.linspace(0, 1, 100)
 mean_fpr4 = np.linspace(0, 1, 100)
-ltm = ltm[-411:]
-mu = mu[-411:]
-p = p[-411:]
-y = y[-411:]
-y2 = y2[-411:]
+#ltm = ltm[-411:]
+#mu = mu[-411:]
+#p = p[-411:]
+#y = y[-411:]
+#y2 = y2[-411:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
@@ -284,13 +284,13 @@ std_auc = np.std(aucs1)
 std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
 std_auc4 = np.std(aucs4)
-ax1.plot(mean_fpr1, mean_tpr, color='blue',label=r'M_1 Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.7)
+ax1.plot(mean_fpr1, mean_tpr, color='blue',label=r'M_1 Mean ROC \n (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.7)
 std_tpr = np.std(tprs1, axis=0)
-ax1.plot(mean_fpr2, mean_tpr2, color='green',label=r'M_2 Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.7)
+ax1.plot(mean_fpr2, mean_tpr2, color='green',label=r'M_2 Mean ROC \n (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc2, std_auc2), lw=2, alpha=.7)
 std_tpr2 = np.std(tprs2, axis=0)
-ax1.plot(mean_fpr3, mean_tpr3, color='orange',label=r'M_3 Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.7)
+ax1.plot(mean_fpr3, mean_tpr3, color='orange',label=r'M_3 Mean ROC \n (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc3, std_auc3), lw=2, alpha=.7)
 std_tpr3 = np.std(tprs3, axis=0)
-ax1.plot(mean_fpr4, mean_tpr4, color='red',label=r'M_123 Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc4, std_auc4), lw=2, alpha=.7)
+ax1.plot(mean_fpr4, mean_tpr4, color='red',label=r'M_123 Mean ROC \n (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc4, std_auc4), lw=2, alpha=.7)
 std_tpr4 = np.std(tprs4, axis=0)
 
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
