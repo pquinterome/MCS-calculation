@@ -244,11 +244,11 @@ mean_fpr1 = np.linspace(0, 1, 100)
 mean_fpr2 = np.linspace(0, 1, 100)
 mean_fpr3 = np.linspace(0, 1, 100)
 mean_fpr4 = np.linspace(0, 1, 100)
-ltm = ltm[-205:]
-mu = mu[-205:]
-p = p[-205:]
-y = y[-205:]
-y2 = y2[-205:]
+#ltm = ltm[-205:]
+#mu = mu[-205:]
+#p = p[-205:]
+#y = y[-205:]
+#y2 = y2[-205:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
@@ -261,7 +261,14 @@ for model in models:
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
+    idx1 = np.random.choice(np.arange(len(p)), w, replace=False)
+    ltm1 = ltm[idx]
+    mu1 = mu[idx]
+    p1 = p[idx]
+    y1 = y[idx]
+    y21 = y2[idx]
+
+    X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm1, mu1, p1, y1, y21, test_size=0.2)
     print('X_train', X_train0.shape)
     print('X_test', X_test0.shape)
     X_train1 = X_train0.reshape(X_train0.shape[0], 70, 177, 1)
