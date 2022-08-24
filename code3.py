@@ -173,9 +173,9 @@ model7 = Model(inputs=[i2, i3], outputs=g1)
 #y_cat_train = to_categorical(y_train, 2)
 #y_cat_test = to_categorical(y_test, 2)
 
-data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=10)
-train_generator = data_generator.flow(X_train3, y_train,  batch_size=64)
-test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
+##data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True, rotation_range=10)
+##train_generator = data_generator.flow(X_train3, y_train,  batch_size=64)
+##test_generator = data_generator.flow(X_test3, y_test, shuffle=False)
 
 #data_generator = ImageDataGenerator(horizontal_flip=True, vertical_flip=True)
 #train_generator = data_generator.flow(X_train, y_train)
