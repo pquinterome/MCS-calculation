@@ -261,7 +261,7 @@ for model in models:
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx1 = np.random.choice(np.arange(len(p)), w, replace=False)
+    idx1 = np.random.choice(np.arange(len(p)), 205, replace=False)
     ltm1 = ltm[idx]
     mu1 = mu[idx]
     p1 = p[idx]
