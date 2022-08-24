@@ -590,9 +590,9 @@ ax1.plot(mean_fpr1, mean_tpr, color='blue',linestyle='-' ,label=r'M_123 ROC_AUC 
 std_tpr = np.std(tprs1, axis=0)
 ax1.plot(mean_fpr2, mean_tpr2, color='green', linestyle='--',label=r'M_12 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc2, std_auc2), lw=2, alpha=.7)
 std_tpr2 = np.std(tprs2, axis=0)
-ax1.plot(mean_fpr3, mean_tpr3, color='orange', linestyle='-.',label=r'M_13 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc3, std_auc3), lw=2, alpha=.7)
+ax1.plot(mean_fpr3, mean_tpr3, color='orange', linestyle='-.', label=r'M_13 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc3, std_auc3), lw=2, alpha=.7)
 std_tpr3 = np.std(tprs3, axis=0)
-ax1.plot(mean_fpr4, mean_tpr4, color='red',, linestyle=':'label=r'M_23 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc4, std_auc4), lw=2, alpha=.7)
+ax1.plot(mean_fpr4, mean_tpr4, color='red',linestyle=':', label=r'M_23 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc4, std_auc4), lw=2, alpha=.7)
 std_tpr4 = np.std(tprs4, axis=0)
 
 tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
