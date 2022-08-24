@@ -632,7 +632,7 @@ print(f'recall{5}',     recall_score(y_test, predictions1))
 print(f'f1{5}',         f1_score(y_test, predictions1))#
 
 metrics6 = pd.DataFrame(model6.history.history)
-pred2 = model2.predict((X_test1, X_test3))
+pred2 = model6.predict((X_test1, X_test3))
 predictions2 = np.round(pred2)
 fpr2, tpr2, thresholds2 = roc_curve(y_test, pred2)
 roc_auc2 = auc(fpr2, tpr2)
@@ -645,7 +645,7 @@ print(f'recall{6}',     recall_score(y_test, predictions2))
 print(f'f1{6}',         f1_score(y_test, predictions2))#
 
 metrics7 = pd.DataFrame(model7.history.history)
-pred3 = model3.predict((X_test2, X_test3))
+pred3 = model7.predict((X_test2, X_test3))
 predictions3 = np.round(pred3)
 fpr3, tpr3, thresholds3 = roc_curve(y_test, pred3)
 roc_auc3 = auc(fpr3, tpr3)
