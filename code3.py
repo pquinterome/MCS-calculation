@@ -20,6 +20,8 @@ from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 from numpy import interp
 print('TensorFlow version', tf.__version__)
+
+import random
 # %%
 ltm_T = np.load('inputs/ltm_T.npy')
 ltm_H = np.load('inputs/ltm_H.npy')
@@ -261,7 +263,7 @@ for model in models:
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx1 = np.random.choice(np.arange(len(p)), 205, replace=False)
+    idx = np.random.choice(np.arange(len(p)), 205, replace=False)
     ltm1 = ltm[idx]
     mu1 = mu[idx]
     p1 = p[idx]
@@ -537,7 +539,14 @@ for model in models:
     model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)
+    idx = np.random.choice(np.arange(len(p)), 205, replace=False)
+    ltm1 = ltm[idx]
+    mu1 = mu[idx]
+    p1 = p[idx]
+    y1 = y[idx]
+    y21 = y2[idx]
+
+    X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm1, mu1, p1, y1, y21, test_size=0.2)
     print('X_train', X_train0.shape)
     print('X_test', X_test0.shape)
     X_train1 = X_train0.reshape(X_train0.shape[0], 70, 177, 1)
