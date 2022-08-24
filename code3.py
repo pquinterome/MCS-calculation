@@ -201,31 +201,24 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_l
 #model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 #model4.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
 #model4.save('models/model_4.h5')
-
-model5.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model5.fit(x=[X_train1, X_train2], y= y_train, validation_data= ([X_test1, X_test2], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model5.save('models/model_5.h5')
-
-model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model6.fit(x=[X_train1, X_train3], y= y_train, validation_data= ([X_test1, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model6.save('models/model_6.h5')
-
-model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-model7.fit(x=[X_train2, X_train3], y= y_train, validation_data= ([X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-model7.save('models/model_7.h5')
-
-model5.save('models/model_5.h5')
-model6.save('models/model_6.h5')
-model7.save('models/model_7.h5')
+#model5.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model5.fit(x=[X_train1, X_train2], y= y_train, validation_data= ([X_test1, X_test2], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model5.save('models/model_5.h5')
+#model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model6.fit(x=[X_train1, X_train3], y= y_train, validation_data= ([X_test1, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model6.save('models/model_6.h5')
+#model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model7.fit(x=[X_train2, X_train3], y= y_train, validation_data= ([X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+#model7.save('models/model_7.h5')
+#model5.save('models/model_5.h5')
+#model6.save('models/model_6.h5')
+#model7.save('models/model_7.h5')
 
 
 model1 = tf.keras.models.load_model('models/model_1.h5')
 model2 = tf.keras.models.load_model('models/model_2.h5')
 model3 = tf.keras.models.load_model('models/model_3.h5')
-
 model4 = tf.keras.models.load_model('models/model_4.h5')
-
-
 model5 = tf.keras.models.load_model('models/model_5.h5')
 model6 = tf.keras.models.load_model('models/model_6.h5')
 model7 = tf.keras.models.load_model('models/model_7.h5')
@@ -623,3 +616,43 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_02.png', bbox_inches='tight')
+
+
+metrics5 = pd.DataFrame(model5.history.history)
+pred1 = model5.predict((X_test1, X_test2))
+predictions1 = np.round(pred1)
+fpr1, tpr1, thresholds1 = roc_curve(y_test, pred1)
+roc_auc1 = auc(fpr1, tpr1)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions1).numpy()
+print(f'AUC_model{5}',  roc_auc1)
+print(f'Accuracy{5}',   accuracy_score(y_test, predictions1))
+print(f'precision{5}',  precision_score(y_test, predictions1))
+print(f'recall{5}',     recall_score(y_test, predictions1))
+print(f'f1{5}',         f1_score(y_test, predictions1))#
+
+metrics6 = pd.DataFrame(model6.history.history)
+pred2 = model2.predict((X_test1, X_test3))
+predictions2 = np.round(pred2)
+fpr2, tpr2, thresholds2 = roc_curve(y_test, pred2)
+roc_auc2 = auc(fpr2, tpr2)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions2).numpy()
+print(f'AUC_model{6}',  roc_auc2)
+print(f'Accuracy{6}',   accuracy_score(y_test, predictions2))
+print(f'precision{6}',  precision_score(y_test, predictions2))
+print(f'recall{6}',     recall_score(y_test, predictions2))
+print(f'f1{6}',         f1_score(y_test, predictions2))#
+
+metrics7 = pd.DataFrame(model7.history.history)
+pred3 = model3.predict((X_test2, X_test3))
+predictions3 = np.round(pred3)
+fpr3, tpr3, thresholds3 = roc_curve(y_test, pred3)
+roc_auc3 = auc(fpr3, tpr3)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions3).numpy()
+print(f'AUC_model{7}',  roc_auc3)
+print(f'Accuracy{7}',   accuracy_score(y_test, predictions3))
+print(f'precision{7}',  precision_score(y_test, predictions3))
+print(f'recall{7}',     recall_score(y_test, predictions3))
+print(f'f1{7}',         f1_score(y_test, predictions3))#
