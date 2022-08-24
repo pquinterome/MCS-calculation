@@ -244,11 +244,11 @@ mean_fpr1 = np.linspace(0, 1, 100)
 mean_fpr2 = np.linspace(0, 1, 100)
 mean_fpr3 = np.linspace(0, 1, 100)
 mean_fpr4 = np.linspace(0, 1, 100)
-#ltm = ltm[-411:]
-#mu = mu[-411:]
-#p = p[-411:]
-#y = y[-411:]
-#y2 = y2[-411:]
+ltm = ltm[-205:]
+mu = mu[-205:]
+p = p[-205:]
+y = y[-205:]
+y2 = y2[-205:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
