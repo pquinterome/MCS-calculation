@@ -117,6 +117,7 @@ feature_maps1 = model1.predict(X_test1)
 feature_maps2 = model2.predict(X_test2)
 feature_maps3 = model3.predict(X_test3)
 
+print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
 for i in range(10):
     a1 =feature_maps1[i, :, :]
