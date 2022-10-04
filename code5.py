@@ -124,7 +124,7 @@ for i in range(30):
     a1 =feature_maps1[i, :, :]
     res1 = np.sum(a1, axis=2)
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
-    plt.figure(figsize=(18,4))
+    plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
     plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.7)
     cbar = plt.colorbar()
@@ -142,7 +142,7 @@ for i in range(30):
     a2 =feature_maps2[i, :]
     res2 = np.sum(a2, axis=1)
     res2 = res2/res2.max()
-    plt.figure(figsize=(18,4))
+    plt.figure(figsize=(8,4))
     x = np.arange(0.0, len(res2), 1)
     plt.plot(X_test2[i], alpha=1, linewidth=5.5, label='MUcp_profile')
     #plt.plot(res2)
