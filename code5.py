@@ -120,7 +120,7 @@ feature_maps2 = model2.predict(X_test2)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
-for i in range(30):
+for i in range(5):
     a1 =feature_maps1[i, :, :]
     res1 = np.sum(a1, axis=2)
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
@@ -162,8 +162,9 @@ print('End of first Experiment')
 
 val_ltm = np.load('inputs/tlm_val.npy')
 val_ltm = np.array([val_ltm[i][:177,].T for i in range(len(val_ltm))])
+
 y3 = pd.read_csv('inputs/id_val.csv')
-y3['2_1'] = y3['2_1'].fillna(y3['2_1'].mean())
+y3['2_2'] = y3['2_2'].fillna(y3['2_2'].mean())
 y = y3['2_2']/100
 y_test = np.array([0 if x >= 0.98 else 1 for x in y])
 
@@ -201,17 +202,17 @@ p = np.array(z)
 print('LTM_dataset', ltm.shape)
 print('MU_cp_dataset', mu.shape)
 print('Portal dataset', p.shape)
-print('labels', y.shape)
+print('labels', y_test.shape)
 
-X_train1 = ltm.reshape(32, 70, 177, 1)
-X_train2 = mu.reshape(32, 176, 1)
-X_train3 = p.reshape(32, 512, 512, 1)
+X_test1 = ltm.reshape(32, 70, 177, 1)
+X_test2 = mu.reshape(32, 176, 1)
+X_test3 = p.reshape(32, 512, 512, 1)
 
 
 print('LTM_dataset', X_train1.shape)
 print('MU_cp_dataset', X_train2.shape)
 print('Portal dataset', X_train3.shape)
-print('labels', y.shape)
+print('labels', y_test.shape)
 
 
 model1 = tf.keras.models.load_model('models/model_1.h5')
