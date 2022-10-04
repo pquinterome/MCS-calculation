@@ -139,7 +139,7 @@ for i in range(10):
     plt.plot(res2)
     plt.fill_between(x= x, y1= X_test2[0].ravel(), y2= res2, color='r', label='feature')
     plt.legend()
-    #plt.savefig(f'output/M1_{i}.png', bbox_inches='tight')
+    plt.savefig(f'output/Mcp_{i}.png', bbox_inches='tight')
 
     #a3 =feature_maps3[i, :, :]
     #res3 = np.sum(a3, axis=2)
