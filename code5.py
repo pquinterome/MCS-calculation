@@ -189,7 +189,7 @@ for i in range(len(ltm)):
     z.append(padded_array)
 ltm = np.array(z)
 mu = np.load('inputs/mu_val.npy')
-mu = [mu[w]/mu[w].max() for w in range(len(mu))]
+mu = np.array([mu[w]/mu[w].max() for w in range(len(mu))])
 p = np.load('inputs/portal_val.npy', allow_pickle=True)
 z=[]
 for i in range(len(p)):
