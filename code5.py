@@ -134,9 +134,8 @@ for i in range(30):
     plt.xlabel('Control Points')
     plt.ylabel('Leaf Number')
     plt.title(f'Plan_{i} verification')
+    plt.xlim(0,176)
     plt.savefig(f'output/M1_{i}.png', bbox_inches='tight')
-
-
 
 
     a2 =feature_maps2[i, :]
@@ -148,6 +147,7 @@ for i in range(30):
     #plt.plot(res2)
     plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='gray', label='Activation zone', alpha=0.5, where= res2>0.7)
     plt.legend()
+    plt.xlim(0,176)
     plt.savefig(f'output/Mcp_{i}.png', bbox_inches='tight')
 
     #a3 =feature_maps3[i, :, :]
@@ -248,12 +248,6 @@ for model in models:
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx = np.random.choice(np.arange(len(p)), 205, replace=False)
-    ltm1 = ltm[idx]
-    mu1 = mu[idx]
-    p1 = p[idx]
-    y1 = y[idx]
-    y21 = y2[idx]
 
     y_pred_keras = model1.predict(X_test1).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
