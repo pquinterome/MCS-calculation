@@ -189,6 +189,7 @@ for i in range(len(ltm)):
     z.append(padded_array)
 ltm = np.array(z)
 mu = np.load('inputs/mu_val.npy')
+mu = [mu[w]/mu[w].max() for w in range(len(mu))]
 p = np.load('inputs/portal_val.npy', allow_pickle=True)
 z=[]
 for i in range(len(p)):
@@ -300,7 +301,7 @@ std_auc = np.std(aucs1)
 std_auc2 = np.std(aucs2)
 std_auc3 = np.std(aucs3)
 std_auc4 = np.std(aucs4)
-ax1.plot(mean_fpr1, mean_tpr, color='blue', linestyle='--',label=r'M_1 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc, std_auc), lw=2, alpha=.7)
+ax1.plot(mean_fpr1, mean_tpr, color='blue', linestyle='-',label=r'M_1 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc, std_auc), lw=2, alpha=.7)
 std_tpr = np.std(tprs1, axis=0)
 ax1.plot(mean_fpr2, mean_tpr2, color='green' , linestyle='-.',label=r'M_2 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc2, std_auc2), lw=2, alpha=.7)
 std_tpr2 = np.std(tprs2, axis=0)
