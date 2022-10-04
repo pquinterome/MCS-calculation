@@ -94,16 +94,16 @@ model6 = tf.keras.models.load_model('models/model_6.h5')
 model7 = tf.keras.models.load_model('models/model_7.h5')
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #####################
-y = ['pass' if y_test[i]>= 0.5 else 'fail' for i in range(10)]
+y = ['pass' if y_test[i]>= 0.5 else 'fail' for i in range(30)]
 a1 = model1.predict(X_test1)
-a1 = ['pass' if a1[i]>= 0.5 else 'fail' for i in range(10)]
-c1 = [ 'ok_'+y[i] if a1[i]== y[i] else 'fail' for i in range(10)]
+a1 = ['pass' if a1[i]>= 0.5 else 'fail' for i in range(30)]
+c1 = [ 'ok_'+y[i] if a1[i]== y[i] else 'fail' for i in range(30)]
 a2 = model2.predict(X_test2)
-a2 = ['pass' if a2[i]>= 0.5 else 'fail' for i in range(10)]
-c2 = [ 'ok_'+y[i] if a2[i]== y[i] else 'fail' for i in range(10)]
+a2 = ['pass' if a2[i]>= 0.5 else 'fail' for i in range(30)]
+c2 = [ 'ok_'+y[i] if a2[i]== y[i] else 'fail' for i in range(30)]
 a3 = model3.predict(X_test3)
-a3 = ['pass' if a3[i]>= 0.5 else 'fail' for i in range(10)]
-c3 = [ 'ok_'+y[i] if a3[i]== y[i] else 'fail' for i in range(10)]
+a3 = ['pass' if a3[i]>= 0.5 else 'fail' for i in range(30)]
+c3 = [ 'ok_'+y[i] if a3[i]== y[i] else 'fail' for i in range(30)]
 ##########################
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 print('C1->', c1)
@@ -120,7 +120,7 @@ feature_maps2 = model2.predict(X_test2)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
-for i in range(10):
+for i in range(30):
     a1 =feature_maps1[i, :, :]
     res1 = np.sum(a1, axis=2)
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
