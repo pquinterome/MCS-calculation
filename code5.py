@@ -321,7 +321,7 @@ tprs_lower4 = np.maximum(mean_tpr4 - std_tpr4, 0)
 ax1.fill_between(mean_fpr1, tprs_lower, tprs_upper, color='blue', alpha=.2, label=r'$\pm$ 1 std. dev. M_1')
 ax1.fill_between(mean_fpr2, tprs_lower2, tprs_upper2, color='green', alpha=.2, label=r'$\pm$ 1 std. dev. M_2')
 ax1.fill_between(mean_fpr3, tprs_lower3, tprs_upper3, color='orange', alpha=.2, label=r'$\pm$ 1 std. dev. M_3')
-ax1.fill_between(mean_fpr4, tprs_lower4, tprs_upper4, color='red', alpha=.2, label=r'$\pm$ 1 std. dev. M_123')
+#ax1.fill_between(mean_fpr4, tprs_lower4, tprs_upper4, color='red', alpha=.2, label=r'$\pm$ 1 std. dev. M_123')
 
 ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic")
 ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
@@ -330,3 +330,155 @@ plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_01.png', bbox_inches='tight')
 print('End of first Experiment')
+
+
+
+models= [model1, model1, model1, model1, model1]
+print('all ok')
+tprs1 = []
+aucs1 = []
+fprs1 = []
+tprs2 = []
+aucs2 = []
+fprs2 = []
+tprs3 = []
+aucs3 = []
+fprs3 = []
+tprs4 = []
+aucs4 = []
+fprs4 = []
+mean_fpr1 = np.linspace(0, 1, 100)
+mean_fpr2 = np.linspace(0, 1, 100)
+mean_fpr3 = np.linspace(0, 1, 100)
+mean_fpr4 = np.linspace(0, 1, 100)
+#ltm = ltm[-411:]
+#mu = mu[-411:]
+#p = p[-411:]
+#y = y[-411:]
+#y2 = y2[-411:]
+i = 1
+fig1, ax1 = plt.subplots()
+for model in models:
+    #model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    ##model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    #model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    ##model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
+    model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model5.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+    model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+
+
+
+    y_pred_keras4 = model4.predict((X_test1, X_test2, X_test3)).ravel() 
+    fpr4, tpr4, thresholds4 = roc_curve(y_test, y_pred_keras4)
+    tprs4.append(interp(mean_fpr4, fpr4, tpr4))
+    roc_auc4 = auc(fpr4, tpr4)
+    aucs4.append(roc_auc4)
+    
+    y_pred_keras = model5.predict((X_test1, X_test2)).ravel() 
+    fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
+    tprs1.append(interp(mean_fpr1, fpr, tpr))
+    roc_auc = auc(fpr, tpr)
+    aucs1.append(roc_auc) 
+
+    y_pred_keras2 = model6.predict((X_test1, X_test3)).ravel() 
+    fpr2, tpr2, thresholds2 = roc_curve(y_test, y_pred_keras2)
+    tprs2.append(interp(mean_fpr2, fpr2, tpr2))
+    roc_auc2 = auc(fpr2, tpr2)
+    aucs2.append(roc_auc2)
+
+    y_pred_keras3 = model7.predict((X_test2, X_test3)).ravel() 
+    fpr3, tpr3, thresholds3 = roc_curve(y_test, y_pred_keras3)
+    tprs3.append(interp(mean_fpr3, fpr3, tpr3))
+    roc_auc3 = auc(fpr3, tpr3)
+    aucs3.append(roc_auc3)
+    
+
+ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='k', label='Chance', alpha=.8)
+mean_tpr = np.mean(tprs1, axis=0)
+mean_tpr2 = np.mean(tprs2, axis=0)
+mean_tpr3 = np.mean(tprs3, axis=0)
+mean_tpr4 = np.mean(tprs4, axis=0)
+mean_tpr[-1] = 1.0
+mean_tpr2[-1] = 1.0
+mean_tpr3[-1] = 1.0
+mean_tpr4[-1] = 1.0
+mean_auc = np.mean(aucs1)
+mean_auc2 = np.mean(aucs2)
+mean_auc3 = np.mean(aucs3)
+mean_auc4 = np.mean(aucs4)
+std_auc = np.std(aucs1)
+std_auc2 = np.std(aucs2)
+std_auc3 = np.std(aucs3)
+std_auc4 = np.std(aucs4)
+ax1.plot(mean_fpr1, mean_tpr, color='blue',linestyle='-' ,label=r'M_123 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc, std_auc), lw=2, alpha=.7)
+std_tpr = np.std(tprs1, axis=0)
+ax1.plot(mean_fpr2, mean_tpr2, color='green', linestyle='--',label=r'M_12 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc2, std_auc2), lw=2, alpha=.7)
+std_tpr2 = np.std(tprs2, axis=0)
+ax1.plot(mean_fpr3, mean_tpr3, color='orange', linestyle='-.', label=r'M_13 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc3, std_auc3), lw=2, alpha=.7)
+std_tpr3 = np.std(tprs3, axis=0)
+ax1.plot(mean_fpr4, mean_tpr4, color='red',linestyle=':', label=r'M_23 ROC_AUC = %0.2f $\pm$ %0.2f' % (mean_auc4, std_auc4), lw=2, alpha=.7)
+std_tpr4 = np.std(tprs4, axis=0)
+
+tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+tprs_upper2 = np.minimum(mean_tpr2 + std_tpr2, 1)
+tprs_lower2 = np.maximum(mean_tpr2 - std_tpr2, 0)
+tprs_upper3 = np.minimum(mean_tpr3 + std_tpr3, 1)
+tprs_lower3 = np.maximum(mean_tpr3 - std_tpr3, 0)
+tprs_upper4 = np.minimum(mean_tpr4 + std_tpr4, 1)
+tprs_lower4 = np.maximum(mean_tpr4 - std_tpr4, 0)
+
+
+ax1.fill_between(mean_fpr1, tprs_lower, tprs_upper, color='blue', alpha=.1, label=r'$\pm$ 1 std. dev. M_123')
+ax1.fill_between(mean_fpr2, tprs_lower2, tprs_upper2, color='green', alpha=.1, label=r'$\pm$ 1 std. dev. M_12')
+ax1.fill_between(mean_fpr3, tprs_lower3, tprs_upper3, color='orange', alpha=.1, label=r'$\pm$ 1 std. dev. M_13')
+ax1.fill_between(mean_fpr4, tprs_lower4, tprs_upper4, color='red', alpha=.1, label=r'$\pm$ 1 std. dev. M_23')
+
+ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic")
+ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
+
+plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+plt.savefig('output/drop_02.png', bbox_inches='tight')
+
+
+metrics5 = pd.DataFrame(model5.history.history)
+pred1 = model5.predict((X_test1, X_test2))
+predictions1 = np.round(pred1)
+fpr1, tpr1, thresholds1 = roc_curve(y_test, pred1)
+roc_auc1 = auc(fpr1, tpr1)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions1).numpy()
+print(f'AUC_model{5}',  roc_auc1)
+print(f'Accuracy{5}',   accuracy_score(y_test, predictions1))
+print(f'precision{5}',  precision_score(y_test, predictions1))
+print(f'recall{5}',     recall_score(y_test, predictions1))
+print(f'f1{5}',         f1_score(y_test, predictions1))#
+
+metrics6 = pd.DataFrame(model6.history.history)
+pred2 = model6.predict((X_test1, X_test3))
+predictions2 = np.round(pred2)
+fpr2, tpr2, thresholds2 = roc_curve(y_test, pred2)
+roc_auc2 = auc(fpr2, tpr2)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions2).numpy()
+print(f'AUC_model{6}',  roc_auc2)
+print(f'Accuracy{6}',   accuracy_score(y_test, predictions2))
+print(f'precision{6}',  precision_score(y_test, predictions2))
+print(f'recall{6}',     recall_score(y_test, predictions2))
+print(f'f1{6}',         f1_score(y_test, predictions2))#
+
+metrics7 = pd.DataFrame(model7.history.history)
+pred3 = model7.predict((X_test2, X_test3))
+predictions3 = np.round(pred3)
+fpr3, tpr3, thresholds3 = roc_curve(y_test, pred3)
+roc_auc3 = auc(fpr3, tpr3)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions3).numpy()
+print(f'AUC_model{7}',  roc_auc3)
+print(f'Accuracy{7}',   accuracy_score(y_test, predictions3))
+print(f'precision{7}',  precision_score(y_test, predictions3))
+print(f'recall{7}',     recall_score(y_test, predictions3))
+print(f'f1{7}',         f1_score(y_test, predictions3))#
