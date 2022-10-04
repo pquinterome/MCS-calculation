@@ -169,6 +169,7 @@ y = y3['2_2']/100
 y_test = np.array([0 if x >= 0.98 else 1 for x in y])
 
 ltm = val_ltm
+ltm = [abs(ltm[w]/ltm[w].max()) for w in range(len(ltm))]
 a=[]
 for i in range(len(ltm)):
     dlb1= pd.DataFrame(ltm[i].T)
@@ -189,7 +190,6 @@ for i in range(len(ltm)):
     z.append(padded_array)
 ltm = np.array(z)
 mu = np.load('inputs/mu_val.npy')
-mu = np.array([mu[w]/mu[w].max() for w in range(len(mu))])
 p = np.load('inputs/portal_val.npy', allow_pickle=True)
 z=[]
 for i in range(len(p)):
@@ -487,6 +487,11 @@ print(f'f1{7}',         f1_score(y_test, predictions3))#
 
 
 #%%
+
+
+mu = np.array([mu[w]/mu[w].max() for w in range(len(mu))])
+X_test2 = mu.reshape(32, 176, 1)
+
 model1 = tf.keras.models.load_model('models/model_1.h5')
 model2 = tf.keras.models.load_model('models/model_2.h5')
 model3 = tf.keras.models.load_model('models/model_3.h5')
