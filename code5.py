@@ -164,8 +164,9 @@ val_ltm = np.load('inputs/tlm_val.npy')
 val_ltm = np.array([val_ltm[i][:177,].T for i in range(len(val_ltm))])
 y3 = pd.read_csv('inputs/id_val.csv')
 y3['2_1'] = y3['2_1'].fillna(y3['2_1'].mean())
-val_y = y3['2_1']/100
-y = val_y
+y = y3['2_2']/100
+y_test = np.array([0 if x >= 0.98 else 1 for x in y])
+
 ltm = val_ltm
 a=[]
 for i in range(len(ltm)):
@@ -239,18 +240,9 @@ mean_fpr1 = np.linspace(0, 1, 100)
 mean_fpr2 = np.linspace(0, 1, 100)
 mean_fpr3 = np.linspace(0, 1, 100)
 mean_fpr4 = np.linspace(0, 1, 100)
-#ltm = ltm[-205:]
-#mu = mu[-205:]
-#p = p[-205:]
-#y = y[-205:]
-#y2 = y2[-205:]
 i = 1
 fig1, ax1 = plt.subplots()
 for model in models:
-    #model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-    ##model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    #model.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-    ##model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
     model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
@@ -262,19 +254,6 @@ for model in models:
     p1 = p[idx]
     y1 = y[idx]
     y21 = y2[idx]
-
-    X_train0, X_test0, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm1, mu1, p1, y1, y21, test_size=0.2)
-    print('X_train', X_train0.shape)
-    print('X_test', X_test0.shape)
-    X_train1 = X_train0.reshape(X_train0.shape[0], 70, 177, 1)
-    X_test1  = X_test0.reshape(X_test0.shape[0], 70, 177, 1)
-    scaler= MinMaxScaler()
-    X_train2 = scaler.fit_transform(X_train2)
-    X_test2 = scaler.fit_transform(X_test2)
-    X_train2 = X_train2.reshape(X_train0.shape[0], 176, 1)
-    X_test2  = X_test2.reshape(X_test0.shape[0], 176, 1)
-    X_train3 = X_train3.reshape(X_train0.shape[0], 512, 512, 1)
-    X_test3 = X_test3.reshape(X_test0.shape[0], 512, 512, 1)
 
     y_pred_keras = model1.predict(X_test1).ravel() 
     fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
@@ -349,46 +328,6 @@ plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_01.png', bbox_inches='tight')
 
-
-
-
-
-
-#models = [model3, model3, model3, model3, model3]
-#print('all ok')
-#tprs1 = []
-#aucs1 = []
-#fprs1 = []
-#mean_fpr = np.linspace(0, 1, 100)
-#i = 1
-#fig1, ax1 = plt.subplots()
-#for model in models:
-#    model.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
-#    #model.fit(x=[X_train1, X_train2, X_train3], y= y_train, validation_data= ([X_test1, X_test2, X_test3], y_test), epochs=200 ,verbose=0, callbacks=[early_stop, reduce_lr])
-#    model.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
-#    #model.fit_generator(train_generator, validation_data= test_generator, callbacks=[early_stop], epochs=200, verbose=0)
-#  
-#    y_pred_keras = model.predict(X_test3).ravel() 
-#    fpr, tpr, thresholds = roc_curve(y_test, y_pred_keras)
-#    tprs1.append(interp(mean_fpr, fpr, tpr))
-#    roc_auc = auc(fpr, tpr)
-#    aucs1.append(roc_auc)    
-#
-#ax1.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', label='Chance', alpha=.8)
-#mean_tpr = np.mean(tprs1, axis=0)
-#mean_tpr[-1] = 1.0
-#mean_auc = np.mean(aucs1)
-#std_auc = np.std(aucs1)
-#ax1.plot(mean_fpr, mean_tpr, color='b',label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=.8)
-#std_tpr = np.std(tprs1, axis=0)
-#tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
-#tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
-#ax1.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2, label=r'$\pm$ 1 std. dev.')
-#ax1.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05], title="Receiver operating characteristic DBPD")
-#ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
-#plt.ylabel('True Positive Rate')
-#plt.xlabel('False Positive Rate')
-#plt.savefig('output/drop_00.png', bbox_inches='tight')
 
 
 metrics1 = pd.DataFrame(model1.history.history)
