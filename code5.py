@@ -63,7 +63,7 @@ y2 = np.concatenate((y2,y2[-411:]), axis=0)
 #print('labels', y.shape)
 #print('MU_cp', mu.shape)
 #%%
-X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2, random_state= 35)
+X_train1, X_test1, X_train2, X_test2, X_train3, X_test3, y_train, y_test, y_train2, y_test2 = train_test_split(ltm, mu, p, y, y2, test_size=0.2)#, random_state= 35)
 #print('X_train', X_train1.shape)
 #print('X_test', X_test1.shape)
 X_train1 = X_train1.reshape(984, 70, 177, 1)
