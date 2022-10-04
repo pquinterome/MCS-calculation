@@ -121,6 +121,7 @@ print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 for i in range(10):
     a1 =feature_maps1[i, :, :]
     res1 = np.sum(a1, axis=2)
+    res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(28,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
     plt.contour(res1, cmap='jet', alpha=1)
