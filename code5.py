@@ -126,7 +126,7 @@ for i in range(30):
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
-    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.5)
+    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.6)
     cbar = plt.colorbar()
     cbar.set_label('Normalized activation map intensity', rotation=270)
     cbar.ax.get_yaxis().labelpad = 15
@@ -144,7 +144,7 @@ for i in range(30):
     res2 = res2/res2.max()
     plt.figure(figsize=(8,4))
     x = np.arange(0.0, len(res2), 1)
-    plt.plot(X_test2[i], alpha=1, linewidth=5.5, label='MUcp_profile')
+    plt.plot(X_test2[i], alpha=1, linewidth=1.5, label='MUcp_profile')
     #plt.plot(res2)
     plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='gray', label='Activation zone', alpha=0.5, where= res2>0.7)
     plt.legend()
