@@ -126,7 +126,7 @@ for i in range(30):
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
-    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.7)
+    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.5)
     cbar = plt.colorbar()
     cbar.set_label('Normalized activation map intensity', rotation=270)
     cbar.ax.get_yaxis().labelpad = 15
