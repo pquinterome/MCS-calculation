@@ -527,7 +527,7 @@ feature_maps2 = model2.predict(X_test2)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
-for i in range(5):
+for i in range(10):
     a1 =feature_maps1[i, :, :]
     res1 = np.sum(a1, axis=2)
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
