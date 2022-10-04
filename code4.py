@@ -55,6 +55,7 @@ p = np.concatenate((p, p[-411:]), axis=0)
 mu= np.concatenate((mu, mu[-411:]), axis=0)
 y = np.concatenate((y,y[-411:]), axis=0)
 y2 = np.concatenate((y2,y2[-411:]), axis=0)
+# Note
 
 #print('dataset', ltm.shape)
 #print('labels', y.shape)
