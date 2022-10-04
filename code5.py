@@ -158,7 +158,7 @@ for i in range(30):
     #plt.colorbar()
     #plt.savefig(f'output/CDI_{i}.png', bbox_inches='tight')
 
-
+print.print('End of first Experiment')
 
 val_ltm = np.load('inputs/tlm_val.npy')
 val_ltm = np.array([val_ltm[i][:177,].T for i in range(len(val_ltm))])
@@ -207,6 +207,7 @@ X_train1 = ltm.reshape(32, 70, 177, 1)
 X_train2 = mu.reshape(32, 176, 1)
 X_train3 = p.reshape(32, 512, 512, 1)
 
+print.print('End of first Experiment')
 print('LTM_dataset', X_train1.shape)
 print('MU_cp_dataset', X_train2.shape)
 print('Portal dataset', X_train3.shape)
