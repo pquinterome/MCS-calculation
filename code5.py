@@ -116,7 +116,7 @@ model3 = Model(inputs=model3.inputs, outputs=model3.layers[1].output)
 
 feature_maps1 = model1.predict(X_test1)
 feature_maps2 = model2.predict(X_test2)
-#feature_maps3 = model3.predict(X_test3)
+feature_maps3 = model3.predict(X_test3)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
@@ -137,7 +137,7 @@ for i in range(10):
     x = np.arange(0.0, len(res2), 1)
     plt.plot(X_test2[i], alpha=1, linewidth=5.5, label='MUcp_profile')
     plt.plot(res2)
-    plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='r', label='feature')
+    plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='gray', label='feature')
     plt.legend()
     plt.savefig(f'output/Mcp_{i}.png', bbox_inches='tight')
 
