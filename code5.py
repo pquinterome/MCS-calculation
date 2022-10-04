@@ -92,10 +92,9 @@ model4 = tf.keras.models.load_model('models/model_4.h5')
 model5 = tf.keras.models.load_model('models/model_5.h5')
 model6 = tf.keras.models.load_model('models/model_6.h5')
 model7 = tf.keras.models.load_model('models/model_7.h5')
-
+print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 #####################
 y = ['pass' if y_test[i]>= 0.5 else 'fail' for i in range(10)]
-
 a1 = model1.predict(X_test1)
 a1 = ['pass' if a1[i]>= 0.5 else 'fail' for i in range(10)]
 c1 = [ 'ok_'+y[i] if a1[i]== y[i] else 'fail' for i in range(10)]
@@ -106,16 +105,15 @@ a3 = model3.predict(X_test3)
 a3 = ['pass' if a3[i]>= 0.5 else 'fail' for i in range(10)]
 c3 = [ 'ok_'+y[i] if a3[i]== y[i] else 'fail' for i in range(10)]
 ##########################
-
+print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 model1 = Model(inputs=model1.inputs, outputs=model1.layers[1].output)   #Sencod layer-> "layers[1]" is the first Conv layer
 model2 = Model(inputs=model2.inputs, outputs=model2.layers[1].output)
 model3 = Model(inputs=model3.inputs, outputs=model3.layers[1].output)
 
-model1
 
 feature_maps1 = model1.predict(X_test1)
 feature_maps2 = model2.predict(X_test2)
-feature_maps3 = model3.predict(X_test3)
+#feature_maps3 = model3.predict(X_test3)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
@@ -128,12 +126,12 @@ for i in range(10):
     plt.colorbar()
     plt.savefig(f'output/M1_{i}.png', bbox_inches='tight')
 
-    a3 =feature_maps3[i, :, :]
-    res3 = np.sum(a3, axis=2)
-    plt.figure(figsize=(28,4))
-    plt.imshow(X_test3[i], cmap='Greys', alpha=0.7)
-    plt.contour(res3, cmap='jet', alpha=1)
-    plt.colorbar()
-    plt.savefig(f'output/CDI_{i}.png', bbox_inches='tight')
+    #a3 =feature_maps3[i, :, :]
+    #res3 = np.sum(a3, axis=2)
+    #plt.figure(figsize=(28,4))
+    #plt.imshow(X_test3[i], cmap='Greys', alpha=0.7)
+    #plt.contour(res3, cmap='jet', alpha=1)
+    #plt.colorbar()
+    #plt.savefig(f'output/CDI_{i}.png', bbox_inches='tight')
 
 
