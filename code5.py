@@ -223,6 +223,7 @@ model5 = tf.keras.models.load_model('models/model_5.h5')
 model6 = tf.keras.models.load_model('models/model_6.h5')
 model7 = tf.keras.models.load_model('models/model_7.h5')
 
+
 print('End of first Experiment')
 
 models= [model1, model1, model1, model1, model1]
@@ -482,3 +483,70 @@ print(f'Accuracy{7}',   accuracy_score(y_test, predictions3))
 print(f'precision{7}',  precision_score(y_test, predictions3))
 print(f'recall{7}',     recall_score(y_test, predictions3))
 print(f'f1{7}',         f1_score(y_test, predictions3))#
+
+
+#%%
+model1 = tf.keras.models.load_model('models/model_1.h5')
+model2 = tf.keras.models.load_model('models/model_2.h5')
+model3 = tf.keras.models.load_model('models/model_3.h5')
+model4 = tf.keras.models.load_model('models/model_4.h5')
+model5 = tf.keras.models.load_model('models/model_5.h5')
+model6 = tf.keras.models.load_model('models/model_6.h5')
+model7 = tf.keras.models.load_model('models/model_7.h5')
+print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
+#####################
+y = ['pass' if y_test[i]>= 0.5 else 'fail' for i in range(30)]
+a1 = model1.predict(X_test1)
+a1 = ['pass' if a1[i]>= 0.5 else 'fail' for i in range(30)]
+c1 = [ 'ok_'+y[i] if a1[i]== y[i] else 'fail' for i in range(30)]
+a2 = model2.predict(X_test2)
+a2 = ['pass' if a2[i]>= 0.5 else 'fail' for i in range(30)]
+c2 = [ 'ok_'+y[i] if a2[i]== y[i] else 'fail' for i in range(30)]
+a3 = model3.predict(X_test3)
+a3 = ['pass' if a3[i]>= 0.5 else 'fail' for i in range(30)]
+c3 = [ 'ok_'+y[i] if a3[i]== y[i] else 'fail' for i in range(30)]
+##########################
+print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
+print('C1->', c1)
+print('C2->', c2)
+print('C3->', c3)
+model1 = Model(inputs=model1.inputs, outputs=model1.layers[1].output)   #Sencod layer-> "layers[1]" is the first Conv layer
+model2 = Model(inputs=model2.inputs, outputs=model2.layers[1].output)
+model3 = Model(inputs=model3.inputs, outputs=model3.layers[1].output)
+
+
+feature_maps1 = model1.predict(X_test1)
+feature_maps2 = model2.predict(X_test2)
+#feature_maps3 = model3.predict(X_test3)
+
+print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
+
+for i in range(5):
+    a1 =feature_maps1[i, :, :]
+    res1 = np.sum(a1, axis=2)
+    res1 = [res1[w]/res1.max() for w in range(len(res1))]
+    plt.figure(figsize=(8,4))
+    plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
+    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.6)
+    cbar = plt.colorbar()
+    cbar.set_label('Normalized activation map intensity', rotation=270)
+    cbar.ax.get_yaxis().labelpad = 15
+    #plt.colorbar()
+    plt.xlabel('Control Points')
+    plt.ylabel('Leaf Number')
+    plt.title(f'Plan_{i} verification')
+    plt.xlim(0,176)
+    plt.savefig(f'output/M1_Validation{i}.png', bbox_inches='tight')
+
+
+    a2 =feature_maps2[i, :]
+    res2 = np.sum(a2, axis=1)
+    res2 = res2/res2.max()
+    plt.figure(figsize=(8,4))
+    x = np.arange(0.0, len(res2), 1)
+    plt.plot(X_test2[i], alpha=1, linewidth=1.5, label='MUcp_profile')
+    #plt.plot(res2)
+    plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='gray', label='Activation zone', alpha=0.5, where= res2>0.7)
+    plt.legend()
+    plt.xlim(0,176)
+    plt.savefig(f'output/Mcp_Validation{i}.png', bbox_inches='tight')
