@@ -106,7 +106,9 @@ a3 = ['pass' if a3[i]>= 0.5 else 'fail' for i in range(10)]
 c3 = [ 'ok_'+y[i] if a3[i]== y[i] else 'fail' for i in range(10)]
 ##########################
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
-print(c1)
+print('C1->', c1)
+print('C2->', c2)
+print('C3->', c3)
 model1 = Model(inputs=model1.inputs, outputs=model1.layers[1].output)   #Sencod layer-> "layers[1]" is the first Conv layer
 model2 = Model(inputs=model2.inputs, outputs=model2.layers[1].output)
 model3 = Model(inputs=model3.inputs, outputs=model3.layers[1].output)
@@ -128,6 +130,17 @@ for i in range(10):
     plt.colorbar()
     plt.savefig(f'output/M1_{i}.png', bbox_inches='tight')
 
+    a2 =feature_maps2[i, :]
+    res2 = np.sum(a2, axis=1)
+    res2 = res2/res2.max()
+    plt.figure(figsize=(28,4))
+    x = np.arange(0.0, len(res2), 1)
+    plt.plot(X_test2[0], alpha=1, linewidth=5.5, label='MUcp_profile')
+    plt.plot(res2)
+    plt.fill_between(x= x, y1= X_test2[0].ravel(), y2= res2, color='r', label='feature')
+    plt.legend()
+    #plt.savefig(f'output/M1_{i}.png', bbox_inches='tight')
+
     #a3 =feature_maps3[i, :, :]
     #res3 = np.sum(a3, axis=2)
     #plt.figure(figsize=(28,4))
@@ -135,5 +148,7 @@ for i in range(10):
     #plt.contour(res3, cmap='jet', alpha=1)
     #plt.colorbar()
     #plt.savefig(f'output/CDI_{i}.png', bbox_inches='tight')
+
+
 
 
