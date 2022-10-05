@@ -560,6 +560,7 @@ for i in range(len(p)):
     padded_array.shape
     z.append(padded_array)
 p = np.array(z)
+y_test = y
 print('LTM_dataset', ltm.shape)
 print('MU_cp_dataset', mu.shape)
 print('Portal dataset', p.shape)
