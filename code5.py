@@ -126,7 +126,7 @@ for i in range(5):
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
-    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.6)
+    plt.contour(res1, cmap='jet', levels= [ 0.85, 0.87, 0.9, 0.93, 0.95, 0.98, 1])
     cbar = plt.colorbar()
     cbar.set_label('Normalized activation map intensity', rotation=270)
     cbar.ax.get_yaxis().labelpad = 15
@@ -148,7 +148,11 @@ for i in range(5):
     plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='gray', label='Activation zone', alpha=0.5, where= res2>0.7)
     plt.legend()
     plt.xlim(0,176)
+    plt.xlabel('Control Points')
+    plt.title(f'Plan_{i} verification')
+    plt.ylabel('Normalized Monitor Units contribution')
     plt.savefig(f'output/Mcp_{i}.png', bbox_inches='tight')
+    
 
     #a3 =feature_maps3[i, :, :]
     #res3 = np.sum(a3, axis=2)
@@ -533,7 +537,7 @@ for i in range(10):
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
-    plt.imshow(res1, cmap='jet', interpolation='nearest', alpha=0.3, vmin=0.6)
+    plt.contour(res1, cmap='jet', levels= [ 0.85, 0.87, 0.9, 0.93, 0.95, 0.98, 1])
     cbar = plt.colorbar()
     cbar.set_label('Normalized activation map intensity', rotation=270)
     cbar.ax.get_yaxis().labelpad = 15
@@ -555,4 +559,7 @@ for i in range(10):
     plt.fill_between(x= x, y1= X_test2[i].ravel(), y2= res2, color='gray', label='Activation zone', alpha=0.5, where= res2>0.7)
     plt.legend()
     plt.xlim(0,176)
+    plt.xlabel('Control Points')
+    plt.title(f'Plan_{i} verification')
+    plt.ylabel('Normalized Monitor Units contribution')
     plt.savefig(f'output/Mcp_Validation{i}.png', bbox_inches='tight')
