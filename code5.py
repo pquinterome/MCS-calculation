@@ -120,7 +120,7 @@ feature_maps2 = model2.predict(X_test2)
 
 print('X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X')
 
-for i in range(5):
+for i in range(10):
     a1 =feature_maps1[i, :, :]
     res1 = np.sum(a1, axis=2)
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
@@ -264,16 +264,16 @@ for model in models:
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx = np.random.choice(np.arange(31), 28, replace=False)
+    idx = np.random.choice(np.arange(31), 25, replace=False)
     ltm1 = ltm[idx]
     mu1 = mu[idx]
     p1 = p[idx]
     y_test = y[idx]
     y21 = y2[idx]
 
-    X_test1 = ltm1.reshape(32, 70, 177, 1)
-    X_test2 = mu1.reshape(32, 176, 1)
-    X_test3 = p1.reshape(32, 512, 512, 1)
+    X_test1 = ltm1.reshape(25, 70, 177, 1)
+    X_test2 = mu1.reshape(25, 176, 1)
+    X_test3 = p1.reshape(25, 512, 512, 1)
 
 
 
@@ -388,16 +388,16 @@ for model in models:
     model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx = np.random.choice(np.arange(31), 28, replace=False)
+    idx = np.random.choice(np.arange(31), 25, replace=False)
     ltm1 = ltm[idx]
     mu1 = mu[idx]
     p1 = p[idx]
     y_test = y[idx]
     y21 = y2[idx]
 
-    X_test1 = ltm1.reshape(32, 70, 177, 1)
-    X_test2 = mu1.reshape(32, 176, 1)
-    X_test3 = p1.reshape(32, 512, 512, 1)
+    X_test1 = ltm1.reshape(35, 70, 177, 1)
+    X_test2 = mu1.reshape(35, 176, 1)
+    X_test3 = p1.reshape(35, 512, 512, 1)
 
 
 
