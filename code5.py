@@ -518,8 +518,53 @@ print(f'f1{7}',         f1_score(y_test, predictions3))#
 #%%
 
 
+val_ltm = np.load('inputs/tlm_val.npy')
+val_ltm = np.array([val_ltm[i][:177,].T for i in range(len(val_ltm))])
+
+y3 = pd.read_csv('inputs/id_val.csv')
+y3['2_2'] = y3['2_2'].fillna(y3['2_2'].mean())
+y = y3['2_2']/100
+y= np.array([0 if x >= 0.98 else 1 for x in y])
+
+ltm = val_ltm
+ltm = [abs(ltm[w]/ltm[w].max()) for w in range(len(ltm))]
+a=[]
+for i in range(len(ltm)):
+    dlb1= pd.DataFrame(ltm[i].T)
+    nunique1 = dlb1.apply(pd.Series.nunique)
+    cols_to_drop1 = nunique1[nunique1 == 1].index
+    a1= dlb1.drop(cols_to_drop1, axis=1)
+    a.append(a1.T)
+w = np.array([a[i].shape[0] for i in range(len(a))])
+padded_array = np.zeros((w.max(), 177))
+#padded_array = np.zeros((70, 177))
+z=[]
+for i in range(len(ltm)):
+    q = a[i]
+    shape = np.shape(q)
+    padded_array = np.zeros((70, 177))
+    padded_array[:shape[0],:shape[1]] = q
+    padded_array.shape
+    z.append(padded_array)
+ltm = np.array(z)
+mu = np.load('inputs/mu_val.npy')
 mu = np.array([mu[w]/mu[w].max() for w in range(len(mu))])
-X_test2 = mu.reshape(32, 176, 1)
+p = np.load('inputs/portal_val.npy', allow_pickle=True)
+p= np.array([p[w]/p[w].max() for w in range(len(p))])
+z=[]
+for i in range(len(p)):
+    q = p[i]
+    shape = np.shape(q)
+    padded_array = np.zeros((512, 512))
+    padded_array[:shape[0],:shape[1]] = q
+    padded_array.shape
+    z.append(padded_array)
+p = np.array(z)
+print('LTM_dataset', ltm.shape)
+print('MU_cp_dataset', mu.shape)
+print('Portal dataset', p.shape)
+print('labels', y_test.shape)
+
 
 model1 = tf.keras.models.load_model('models/model_1.h5')
 model2 = tf.keras.models.load_model('models/model_2.h5')
