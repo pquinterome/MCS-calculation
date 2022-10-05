@@ -395,9 +395,9 @@ for model in models:
     y_test = y[idx]
     y21 = y2[idx]
 
-    X_test1 = ltm1.reshape(35, 70, 177, 1)
-    X_test2 = mu1.reshape(35, 176, 1)
-    X_test3 = p1.reshape(35, 512, 512, 1)
+    X_test1 = ltm1.reshape(25, 70, 177, 1)
+    X_test2 = mu1.reshape(25, 176, 1)
+    X_test3 = p1.reshape(25, 512, 512, 1)
 
 
 
