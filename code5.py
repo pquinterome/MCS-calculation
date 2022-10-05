@@ -126,7 +126,7 @@ for i in range(5):
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
-    plt.contour(res1, cmap='jet', levels= [ 0.85, 0.87, 0.9, 0.93, 0.95, 0.98, 1])
+    plt.contour(res1, cmap='jet', levels= [ 0.7, 0.8, 0.9, 0.93, 0.95, 0.98, 1])
     cbar = plt.colorbar()
     cbar.set_label('Normalized activation map intensity', rotation=270)
     cbar.ax.get_yaxis().labelpad = 15
@@ -194,7 +194,9 @@ for i in range(len(ltm)):
     z.append(padded_array)
 ltm = np.array(z)
 mu = np.load('inputs/mu_val.npy')
+mu = np.array([mu[w]/mu[w].max() for w in range(len(mu))])
 p = np.load('inputs/portal_val.npy', allow_pickle=True)
+p= np.array([p[w]/p[w].max() for w in range(len(p))])
 z=[]
 for i in range(len(p)):
     q = p[i]
@@ -537,7 +539,7 @@ for i in range(10):
     res1 = [res1[w]/res1.max() for w in range(len(res1))]
     plt.figure(figsize=(8,4))
     plt.imshow(X_test1[i], cmap='Greys', alpha=0.7)
-    plt.contour(res1, cmap='jet', levels= [ 0.85, 0.87, 0.9, 0.93, 0.95, 0.98, 1])
+    plt.contour(res1, cmap='jet', levels= [ 0.7, 0.8, 0.9, 0.93, 0.95, 0.98, 1])
     cbar = plt.colorbar()
     cbar.set_label('Normalized activation map intensity', rotation=270)
     cbar.ax.get_yaxis().labelpad = 15
