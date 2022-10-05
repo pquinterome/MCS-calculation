@@ -170,7 +170,7 @@ val_ltm = np.array([val_ltm[i][:177,].T for i in range(len(val_ltm))])
 y3 = pd.read_csv('inputs/id_val.csv')
 y3['2_2'] = y3['2_2'].fillna(y3['2_2'].mean())
 y = y3['2_2']/100
-y_test = np.array([0 if x >= 0.98 else 1 for x in y])
+y= np.array([0 if x >= 0.98 else 1 for x in y])
 
 ltm = val_ltm
 ltm = [abs(ltm[w]/ltm[w].max()) for w in range(len(ltm))]
@@ -211,9 +211,9 @@ print('MU_cp_dataset', mu.shape)
 print('Portal dataset', p.shape)
 print('labels', y_test.shape)
 
-X_test1 = ltm.reshape(32, 70, 177, 1)
-X_test2 = mu.reshape(32, 176, 1)
-X_test3 = p.reshape(32, 512, 512, 1)
+#X_test1 = ltm.reshape(32, 70, 177, 1)
+#X_test2 = mu.reshape(32, 176, 1)
+#X_test3 = p.reshape(32, 512, 512, 1)
 
 
 print('LTM_dataset', X_train1.shape)
@@ -263,6 +263,18 @@ for model in models:
     model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+
+    idx = np.random.choice(np.arange(31), 28, replace=False)
+    ltm1 = ltm[idx]
+    mu1 = mu[idx]
+    p1 = p[idx]
+    y_test = y[idx]
+    y21 = y2[idx]
+
+    X_test1 = ltm1.reshape(32, 70, 177, 1)
+    X_test2 = mu1.reshape(32, 176, 1)
+    X_test3 = p1.reshape(32, 512, 512, 1)
+
 
 
     y_pred_keras = model1.predict(X_test1).ravel() 
@@ -375,6 +387,17 @@ for model in models:
     model5.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+
+    idx = np.random.choice(np.arange(31), 28, replace=False)
+    ltm1 = ltm[idx]
+    mu1 = mu[idx]
+    p1 = p[idx]
+    y_test = y[idx]
+    y21 = y2[idx]
+
+    X_test1 = ltm1.reshape(32, 70, 177, 1)
+    X_test2 = mu1.reshape(32, 176, 1)
+    X_test3 = p1.reshape(32, 512, 512, 1)
 
 
 
