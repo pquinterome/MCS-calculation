@@ -211,9 +211,10 @@ print('MU_cp_dataset', mu.shape)
 print('Portal dataset', p.shape)
 print('labels', y_test.shape)
 
-#X_test1 = ltm.reshape(32, 70, 177, 1)
-#X_test2 = mu.reshape(32, 176, 1)
-#X_test3 = p.reshape(32, 512, 512, 1)
+X_test1 = ltm.reshape(32, 70, 177, 1)
+X_test2 = mu.reshape(32, 176, 1)
+X_test3 = p.reshape(32, 512, 512, 1)
+y_test = y
 
 
 print('LTM_dataset', X_train1.shape)
@@ -264,16 +265,16 @@ for model in models:
     model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model4.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx = np.random.choice(np.arange(31), 25, replace=False)
-    ltm1 = ltm[idx]
-    mu1 = mu[idx]
-    p1 = p[idx]
-    y_test = y[idx]
-    y21 = y2[idx]
+    #idx = np.random.choice(np.arange(31), 25, replace=False)
+    #ltm1 = ltm[idx]
+    #mu1 = mu[idx]
+    #p1 = p[idx]
+    #y_test = y[idx]
+    #y21 = y2[idx]
 
-    X_test1 = ltm1.reshape(25, 70, 177, 1)
-    X_test2 = mu1.reshape(25, 176, 1)
-    X_test3 = p1.reshape(25, 512, 512, 1)
+    #X_test1 = ltm1.reshape(25, 70, 177, 1)
+    #X_test2 = mu1.reshape(25, 176, 1)
+    #X_test3 = p1.reshape(25, 512, 512, 1)
 
 
 
@@ -440,16 +441,16 @@ for model in models:
     model6.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
     model7.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 
-    idx = np.random.choice(np.arange(31), 25, replace=False)
-    ltm1 = ltm[idx]
-    mu1 = mu[idx]
-    p1 = p[idx]
-    y_test = y[idx]
-    y21 = y2[idx]
+    #idx = np.random.choice(np.arange(31), 25, replace=False)
+    #ltm1 = ltm[idx]
+    #mu1 = mu[idx]
+    #p1 = p[idx]
+    #y_test = y[idx]
+    #y21 = y2[idx]
 
-    X_test1 = ltm1.reshape(25, 70, 177, 1)
-    X_test2 = mu1.reshape(25, 176, 1)
-    X_test3 = p1.reshape(25, 512, 512, 1)
+    #X_test1 = ltm1.reshape(25, 70, 177, 1)
+    #X_test2 = mu1.reshape(25, 176, 1)
+    #X_test3 = p1.reshape(25, 512, 512, 1)
 
 
 
