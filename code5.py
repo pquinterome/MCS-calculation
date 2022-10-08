@@ -349,6 +349,58 @@ ax1.legend(loc="right", bbox_to_anchor=(1.65, 0.5))
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.savefig('output/drop_01.png', bbox_inches='tight')
+
+metrics1 = pd.DataFrame(model1.history.history)
+pred1 = model1.predict(X_test1)
+predictions1 = np.round(pred1)
+fpr1, tpr1, thresholds1 = roc_curve(y_test, pred1)
+roc_auc1 = auc(fpr1, tpr1)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions1).numpy()
+print(f'AUC_model{1}',  roc_auc1)
+print(f'Accuracy{1}',   accuracy_score(y_test, predictions1))
+print(f'precision{1}',  precision_score(y_test, predictions1))
+print(f'recall{1}',     recall_score(y_test, predictions1))
+print(f'f1{1}',         f1_score(y_test, predictions1))#
+
+metrics2 = pd.DataFrame(model2.history.history)
+pred2 = model2.predict(X_test2)
+predictions2 = np.round(pred2)
+fpr2, tpr2, thresholds2 = roc_curve(y_test, pred2)
+roc_auc2 = auc(fpr2, tpr2)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions2).numpy()
+print(f'AUC_model{2}',  roc_auc2)
+print(f'Accuracy{2}',   accuracy_score(y_test, predictions2))
+print(f'precision{2}',  precision_score(y_test, predictions2))
+print(f'recall{2}',     recall_score(y_test, predictions2))
+print(f'f1{2}',         f1_score(y_test, predictions2))#
+
+metrics3 = pd.DataFrame(model3.history.history)
+pred3 = model3.predict(X_test3)
+predictions3 = np.round(pred3)
+fpr3, tpr3, thresholds3 = roc_curve(y_test, pred3)
+roc_auc3 = auc(fpr3, tpr3)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions3).numpy()
+print(f'AUC_model{3}',  roc_auc3)
+print(f'Accuracy{3}',   accuracy_score(y_test, predictions3))
+print(f'precision{3}',  precision_score(y_test, predictions3))
+print(f'recall{3}',     recall_score(y_test, predictions3))
+print(f'f1{3}',         f1_score(y_test, predictions3))#
+
+metrics4 = pd.DataFrame(model4.history.history)
+pred4 = model4.predict((X_test1, X_test2, X_test3))
+predictions4 = np.round(pred4)
+fpr4, tpr4, thresholds4 = roc_curve(y_test, pred4)
+roc_auc4 = auc(fpr4, tpr4)
+classes=[0,1]
+con_mat = tf.math.confusion_matrix(labels=y_test, predictions=predictions4).numpy()
+print(f'AUC_model{4}',  roc_auc4)
+print(f'Accuracy{4}',   accuracy_score(y_test, predictions4))
+print(f'precision{4}',  precision_score(y_test, predictions4))
+print(f'recall{4}',     recall_score(y_test, predictions4))
+print(f'f1{4}',         f1_score(y_test, predictions4))
 print('End of first Experiment')
 
 
