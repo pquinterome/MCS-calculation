@@ -488,6 +488,14 @@ print('now hybrid')
 #    i = i+1
 #print('all  ok')
 
+model1 = tf.keras.models.load_model('models/model_1.h5')
+model2 = tf.keras.models.load_model('models/model_2.h5')
+model3 = tf.keras.models.load_model('models/model_3.h5')
+model4 = tf.keras.models.load_model('models/model_4.h5')
+model5 = tf.keras.models.load_model('models/model_5.h5')
+model6 = tf.keras.models.load_model('models/model_6.h5')
+model7 = tf.keras.models.load_model('models/model_7.h5')
+
 models= [model1, model1, model1, model1, model1]
 print('all ok')
 tprs1 = []
