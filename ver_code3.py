@@ -97,7 +97,7 @@ activation = 'sigmoid'
 ##softmax
 ##models---->>>
 ##
-drop= 0.3
+drop= 0.4
 ##1 Single layers
 ##Model->1
 i1 = Input(shape=(70,177,1))
