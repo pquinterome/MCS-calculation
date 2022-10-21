@@ -97,15 +97,16 @@ activation = 'sigmoid'
 ##softmax
 ##models---->>>
 ##
-
+drop= 0.1
 ##1 Single layers
 ##Model->1
 i1 = Input(shape=(70,177,1))
 x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(i1)
 x1 = MaxPool2D(pool_size=(2,2))(x1)
+x1 = Dropout(rate=0.1)(x1)
 x1 = Conv2D(filters=64, kernel_size=(3,3), activation='relu', padding='same')(x1)
 x1 = MaxPool2D(pool_size=(2,2))(x1)                                                
-x1 = Dropout(rate=0.2)(x1)
+x1 = Dropout(rate=0.1)(x1)
 x1 = Flatten()(x1)
 #x1 = BatchNormalization()(x1)
 x11 = Dense(90, activation='relu')(x1)
@@ -131,7 +132,7 @@ x3 = MaxPool2D(pool_size=(2,2))(x3)
 x3 = Dropout(0.1)(x3)
 x3 = Conv2D(filters=32, kernel_size=(3,3), activation='relu', padding='same')(x3)
 x3 = MaxPool2D(pool_size=(2,2))(x3)
-x3 = Dropout(0.2)(x3)
+x3 = Dropout(0.1)(x3)
 x3 = Flatten()(x3)
 #x3 = BatchNormalization()(x3)
 x33 = Dense(360, activation='relu')(x3)
