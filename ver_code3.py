@@ -177,33 +177,33 @@ x33 = Dense(90, activation='relu')(x33)
 x33 = Dense(1, activation='sigmoid')(x33)
 model3 = Model(i3, x33)
 ##########################################
-#merge
-merge = concatenate([x1, x2, x3])
+##merge
+#merge = concatenate([x1, x2, x3])
+##merge = concatenate([x2, x3])
+#x = Dense(360, activation='relu')(merge)
+#x = Dense(180, activation='relu')(x)
+##x = Dense(90, activation='relu')(x)
+#g1 = Dense(1, activation='sigmoid')(x)  #Classification Hybrid model
+##x2 = Dense(1, activation='linear')(x)
+#model4 = Model(inputs=[i1, i2, i3], outputs=g1)
+
+#merge = concatenate([x1, x2])
+#x = Dense(360, activation='relu')(merge)
+#x = Dense(180, activation='relu')(x)
+#g1 = Dense(1, activation='sigmoid')(x)
+#model5 = Model(inputs=[i1, i2], outputs=g1)
+
+#merge = concatenate([x1, x3])
+#x = Dense(360, activation='relu')(merge)
+#x = Dense(180, activation='relu')(x)
+#g1 = Dense(1, activation='sigmoid')(x)
+#model6 = Model(inputs=[i1, i3], outputs=g1)
+
 #merge = concatenate([x2, x3])
-x = Dense(360, activation='relu')(merge)
-x = Dense(180, activation='relu')(x)
-#x = Dense(90, activation='relu')(x)
-g1 = Dense(1, activation='sigmoid')(x)  #Classification Hybrid model
-#x2 = Dense(1, activation='linear')(x)
-model4 = Model(inputs=[i1, i2, i3], outputs=g1)
-
-merge = concatenate([x1, x2])
-x = Dense(360, activation='relu')(merge)
-x = Dense(180, activation='relu')(x)
-g1 = Dense(1, activation='sigmoid')(x)
-model5 = Model(inputs=[i1, i2], outputs=g1)
-
-merge = concatenate([x1, x3])
-x = Dense(360, activation='relu')(merge)
-x = Dense(180, activation='relu')(x)
-g1 = Dense(1, activation='sigmoid')(x)
-model6 = Model(inputs=[i1, i3], outputs=g1)
-
-merge = concatenate([x2, x3])
-x = Dense(360, activation='relu')(merge)
-x = Dense(180, activation='relu')(x)
-g1 = Dense(1, activation='sigmoid')(x)
-model7 = Model(inputs=[i2, i3], outputs=g1)
+#x = Dense(360, activation='relu')(merge)
+#x = Dense(180, activation='relu')(x)
+#g1 = Dense(1, activation='sigmoid')(x)
+#model7 = Model(inputs=[i2, i3], outputs=g1)
 ##############################################
 
 early_stop = EarlyStopping(monitor='val_loss', patience=15)
