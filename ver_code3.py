@@ -209,9 +209,13 @@ model3 = Model(i3, x33)
 early_stop = EarlyStopping(monitor='val_loss', patience=15)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.4, patience=10, min_lr=0.00001)
 
-model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+#model1.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model2.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
 model3.compile(loss="binary_crossentropy", optimizer= "adam", metrics=['accuracy'])
+ #model1.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model2.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
+model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
+
 #model1.fit(x=X_train1, y= y_train, validation_data= (X_test1, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
 #model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=400 ,verbose=0, callbacks=[reduce_lr])
 #model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
@@ -287,7 +291,7 @@ for model in models:
     #model2.fit(x=X_train2, y= y_train, validation_data= (X_test2, y_test), epochs=400 ,verbose=0, callbacks=[reduce_lr])
     #model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
-    model1.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
+    #model1.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
     model2.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
     model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=400 ,verbose=0, callbacks=[early_stop, reduce_lr])
 
