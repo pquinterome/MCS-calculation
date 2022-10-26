@@ -244,6 +244,7 @@ model3.fit(x=X_train3, y= y_train, validation_data= (X_test3, y_test), epochs=40
 #model1 = tf.keras.models.load_model('models/model_1.h5')
 #model2 = tf.keras.models.load_model('models/model_2.h5')
 model1 = tf.keras.models.load_model('models/model_3.h5')
+model1.summary()
 #model4 = tf.keras.models.load_model('models/model_4.h5')
 #model5 = tf.keras.models.load_model('models/model_5.h5')
 #model6 = tf.keras.models.load_model('models/model_6.h5')
